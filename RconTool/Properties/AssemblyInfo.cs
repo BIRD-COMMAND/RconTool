@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Rcon Tool")]
-[assembly: AssemblyDescription("Eldewrito Rcon Tool for Dedicated Hosts")]
+[assembly: AssemblyDescription("ElDewrito Rcon Tool for Dedicated Hosts")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jaron#0898")]
-[assembly: AssemblyProduct("Eldewrito Rcon Tool for Dedicated Hosts")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCompany("BIRD COMMAND")]
+[assembly: AssemblyProduct("ElDewrito Rcon Tool for Dedicated Hosts")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

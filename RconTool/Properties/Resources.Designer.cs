@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RconTool.Properties
-{
-
-
+namespace RconTool.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,52 +19,378 @@ namespace RconTool.Properties
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    public class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        public static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RconTool.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        public static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        public static System.IO.UnmanagedMemoryStream Audio_PlayerJoinSound {
+            get {
+                return ResourceManager.GetStream("Audio_PlayerJoinSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        public static System.IO.UnmanagedMemoryStream Audio_PlayerLeaveSound {
+            get {
+                return ResourceManager.GetStream("Audio_PlayerLeaveSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Font_Cascadia {
+            get {
+                object obj = ResourceManager.GetObject("Font_Cascadia", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Font_Consolas {
+            get {
+                object obj = ResourceManager.GetObject("Font_Consolas", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Font_EnvyCodeR {
+            get {
+                object obj = ResourceManager.GetObject("Font_EnvyCodeR", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Font_Go {
+            get {
+                object obj = ResourceManager.GetObject("Font_Go", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Font_Inconsolata {
+            get {
+                object obj = ResourceManager.GetObject("Font_Inconsolata", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Font_LiberationMono {
+            get {
+                object obj = ResourceManager.GetObject("Font_LiberationMono", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Font_SourceCodeProMedium {
+            get {
+                object obj = ResourceManager.GetObject("Font_SourceCodeProMedium", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Font_UbuntuMonoBird {
+            get {
+                object obj = ResourceManager.GetObject("Font_UbuntuMonoBird", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Icon_DoubleArrowExpandDiagonal {
+            get {
+                object obj = ResourceManager.GetObject("Icon_DoubleArrowExpandDiagonal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Icon_DoubleArrowExpandListVertical {
+            get {
+                object obj = ResourceManager.GetObject("Icon_DoubleArrowExpandListVertical", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        public static System.Drawing.Icon Icon_RconTool {
+            get {
+                object obj = ResourceManager.GetObject("Icon_RconTool", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Icon_Server {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Server", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Icon_TriangleDown {
+            get {
+                object obj = ResourceManager.GetObject("Icon_TriangleDown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Icon_TriangleUp {
+            get {
+                object obj = ResourceManager.GetObject("Icon_TriangleUp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        public static System.Drawing.Icon Icon_WarningSign {
+            get {
+                object obj = ResourceManager.GetObject("Icon_WarningSign", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_CheckMark32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Image_CheckMark32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_DiscordLogo32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Image_DiscordLogo32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_DiscordLogoBlack245x240 {
+            get {
+                object obj = ResourceManager.GetObject("Image_DiscordLogoBlack245x240", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_DiscordLogoBlack32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Image_DiscordLogoBlack32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_DiscordLogoBlue245x240 {
+            get {
+                object obj = ResourceManager.GetObject("Image_DiscordLogoBlue245x240", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_DiscordLogoWhite245x240 {
+            get {
+                object obj = ResourceManager.GetObject("Image_DiscordLogoWhite245x240", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_EmblemDead {
+            get {
+                object obj = ResourceManager.GetObject("Image_EmblemDead", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_EmblemGeneric {
+            get {
+                object obj = ResourceManager.GetObject("Image_EmblemGeneric", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_GitHubLogo32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Image_GitHubLogo32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_GitHubLogo64x64 {
+            get {
+                object obj = ResourceManager.GetObject("Image_GitHubLogo64x64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_LochNessMonster256x132 {
+            get {
+                object obj = ResourceManager.GetObject("Image_LochNessMonster256x132", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_WarningSign32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Image_WarningSign32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Image_XMark32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Image_XMark32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute
+        ///Help
+        ///WriteConfig
+        ///Camera.CenteredCrosshairFirst
+        ///Camera.CenteredCrosshairThird
+        ///Camera.FOV
+        ///Camera.HideHUD
+        ///Camera.Mode
+        ///Camera.Position
+        ///Camera.ShowCoordinates
+        ///Camera.Speed
+        ///Forge.Budget
+        ///Forge.Canvas
+        ///Forge.CloneDepth
+        ///Forge.CloneMultiplier
+        ///Forge.DeleteAll
+        ///Forge.DeletePrefab
+        ///Forge.DeselectAll
+        ///Forge.DeselectAllOf
+        ///Forge.DumpPalette
+        ///Forge.DumpPrefabs
+        ///Forge.ExpandSelection
+        ///Forge.GrabDistance
+        ///Forge.InvertSelection
+        ///Forge.LoadPrefab
+        ///Forge.Magnets
+        ///Forge.MagnetsStrength
+        ///Forge.MagnetsVisible [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string TextFile_ServerCommandTriggers {
+            get {
+                return ResourceManager.GetString("TextFile_ServerCommandTriggers", resourceCulture);
             }
         }
     }

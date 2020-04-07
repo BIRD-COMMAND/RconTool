@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RconTool Simplified", "RconTool\RconTool Simplified.csproj", "{3BB0456E-8939-4AD2-A6CB-962E5512E76B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RconTool", "RconTool\RconTool.csproj", "{3BB0456E-8939-4AD2-A6CB-962E5512E76B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

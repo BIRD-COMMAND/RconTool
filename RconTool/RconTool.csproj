@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--<Import Project="..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" />-->
+  <!--<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3BB0456E-8939-4AD2-A6CB-962E5512E76B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>RconTool</RootNamespace>
+    <AssemblyName>RconTool</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Build|AnyCPU'">
+    <OutputPath>bin\Build\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Testing|AnyCPU'">
+    <OutputPath>bin\Testing\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Images\Icon_RconTool.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.Compatibility.Data" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="websocket-sharp, Version=1.0.2.59611, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocketSharp.1.0.3-rc11\lib\websocket-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Windows and Controls\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows and Controls\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Server\AddNewVotingFilePrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Server\AddNewVotingFilePrompt.Designer.cs">
+      <DependentUpon>AddNewVotingFilePrompt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows and Controls\AutoCompleteTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\FontUtility.cs" />
+    <Compile Include="Utility\Prompt.cs" />
+    <Compile Include="Scoreboard.cs" />
+    <Compile Include="Commands\ToolCommandEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\ToolCommandEditor.Designer.cs">
+      <DependentUpon>ToolCommandEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\ToolCommand.cs" />
+    <Compile Include="Commands\ToolCommandManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\ToolCommandManager.Designer.cs">
+      <DependentUpon>ToolCommandManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows and Controls\ConfigExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows and Controls\ConfigExport.Designer.cs">
+      <DependentUpon>ConfigExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\Extensions.cs" />
+    <Compile Include="Windows and Controls\FileStreamDebugHelper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows and Controls\FileStreamDebugHelper.Designer.cs">
+      <DependentUpon>FileStreamDebugHelper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Voting and Variants\GameVariant.cs" />
+    <Compile Include="Windows and Controls\ListBoxExtended.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Voting and Variants\MapVariant.cs" />
+    <Compile Include="Voting and Variants\MatchInfo.cs" />
+    <Compile Include="Commands\RuntimeCommand.cs" />
+    <Compile Include="Windows and Controls\SelectionRangeSlider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows and Controls\SelectionRangeSlider.Designer.cs">
+      <DependentUpon>SelectionRangeSlider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Server\ServerEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Server\ServerEditor.Designer.cs">
+      <DependentUpon>ServerEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\ServerMessenger.cs" />
+    <Compile Include="Server\ServerSettings.cs" />
+    <Compile Include="Server\ServerManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Server\ServerManager.Designer.cs">
+      <DependentUpon>ServerManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Connection.cs" />
+    <Compile Include="Server\PlayerInfo.cs" />
+    <Compile Include="Server\ServerState.cs" />
+    <Compile Include="App.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="App.Designer.cs">
+      <DependentUpon>App.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\ServerSettingsEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Server\ServerSettingsEditor.Designer.cs">
+      <DependentUpon>ServerSettingsEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Voting and Variants\VoteFile.cs" />
+    <EmbeddedResource Include="Windows and Controls\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\AddNewVotingFilePrompt.resx">
+      <DependentUpon>AddNewVotingFilePrompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commands\ToolCommandEditor.resx">
+      <DependentUpon>ToolCommandEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commands\ToolCommandManager.resx">
+      <DependentUpon>ToolCommandManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows and Controls\ConfigExport.resx">
+      <DependentUpon>ConfigExport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows and Controls\FileStreamDebugHelper.resx">
+      <DependentUpon>FileStreamDebugHelper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows and Controls\SelectionRangeSlider.resx">
+      <DependentUpon>SelectionRangeSlider.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\ServerEditor.resx">
+      <DependentUpon>ServerEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\ServerManager.resx">
+      <DependentUpon>ServerManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App.resx">
+      <DependentUpon>App.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\ServerSettingsEditor.resx">
+      <DependentUpon>ServerSettingsEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Framework\App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TextFile_ServerCommandTriggers.txt" />
+    <None Include="Resources\Images\Image_XMark32x32.png" />
+    <None Include="Resources\Images\Image_WarningSign32x32.png" />
+    <None Include="Resources\Images\Image_LochNessMonster256x132.png" />
+    <None Include="Resources\Images\Image_GitHubLogo64x64.png" />
+    <None Include="Resources\Images\Image_GitHubLogo32x32.png" />
+    <None Include="Resources\Images\Image_EmblemGeneric.png" />
+    <None Include="Resources\Images\Image_EmblemDead.png" />
+    <None Include="Resources\Images\Image_DiscordLogoWhite245x240.png" />
+    <None Include="Resources\Images\Image_DiscordLogoBlue245x240.png" />
+    <None Include="Resources\Images\Image_DiscordLogoBlack245x240.png" />
+    <None Include="Resources\Images\Image_DiscordLogoBlack32x32.png" />
+    <None Include="Resources\Images\Image_DiscordLogo32x32.png" />
+    <None Include="Resources\Images\Image_CheckMark32x32.png" />
+    <None Include="Resources\Images\Icon_WarningSign.ico" />
+    <None Include="Resources\Images\Icon_TriangleUp.png" />
+    <None Include="Resources\Images\Icon_TriangleDown.png" />
+    <None Include="Resources\Images\Icon_Server.png" />
+    <None Include="Resources\Images\Icon_RconTool.ico" />
+    <None Include="Resources\Images\Icon_DoubleArrowExpandListVertical.png" />
+    <None Include="Resources\Images\Icon_DoubleArrowExpandDiagonal.png" />
+    <None Include="Resources\Fonts\Font_Cascadia.ttf" />
+    <None Include="Resources\Fonts\Font_Consolas.ttf" />
+    <None Include="Resources\Fonts\Font_EnvyCodeR.ttf" />
+    <None Include="Resources\Fonts\Font_Go.ttf" />
+    <None Include="Resources\Fonts\Font_Inconsolata.ttf" />
+    <None Include="Resources\Fonts\Font_LiberationMono.ttf" />
+    <None Include="Resources\Fonts\Font_SourceCodeProMedium.ttf" />
+    <None Include="Resources\Fonts\Font_UbuntuMonoBird.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Audio_PlayerJoinSound.wav" />
+    <Content Include="Resources\Audio_PlayerLeaveSound.wav" />
+    <Content Include="Resources\Credits.txt" />
+    <Content Include="Resources\Fonts\SIL Open Font License.txt" />
+    <Content Include="Resources\Fonts\UBUNTU FONT LICENCE.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <!--<Error Condition="!Exists('..\packages\Fody.6.0.6\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.0.6\build\Fody.targets'))" />-->
+    <!--<Error Condition="!Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />-->
+  </Target>
+  <!--<Import Project="..\packages\Fody.6.0.6\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.6\build\Fody.targets')" />-->
+</Project>
