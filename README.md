@@ -1,4 +1,6 @@
-[Original Version](https://github.com/jaron780/RconTool) Created by Jaron
+[Current Version Released Here](https://github.com/BIRD-COMMAND/RconTool/releases/) Updated by BIRD COMMAND
+
+[Original Version Found Here](https://github.com/jaron780/RconTool) Created by Jaron
 
 # RconTool
 This is a tool for Server hosts to monitor and moderate their own servers.
@@ -50,7 +52,7 @@ This is a tool for Server hosts to monitor and moderate their own servers.
 
 # Instructions 
 
-- Download the latest Release from https://github.com/BIRD-COMMAND/RconTool
+- Download the latest Release from https://github.com/BIRD-COMMAND/RconTool/releases/
 - Extract the zip to folder of your choice
 - double click the exe
 - Click add server and fill in your servers info which can be found in dewrito_prefs.cfg file
