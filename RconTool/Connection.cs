@@ -75,6 +75,8 @@ namespace RconTool
         public bool GameVariantsLoaded { get; set; } = false;
         public DateTime LastMapVariantLoadTime { get; set; }
         public DateTime LastGameVariantLoadTime { get; set; }
+        public DateTime TimeOfLastEmblemRequest { get; set; }
+        public bool EmblemsNeeded { get; set; } = false;
 
         private PlayerJoinLeaveEventArgs LastPlayerJoinEventArgs { get; set; } = null;
         public List<Tuple<int, string>> RankAndEmblemDataPairs { get; set; } = new List<Tuple<int, string>>();
@@ -160,7 +162,9 @@ namespace RconTool
 
 		public Connection(ServerSettings settings)
         {
-
+            
+            TimeOfLastEmblemRequest = DateTime.Now;
+            
             Settings = settings;
             
             if (!App.connectionList.Contains(this)) { App.connectionList.Add(this); }
@@ -544,6 +548,7 @@ namespace RconTool
 
             State.Update(newState, this);
             if (IsDisplayedCurrently) { Scoreboard.RegenerateScoreboardImage = true; }
+            if (EmblemsNeeded && DateTime.Now - TimeOfLastEmblemRequest > TimeSpan.FromSeconds(3)) { RequestRankAndEmblemInfo(); }
 
         }
 
@@ -1711,8 +1716,15 @@ namespace RconTool
             }
         }
 
-        private void RequestRankAndEmblemInfo(PlayerJoinLeaveEventArgs e)
+        private void RequestRankAndEmblemInfo()
         {
+
+            EmblemsNeeded = true;
+
+            if (DateTime.Now - TimeOfLastEmblemRequest < TimeSpan.FromSeconds(3)) { return; }            
+            
+            TimeOfLastEmblemRequest = DateTime.Now;
+            
             new Thread(new ThreadStart(async () =>
             {
                 string rankAndEmblemJson = null;
@@ -1729,6 +1741,7 @@ namespace RconTool
                 }
 
             })).Start();
+
         }
 
 		#endregion
@@ -1817,7 +1830,7 @@ namespace RconTool
                 player.Play();
             }
 
-            RequestRankAndEmblemInfo(e);
+            RequestRankAndEmblemInfo();
 
         }
         public void OnPlayerLeft(PlayerJoinLeaveEventArgs e)

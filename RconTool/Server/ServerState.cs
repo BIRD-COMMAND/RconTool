@@ -187,6 +187,11 @@ namespace RconTool
                 //    }
                 //}
 
+                if (connection.EmblemsNeeded)
+                {
+                    if (!Players.Any(x => x.Emblem == null)) { connection.EmblemsNeeded = false; }
+                }
+
             }
             
         }

@@ -43,7 +43,7 @@ namespace RconTool
                 this.serviceTag = value; 
                 if (serviceTag != null && serviceTag.Length < 4)
                 {
-                    ScoreboardServiceTag = serviceTag + new string(' ', serviceTag.Length - 4);
+                    ScoreboardServiceTag = serviceTag + new string(' ', 4 - serviceTag.Length);
                 }
                 else
                 {
