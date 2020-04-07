@@ -1,11 +1,11 @@
-(https://github.com/jaron780/RconTool)[Original Version] Created by Jaron
+[Original Version](https://github.com/jaron780/RconTool) Created by Jaron
 
 # RconTool
 This is a tool for Server hosts to monitor and moderate their own servers.
 
 ## Build Instructions
 - Clone/Download
-- (https://github.com/sta/websocket-sharp)[WebSocketSharp] and (https://www.newtonsoft.com/json)[Json.NET] are both required and can be installed with nuget package manager.
+- [WebSocketSharp](https://github.com/sta/websocket-sharp) and [Json.NET](https://www.newtonsoft.com/json) are both required and can be installed with nuget package manager.
 - Install-Package WebSocketSharp -Pre | Install-Package Newtonsoft.Json
 - Build and run.
 
@@ -56,5 +56,5 @@ This is a tool for Server hosts to monitor and moderate their own servers.
 - Click save after adding all your servers
 - To switch between servers use the dropdown at the bottom-left of the program
 
-(https://github.com/jaron780/RconTool)[Original Version] Created by Jaron
+[Original Version](https://github.com/jaron780/RconTool) Created by Jaron
 Updated by BIRD COMMAND
