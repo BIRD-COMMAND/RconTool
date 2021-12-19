@@ -1,9 +1,10 @@
+# RconTool
+This is a tool for ElDewrito Server hosts to monitor and moderate their own servers.
+
 [Current Version Released Here](https://github.com/BIRD-COMMAND/RconTool/releases/) Updated by BIRD COMMAND
 
-[Original Version Found Here](https://github.com/jaron780/RconTool) Created by Jaron
+[Original Version](https://github.com/jaron780/RconTool) Created by Jaron
 
-# RconTool
-This is a tool for Server hosts to monitor and moderate their own servers.
 
 ## Build Instructions
 - Clone/Download
@@ -11,52 +12,63 @@ This is a tool for Server hosts to monitor and moderate their own servers.
 - Install-Package WebSocketSharp -Pre | Install-Package Newtonsoft.Json
 - Build and run.
 
-![Ready for action.](https://i.imgur.com/W9Qo0WY.png)
+<!--![Ready for action.](https://i.imgur.com/W9Qo0WY.png)-->
 
-# Update Note - BIRD COMMAND
-## There are currently a lot of undocumented features, here's a brief list.
+## Brief overview of some of the features
 
-- Server selection is now a drop-down menu.
+- Server selection drop-down menu in the bottom-left.
 - Toggleable sound effects for when players leave or join the currently displayed server.
 - Runtime commands are available in game. Use '!commands' to be PM'd the list.
-- '!pm PlayerName Message content' - a private messaging system. Quotation marks are NOT required for player names(even names with spaces) or for messages.
-- Additional command triggers have been added. Commands may be run when a player joins, leaves, or when the server player count enters a specified range.
-- Added auto-complete for server commands in the console tab.
-- Scoreboard rendering now supports multiple fonts and font sizes. File -> Settings -> Set Scoreboard Font Size to select it. Or use the buttons in the bottom-right.
-- File -> About window is now 200% cooler.
+- '!pm Player Name *message*' - a private messaging system. Quotation marks should NOT be used for player names (even names with spaces) or for messages.
+- '!r *message*' - will respond to the last player who sent you a '!pm'. Do not use quotation marks.
+- Additional command triggers have been added. Commands may be run when a player joins or leaves, when the server player count enters a specified range, and more.
+- Added auto-complete for server commands in the console tab. You can use the TAB key to cycle through all commands containing your currently entered text.
+- Scoreboard rendering supports multiple fonts and font sizes. File -> Settings -> Set Scoreboard Font Size to select it. Or use the buttons in the bottom-right.
 
-### Runtime Votefile Manipulation and In-Game Voting + Match Queue
+## ServerHook - Enables manual player-team assignment and !balanceTeams command
 ##### (LOCAL ONLY - Only available if Rcon Tool is running on the same computer that is hosting the server)
 
-- Configure the settings from the option in the settings menu.
-- You'll be able to use '!list games', '!list maps', and '!voteAddGame gametype mapname' to start an in-game vote for the next match.
-- If the vote passes a dynamic votefile will be created and loaded server-side that will ensure the voted match is the only available option for the next game.
-- Voted matches are added to an internal match queue, so you may hold as many votes as you want to create a community-driven playlist experience.
-- Your regular votefile will be reloaded after all voted matches are complete and the match queue is empty.
+When enabled (and the lobby has a team gametype loaded), you can right-click a player on the scoreboard and assign them to another team. Send-To-Team commands are disregarded in lobbies and gametypes with a FFA gametype loaded. If the loaded gametype has only 2 valid teams, Send-To-Team will only work if you try to send a player to one of those 2 teams. Unlike me, the server doesn't care that *gold team rules*.
 
-#### There's more but I'll get to it later. Peace. - BIRD COMMAND
+There is now a !balanceTeams command that initiates a custom vote to balance the teams, and there's also a !forceBalanceTeams admin command that immediately executes the action. It's a simple algorithm that attempts to construct balanced team lists based on current player Kill/Death ratios and Kill/Death ratios saved from the previous match (when available). It's not perfect, but it can be helpful.
+
+If you do want to use this feature, it's good to have at least a basic understanding of how it works:
+
+- Works by finding the server process, and temporarily tweaking the bytes for the !shuffleTeams command function.
+  - Sets a bit within the server process memory indicating which team player(s) should be on.
+  - Edits !shuffleTeams function to skip random team assignment and use a custom message instead of 'Teams have been shuffled'.
+  - The remainder of the function propagates the altered player team indices out to all players.
+- After a brief delay the !shuffleTeams function bytes are reverted back to their original values.
+- *The !shuffleTeams command will not work correctly during this ~3-second window.*
+- > But that's a sacrifice I'm willing to make.
+
+**Warning**: In the absolute worst-case scenario, if the Rcon Tool crashes in the middle of a send-to-team operation, your server's !shuffleTeams function could be left in a non-functional state. ***Restarting your server will fix this issue***, and otherwise your server should still run the game just fine aside from not being able to automatically randomize or balance teams.
+
+### In-Game Custom Voting + Match Queue
+
+- Use '!voteAddGame gametype mapname' to start an in-game vote to add that match to the 'match queue'.
+- Add as many games to the queue as you want. The tool will load the next match after the current one ends.
+- When the queue is empty, your regular votefile and voting will be re-enabled.
 
 # Features
 
-- Connect to and control your server via Rcon
+- Connect to and control your server via Rcon - Supports multiple servers
 - View Live Scoreboard that shows score/kills/deaths etc
-- View players name and service-tag
+- Right-click context menu on scoreboard for player management
+- Info panel with map and gametype icons
+- Dropdowns for loading built-in maps and gametypes
+- Will also include all your custom maps and gametypes in local mode
 - View and interact with chat via the chat Tab
-- View players that join and leave the server
-- Timed commands that can be sent every x minutes or at certain hours
-- Right click Context menu to Kick or ban players
-- Supports multiple servers
-- Control tab for easy access to commands you might commonly use
-- Info tab to view the name and some basic settings for the server as well as the current map and game type
+- View players that join and leave the server or switch teams
 - Connect to discord Webhook to send messages when a Report command is used
 
 # Instructions 
 
 - Download the latest Release from https://github.com/BIRD-COMMAND/RconTool/releases/
-- Extract the zip to folder of your choice
-- double click the exe
-- Click add server and fill in your servers info which can be found in dewrito_prefs.cfg file
-- Default ports you need for the tool are server port 11775 and rcon port 11776
+- Extract the contents of the zip to the folder of your choice
+- Run the .exe (as administrator if you want to use ServerHook)
+- Click add server and fill in your server's info which can be found in dewrito_prefs.cfg file
+- Default ports you need for the tool are (usually) server port 11775 and rcon port 11776
 - Click save after adding all your servers
 - To switch between servers use the dropdown at the bottom-left of the program
 
