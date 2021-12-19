@@ -44,7 +44,19 @@ If you do want to use this feature, it's good to have at least a basic understan
 
 **Warning**: In the absolute worst-case scenario, if the Rcon Tool crashes in the middle of a send-to-team operation, your server's !shuffleTeams function could be left in a non-functional state. ***Restarting your server will fix this issue***, and otherwise your server should still run the game just fine aside from not being able to automatically randomize or balance teams.
 
-### In-Game Custom Voting + Match Queue
+## Auto-Translate
+If you have a Google Translate API key set up (with billing configured and all that), you can plug it into the app and get automatic translation services in your server chat. You can set your server's default language, and messages detected in other languages will have an automatic translation posted in chat. You can also configure a list of words and phrases that will be ignored by the auto-translate ('lol', 'haha', etc.).
+
+Additionally, you can manually translate with the '!t' and '!t-lc' commands.
+* '!t *message*': translate the message to the server language.
+* '!t-*lc*' *message*: translate the message to the language denoted by the ISO 639-1 language code *lc*: en, es, fr, de, etc.
+* Excample: you type in chat '!t-es Hello, my friends'.
+  * App detects command, auto-detects message language - gets translation to 'es'pañol (spanish).
+  * App sends message to server chat - 'PlayerName: !t-es Hello, my friends'.
+  * App sends message to server chat - 'PlayerName: Hola, mis amigos'.
+  * This format makes the translation process transparent and more easily understandable for players.
+
+## In-Game Custom Voting + Match Queue
 
 - Use '!voteAddGame gametype mapname' to start an in-game vote to add that match to the 'match queue'.
 - Add as many games to the queue as you want. The tool will load the next match after the current one ends.
