@@ -1,4 +1,6 @@
-[Original Version](https://github.com/jaron780/RconTool) Created by Jaron
+[Current Version Released Here](https://github.com/BIRD-COMMAND/RconTool/releases/) Updated by BIRD COMMAND
+
+[Original Version Found Here](https://github.com/jaron780/RconTool) Created by Jaron
 
 # RconTool
 This is a tool for Server hosts to monitor and moderate their own servers.
@@ -8,6 +10,8 @@ This is a tool for Server hosts to monitor and moderate their own servers.
 - [WebSocketSharp](https://github.com/sta/websocket-sharp) and [Json.NET](https://www.newtonsoft.com/json) are both required and can be installed with nuget package manager.
 - Install-Package WebSocketSharp -Pre | Install-Package Newtonsoft.Json
 - Build and run.
+
+![Ready for action.](https://i.imgur.com/W9Qo0WY.png)
 
 # Update Note - BIRD COMMAND
 ## There are currently a lot of undocumented features, here's a brief list.
@@ -48,7 +52,7 @@ This is a tool for Server hosts to monitor and moderate their own servers.
 
 # Instructions 
 
-- Download the latest Release from https://github.com/BIRD-COMMAND/RconTool
+- Download the latest Release from https://github.com/BIRD-COMMAND/RconTool/releases/
 - Extract the zip to folder of your choice
 - double click the exe
 - Click add server and fill in your servers info which can be found in dewrito_prefs.cfg file
