@@ -1,51 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Linq;
-using System.Reflection;
-using System.Collections;
-using System.Threading;
+using Newtonsoft.Json;
 
 namespace RconTool
 {
-    [DataContract]
+	[JsonObject(MemberSerialization.OptIn)]
     public class ToolCommand
     {
 
-        [DataMember]
+		#region Properties
+
+		[JsonProperty]
         public string Name { get; set; }
-        [DataMember]
+        [JsonProperty]
         public List<string> CommandStrings { get; set; }
-        [DataMember]
+        [JsonProperty]
         public bool Enabled { get; set; }
-        [DataMember]
-        public Type ConditionType { get; set; }
-        [DataMember]
+        [JsonProperty]
+        public TriggerType ConditionType { get; set; }
+        [JsonProperty]
         public Operator ConditionOperator { get; set; }
-        [DataMember]
+        [JsonProperty]
         public int ConditionThreshold { get; set; }
-        [IgnoreDataMember]
-        public ServerSettings AssociatedServer { get; set; }
-        [DataMember]
+        [JsonProperty]
         public string CustomServerCommand { get; set; }
-        [DataMember]
+        [JsonProperty]
         public int PlayerCountRangeMin { get; set; }
-        [DataMember]
+        [JsonProperty]
         public int PlayerCountRangeMax { get; set; }
-        [DataMember]
+        [JsonProperty]
         public int RunTime { get; set; }        
-        [DataMember]
+        [JsonProperty]
         public string Tag { get; set; } = "";
-        [DataMember]
+        [JsonProperty]
         public bool IsGlobalToolCommand { get; set; } = false;
-        public DateTime nextRunTime;
-        public Connection connection;
+
+        public ServerSettings AssociatedServer { get; set; }
+        public Connection Connection { get; set; }
+        public DateTime NextRunTime { get; set; }
+
+        public bool Triggered { get; set; } = false;
+        private bool SubscribedToConnectionEvents { get; set; } = false;
+
+        #endregion
 
         public ToolCommand(
             string name,
             bool enabled,
             List<string> runs,
-            Type conditionType,
+            TriggerType trigger,
             Operator conditionOperator,
             int conditionThreshold,
             ServerSettings associatedServer,
@@ -61,7 +64,7 @@ namespace RconTool
             this.CommandStrings = runs;
             this.Enabled = enabled;
             this.AssociatedServer = associatedServer;
-            this.ConditionType = conditionType;
+            this.ConditionType = trigger;
             this.ConditionOperator = conditionOperator;
             this.ConditionThreshold = conditionThreshold;
             this.CustomServerCommand = customServerCommand;
@@ -69,65 +72,76 @@ namespace RconTool
             this.PlayerCountRangeMax = playerCountRangeMax;
             this.RunTime = runTime;
             this.Tag = tag;
-            nextRunTime = DateTime.Now;
+            NextRunTime = DateTime.Now;
 
         }
-
-        public bool triggered = false;
 
         public void Initialize(Connection connection)
         {
 
-            nextRunTime = DateTime.Now;
+            Connection = connection;
+            NextRunTime = DateTime.Now;
 
             if (Enabled)
             {
                 switch (ConditionType)
                 {
-                    case Type.PlayerJoined:
+                    case TriggerType.PlayerJoined:
                         connection.PlayerJoined += CheckPlayerConditional;
                         break;
-                    case Type.PlayerLeft:
+                    case TriggerType.PlayerLeft:
                         connection.PlayerLeft += CheckPlayerConditional;
                         break;
-                    case Type.PlayerCount:
+                    case TriggerType.PlayerCount:
                         connection.PlayerCountChanged += CheckPlayerConditional;
                         break;
-                    case Type.PlayerCountInRange:
+                    case TriggerType.PlayerCountInRange:
                         connection.PlayerCountChanged += CheckPlayerConditional;
                         break;
-                    case Type.CustomServerCommand:
+                    case TriggerType.CustomServerCommand:
                         connection.ChatMessageReceived += CheckChatConditional;
                         break;
-                    default: break;
+					case TriggerType.MatchBegan:
+						connection.MatchBeganOrEnded += CheckMatchBeginEndConditional;
+						break;
+					case TriggerType.MatchEnded:
+						connection.MatchBeganOrEnded += CheckMatchBeginEndConditional;
+						break;
+					default: break;
                 }
+                SubscribedToConnectionEvents = true;
             }
 
         }
 
-        public bool CanRunCommand(Connection connection)
+        public bool CanRunCommandOnConnection(Connection connection)
         {
             if (!Enabled) { return false; }
-            if (this.connection == null)
+            if (Connection == null)
             {
-                this.connection = App.GetConnection(AssociatedServer);
-                if (this.connection == null) { return false; }
+                if (AssociatedServer == null) { return false; }
+                Connection = App.GetConnection(AssociatedServer);
+                if (Connection == null) { return false; }
             }
-            if (this.connection != connection) { return false; }
+            if (Connection != connection) { return false; }
             return true;
         }
 
-        public void Enable()
+        public void Enable(bool populateCommandsDropdown = true)
         {
             Enabled = true;
-            Initialize(connection);
-            App.PopulateConditionalCommandsDropdown();
+            if (!SubscribedToConnectionEvents) {
+                Initialize(Connection);
+            }
+            if (populateCommandsDropdown) {
+                App.RepopulateConditionalCommandsDropdown = true;
+            }
         }
 
-        public void Disable()
+        public void Disable(bool populateCommandsDropdown = true)
         {
 
-            if (!IsGlobalToolCommand && connection == null)
+            if (!IsGlobalToolCommand && Connection == null)
             {
                 //throw new Exception
                 App.Log("Attempted to disable a connection-specific command with no specified connection.");
@@ -138,29 +152,39 @@ namespace RconTool
 
                 Enabled = false;
 
-                switch (ConditionType)
-                {
-                    case Type.PlayerJoined:
-                        connection.PlayerJoined -= CheckPlayerConditional;
-                        break;
-                    case Type.PlayerLeft:
-                        connection.PlayerLeft -= CheckPlayerConditional;
-                        break;
-                    case Type.PlayerCount:
-                        connection.PlayerCountChanged -= CheckPlayerConditional;
-                        break;
-                    case Type.PlayerCountInRange:
-                        connection.PlayerCountChanged -= CheckPlayerConditional;
-                        break;
-                    case Type.CustomServerCommand:
-                        connection.ChatMessageReceived -= CheckChatConditional;
-                        break;
-                    default: break;
+                if (SubscribedToConnectionEvents) {
+                    switch (ConditionType) {
+                        case TriggerType.PlayerJoined:
+                            Connection.PlayerJoined -= CheckPlayerConditional;
+                            break;
+                        case TriggerType.PlayerLeft:
+                            Connection.PlayerLeft -= CheckPlayerConditional;
+                            break;
+                        case TriggerType.PlayerCount:
+                            Connection.PlayerCountChanged -= CheckPlayerConditional;
+                            break;
+                        case TriggerType.PlayerCountInRange:
+                            Connection.PlayerCountChanged -= CheckPlayerConditional;
+                            break;
+                        case TriggerType.CustomServerCommand:
+                            Connection.ChatMessageReceived -= CheckChatConditional;
+                            break;
+                        case TriggerType.MatchBegan:
+                            Connection.MatchBeganOrEnded -= CheckMatchBeginEndConditional;
+                            break;
+                        case TriggerType.MatchEnded:
+                            Connection.MatchBeganOrEnded -= CheckMatchBeginEndConditional;
+                            break;
+                        default: break;
+                    }
+                    SubscribedToConnectionEvents = false;
                 }
 
             }
 
-            App.PopulateConditionalCommandsDropdown();
+            if (populateCommandsDropdown) {
+                App.RepopulateConditionalCommandsDropdown = true;
+            }
 
         }
 
@@ -172,35 +196,35 @@ namespace RconTool
             }
             else
             {
-                if (ConditionType == Type.EveryXMinutes)
+                if (ConditionType == TriggerType.EveryXMinutes)
                 {
-                    nextRunTime = DateTime.Now;
+                    NextRunTime = DateTime.Now;
                 }
                 Enable();
             }
-            App.PopulateConditionalCommandsDropdown();
-            App.SaveConditionalCommands();
+            App.RepopulateConditionalCommandsDropdown = true;
+            App.SaveSettings();
         }
 
         public void CheckPlayerConditional(object sender, Connection.PlayerJoinLeaveEventArgs e)
         {
 
-            if (!CanRunCommand(e.Connection)) { return; }
+            if (!CanRunCommandOnConnection(e.Connection)) { return; }
             
             switch (ConditionType)
             {
-                case Type.PlayerJoined:
-                    RunCommands();
+                case TriggerType.PlayerJoined:
+                    if (e.PlayerJoined) { RunCommands(); }
                     break;
-                case Type.PlayerLeft:
-                    RunCommands();
+                case TriggerType.PlayerLeft:
+                    if (!e.PlayerJoined) { RunCommands(); }
                     break;
-                case Type.PlayerCount:
+                case TriggerType.PlayerCount:
                     #region
 
                     bool conditionMet = false;
 
-                    if (triggered == false)
+                    if (Triggered == false)
                     {
                         switch (ConditionOperator)
                         {
@@ -223,7 +247,7 @@ namespace RconTool
                         if (conditionMet)
                         {
                             RunCommands();
-                            triggered = true;
+                            Triggered = true;
                         }
                     }
                     else
@@ -249,20 +273,20 @@ namespace RconTool
                         }
                         if (conditionMet)
                         {
-                            triggered = false;
+                            Triggered = false;
                         }
 
                     }
                     #endregion
                     break;
-                case Type.PlayerCountInRange:
+                case TriggerType.PlayerCountInRange:
                     #region
 
-                    if (triggered == false)
+                    if (Triggered == false)
                     {
                         if (e.NewPlayerCount >= PlayerCountRangeMin && e.NewPlayerCount <= PlayerCountRangeMax)
                         {
-                            triggered = true;
+                            Triggered = true;
                             RunCommands();
                         }
                     }
@@ -270,7 +294,7 @@ namespace RconTool
                     {
                         if (e.NewPlayerCount < PlayerCountRangeMin || e.NewPlayerCount > PlayerCountRangeMax)
                         {
-                            triggered = false;
+                            Triggered = false;
                         }
                     }
 
@@ -286,16 +310,15 @@ namespace RconTool
         public void CheckChatConditional(object sender, Connection.ChatEventArgs e = null)
         {
 
-            if (!CanRunCommand(e.Connection)) { return; }
+            if (!CanRunCommandOnConnection(e.Connection)) { return; }
 
             switch (ConditionType)
             {
 
-                case Type.CustomServerCommand:
+                case TriggerType.CustomServerCommand:
                     #region
 
-                    if (e.Message.StartsWith(CustomServerCommand))
-                    {
+                    if (e.Message.StartsWith(CustomServerCommand)) {
                         RunCommands(e);
                     }
 
@@ -307,129 +330,78 @@ namespace RconTool
 
         }
 
+        public void CheckMatchBeginEndConditional(object sender, Connection.MatchBeginEndArgs e = null)
+		{
+            if (ConditionType == TriggerType.MatchBegan && e.MatchBegan) { RunCommands(); }
+            else if (ConditionType == TriggerType.MatchEnded && !e.MatchBegan) { RunCommands(); }
+		}
+
         public void RunCommands(Connection.ChatEventArgs e = null)
         {
-
             foreach (string command in CommandStrings)
             {
-                if (command.StartsWith("!!"))
+                string formatted = command.Trim();
+                formatted = ParseResult.ReplaceDynamicReferences(formatted, Connection);
+                if (command.Trim().StartsWith("!") || command.Trim().StartsWith("%"))
                 {
-                    string s = command.TrimStart(new char[] { '@' });
 
-                    foreach (string item in Directives.List)
-                    {
-                        if (s.StartsWith(item)) { }
+                    if (command.Trim().StartsWith("!!")) {
+                        formatted = formatted.TrimStart("@".ToCharArray()); // I don't remember why this is necessary
+					}
+                    else {
+                        // Remove the command-enclosing '%' characters
+                        formatted = command.RemoveFirst('%', 2);
+                    }
+                    while (formatted.StartsWith("!")) { 
+                        // Remove '!' characters
+                        formatted = formatted.Remove(0, 1); 
+                    }
+
+                    if (RuntimeCommand.StringStartsWithCommandName(formatted)) {
+                        RuntimeCommand.TryRunCommand($"!{formatted}", null, Connection);
+                    }
+                    else {
+                        Connection.RconCommandQueue.Enqueue(
+                            RconCommand.ConsoleLogCommand(
+                                formatted, formatted, 
+                                e?.SendingPlayer?.Name ?? "SERVER"
+                            )
+                        );
                     }
 
                 }
-                else if (command.Trim().StartsWith("%"))
-                {
-                    string formatted = command.TrimStart(new char[] { '%' });
-                    if (formatted.StartsWith(Directives.DisableConditionalCommand))
-                    {
-                        AssociatedServer.SetCommandEnabledState(
-                            formatted.Remove(0, Directives.DisableConditionalCommand.Length + 1).Trim(),
-                            false
-                        );
-                    }
-                    else if (formatted.StartsWith(Directives.DisableTimedCommand))
-                    {
-                        AssociatedServer.SetCommandEnabledState(
-                            formatted.Remove(0, Directives.DisableTimedCommand.Length + 1).Trim(),
-                            false
-                        );
-                    }
-                    else if (formatted.StartsWith(Directives.DisableCommandsByTag))
-                    {
-                        AssociatedServer.SetCommandEnabledState("", false, formatted.Remove(0, Directives.DisableCommandsByTag.Length + 1).Trim());
-                    }
-                    else if (formatted.StartsWith(Directives.EnableConditionalCommand))
-                    {
-                        AssociatedServer.SetCommandEnabledState(
-                            formatted.Remove(0, Directives.EnableConditionalCommand.Length + 1).Trim(),
-                            true
-                        );
-                    }
-                    else if (formatted.StartsWith(Directives.EnableTimedCommand))
-                    {
-                        AssociatedServer.SetCommandEnabledState(
-                            formatted.Remove(0, Directives.EnableTimedCommand.Length + 1).Trim(),
-                            true
-                        );
-                    }
-                    else if (formatted.StartsWith(Directives.EnableCommandsByTag))
-                    {
-                        AssociatedServer.SetCommandEnabledState("", true, formatted.Remove(0, Directives.EnableCommandsByTag.Length + 1).Trim());
-                    }
-                    else if (formatted.StartsWith(Directives.EnableDynamicVoteFiles))
-                    {
-                        connection.Command_EnableDynamicVoteFileManagement();
-                    }
-                    else if (formatted.StartsWith(Directives.DisableDynamicVoteFiles))
-                    {
-                        connection.Command_DisableDynamicVoteFileManagement();
-                    }
-                    else if (formatted.StartsWith(Directives.ListGameVariants))
-                    {
-                        connection.SendGameDescriptions(GameVariant.BaseGame.All);
-                    }
-                    else if (formatted.StartsWith(Directives.ListMapVariants))
-                    {
-                        connection.SendMapDescriptions(MapVariant.BaseMap.All);
-                    }
-                    else if (formatted.StartsWith(Directives.EndGame))
-                    {
-                        //if (formatted.Contains(connection.Settings.CommandAuthorization)) {
-                            connection.SendToRcon("Game.End");
-                        //}
-                    }
-                    else if (formatted.StartsWith(Directives.StartGame))
-                    {
-                        //if (formatted.Contains(connection.Settings.CommandAuthorization)) {
-                            connection.SendToRcon("Game.Start");
-                        //}
-                    }
-                    else if (formatted.StartsWith(Directives.ReloadAll))
-                    {
-                        //if (formatted.Contains(connection.Settings.CommandAuthorization)) {
-                        connection.LoadGameVariants();
-                        connection.LoadMapVariants();
-                        //}
-                    } //ServerSay
-                    else if (formatted.StartsWith(Directives.ServerSay))
-                    {
-                        // Remove "%ServerSay% "" + "
-                        if (e.Message.Length < Directives.ServerSay.Length + 6) { return; }
-                        connection.Broadcast(e.Message.Remove(0, Directives.ServerSay.Length + 4).TrimLastCharacter());
-                    }
-                    else if (formatted.StartsWith(Directives.SetNextGame))
-                    {
-                        
-                        formatted = formatted.Remove(0, Directives.SetNextGame.Length + 1).Trim();
-                        string[] args = e.Message.Remove(0, Directives.SetNextGame.Length + 1).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        connection.Broadcast("DEBUG: " + args[0] + " | " + args[1]);
-                        if (args.Length == 2)
-                        {
-                            connection.Command_SetNextGame(args[0], args[1], e.SendingPlayer.Name);
+				else {
+                    if (formatted.StartsWith("!")) {
+                        if (RuntimeCommand.StringStartsWithCommandName(formatted.TrimStart(1))) {
+                            RuntimeCommand.TryRunCommand(formatted, null, Connection);
                         }
-                        else { connection.Whisper(e.SendingPlayer.Name, "Unable to parse SetNextGame args"); }
-                        
+                        else {
+                            Connection.RconCommandQueue.Enqueue(
+                                RconCommand.ConsoleLogCommand(
+                                    formatted, formatted,
+                                    e?.SendingPlayer?.Name ?? "SERVER"
+                                )
+                            );
+                        }
                     }
-
+                    else {
+                        if (RuntimeCommand.StringStartsWithCommandName(formatted)) {
+                            RuntimeCommand.TryRunCommand($"!{formatted}", null, Connection);
+                        }
+                        else {
+                            Connection.RconCommandQueue.Enqueue(
+                                RconCommand.ConsoleLogCommand(
+                                    formatted, formatted,
+                                    e?.SendingPlayer?.Name ?? "SERVER"
+                                )
+                            );
+                        }
+                    }                    
                 }
-                else if (command.Trim().Contains("%") && ConditionType == Type.CustomServerCommand)
-                {
-                    //TODO FEATURE add mid-string directives
-                }
-                else
-                {
-                    connection.SendToRcon(command);
-                }
-            }
+			}
         }
 
-
-        public enum Type
+        public enum TriggerType
         {
             PlayerJoined,
             PlayerLeft,
@@ -438,6 +410,8 @@ namespace RconTool
             CustomServerCommand,
             Daily,
             EveryXMinutes,
+            MatchBegan,
+            MatchEnded,
         }
 
         public enum Operator
@@ -447,113 +421,6 @@ namespace RconTool
             EqualTo,
             GreaterThanOrEqualTo,
             LessThanOrEqualTo
-        }
-
-        // vote for next gametype
-        // vote for next map
-
-        // vote for next gametype and then automatically vote for next map
-
-        // -- maybe later
-        // 
-        // guided vote file construction
-        //     select a game and then the maps for it
-        //     keep going until vote to end or predetermined count
-        //
-        // chat-based on-the-fly game variant creation
-        //     probably not worth it. definitely not worth it right *now*
-        //     it would take a good bit of time to deconstruct the game variant encoding
-        //
-        // 
-        // 
-
-        public static class Directives
-        {
-
-            public const string DisableTimedCommand = "DisableTimedCommand";
-            public const string DisableConditionalCommand = "DisableConditionalCommand";
-            public const string DisableCommandsByTag = "DisableCommandsByTag";
-            public const string EnableTimedCommand = "EnableTimedCommand";
-            public const string EnableConditionalCommand = "EnableConditionalCommand";
-            public const string EnableCommandsByTag = "EnableCommandsByTag";
-
-            public const string SetNextGame = "SetNextGame";
-
-            public const string EndGame = "EndGame";
-            public const string StartGame = "StartGame";
-
-            public const string EnableDynamicVoteFiles = "EnableDynamicVoteFiles";
-            public const string DisableDynamicVoteFiles = "DisableDynamicVoteFiles";
-
-            public const string ListGameVariants = "ListGameVariants";
-            public const string ListMapVariants = "ListMapVariants";
-
-            public const string ServerSay = "ServerSay";
-
-            public const string ReloadAll = "ReloadAll";
-
-            public static List<string> ListAsCommands {
-                get {
-                    if (_listAsCommands == null)
-                    {
-                        _listAsCommands = new List<string>();
-                        FieldInfo[] fieldInfos = typeof(Directives).GetFields(
-                            // Gets all public and static fields
-                            BindingFlags.Public | BindingFlags.Static |
-                            // This tells it to get the fields from all base types as well
-                            BindingFlags.FlattenHierarchy);
-
-                        // Go through the list and only pick out the constants
-                        foreach (FieldInfo fi in fieldInfos)
-                        {
-                            // IsLiteral determines if its value is written at 
-                            //   compile time and not changeable
-                            // IsInitOnly determines if the field can be set 
-                            //   in the body of the constructor
-                            // for C# a field which is readonly keyword would have both true 
-                            //   but a const field would have only IsLiteral equal to true
-                            if (fi.IsLiteral && !fi.IsInitOnly)
-                            {
-                                _listAsCommands.Add("%" + (string)fi.GetValue(null) + "%");
-                            }
-                        }
-                    }
-                    return _listAsCommands;
-                }
-            }
-            private static List<string> _listAsCommands;
-            public static List<string> List { 
-                get {
-                    if (_list == null)
-                    {
-                        _list = new List<string>();
-                        FieldInfo[] fieldInfos = typeof(Directives).GetFields(
-                            // Gets all public and static fields
-                            BindingFlags.Public | BindingFlags.Static |
-                            // This tells it to get the fields from all base types as well
-                            BindingFlags.FlattenHierarchy);
-
-                        // Go through the list and only pick out the constants
-                        foreach (FieldInfo fi in fieldInfos)
-                        {
-                            // IsLiteral determines if its value is written at 
-                            //   compile time and not changeable
-                            // IsInitOnly determines if the field can be set 
-                            //   in the body of the constructor
-                            // for C# a field which is readonly keyword would have both true 
-                            //   but a const field would have only IsLiteral equal to true
-                            if (fi.IsLiteral && !fi.IsInitOnly)
-                            {
-                                _list.Add((string)fi.GetValue(null));
-                            }
-                        }
-                    }
-                    return _list;
-                }
-            }
-            private static List<string> _list;
-            
-
         }
 
     }

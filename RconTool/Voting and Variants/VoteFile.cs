@@ -187,11 +187,7 @@ namespace RconTool
 		{
 
 			Settings = settings;
-			int mapArrayLosses = 0;
-			int typeMapLosses = 0;
-			int typeLosses = 0;
-
-			ValidateMaps(Maps, Settings, out mapArrayLosses);
+			ValidateMaps(Maps, Settings, out int mapArrayLosses);
 
 			foreach (Type type in Types)
 			{
@@ -220,32 +216,6 @@ namespace RconTool
 
 			Types.RemoveAll(x => x.GameVariant == null);
 
-			//for (int i = 0; i < Types.Count; i++)
-			//{
-			//	//ValidateMaps(Types[i].SpecificMaps, Settings, out typeMapLosses);
-			//	DirectoryInfo match;
-			//	if (!Types[i].GameVariant.Exists(Settings.GameVariantsDirectory, Types[i].TypeName, Types[i].DisplayName, out match))
-			//	{
-			//		Types[i] = null;
-			//		typeLosses++;
-			//	}
-			//	else
-			//	{
-			//		foreach (FileInfo file in match.GetFiles())
-			//		{
-			//			if (file.Name.StartsWith("variant"))
-			//			{
-			//				if (!IsFileLocked(file))
-			//				{
-			//					Types[i].GameVariant = new GameVariant(match);
-			//				}
-			//				else { break; }
-			//			}
-			//		}					
-			//	}
-			//}
-			//Types.RemoveAll(x => x == null);
-
 			if (Types.Count == 0) { return false; }
 			else { return true; }
 		}
@@ -258,7 +228,7 @@ namespace RconTool
 			// Validate the maps referenced in the file
 			for (int i = 0; i < maps.Count; i++)
 			{
-				if (MapVariant.BaseMapIDs.Contains(maps[i].TypeNameForVotingFile))
+				if (MapVariant.BaseMapStringIDs.Contains(maps[i].TypeNameForVotingFile))
 				{
 					maps[i].IsBaseMap = true;
 					continue;
@@ -305,6 +275,7 @@ namespace RconTool
 			return false;
 		}
 
+		
 		public override bool Equals(object obj)
 		{
 			return this.Equals(obj as VoteFile);
@@ -363,6 +334,7 @@ namespace RconTool
 		{
 			return !(lhs == rhs);
 		}
+
 
 		[JsonObject (MemberSerialization.OptIn)]
 		public class Type

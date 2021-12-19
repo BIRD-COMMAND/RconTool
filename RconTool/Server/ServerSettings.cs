@@ -2,80 +2,228 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Linq;
 
 namespace RconTool
 {
-    [DataContract]
+
+	[JsonObject(MemberSerialization.OptIn)]
     public class ServerSettings
     {
 
-        [JsonIgnore]
+        public const string AutoTranslateIgnoredPhrasesSeparator = "\n";
         public const string RconProtocolString = "dew-rcon";
 
-        [DataMember]
-        public string Ip { get; set; }
-        [DataMember]
-        public string InfoPort { get; set; }
-        [DataMember]
-        public string ServerPassword { get; set; } = "";
-        [DataMember]
-        public string RconPassword { get; set; }
-        [DataMember]
-        public string RconPort { get; set; }
-        [DataMember]
-        public string Name { get; set; } = "";
-        [DataMember]
-        public List<string> sendOnConnect { get; set; } = new List<string>();
-        [DataMember]
-        public List<ToolCommand> Commands { get; set; } = new List<ToolCommand>();
-        [DataMember]
-        public List<string> AuthorizedUIDs { get; set; } = new List<string>();
-        [DataMember]
-        public bool DynamicVotingFileManagement { get; set; } = true;
-        [DataMember]
-        public string ServerExecutableDirectoryPath { get; set; }
-        [DataMember]
-        public string VoteFilesDirectoryPath { get; set; }
-        [DataMember]
-        public string RelativeVotingPath { get; set; }
-        [DataMember]
-        public string GameVariantsDirectoryPath { get; set; }
-        [DataMember]
-        public string MapVariantsDirectoryPath { get; set; }
-        [DataMember]
-        public List<VoteFile> voteFiles { get; set; } = new List<VoteFile>();
-        
-        [JsonIgnore]
-        public DirectoryInfo ServerExecutableDirectory {
-            get { return ConfirmAndRetrieveDirectoryInfo(serverExecutableDirectory, ServerExecutableDirectoryPath); }
-        }
-        private DirectoryInfo serverExecutableDirectory;
-        
-        [JsonIgnore]
-        public DirectoryInfo VoteFilesDirectory {
-            get { return ConfirmAndRetrieveDirectoryInfo(voteFilesDirectory, VoteFilesDirectoryPath); }
-        }
-        private DirectoryInfo voteFilesDirectory;
-        
-        [JsonIgnore]
-        public DirectoryInfo GameVariantsDirectory {
-            get { return ConfirmAndRetrieveDirectoryInfo(gameVariantsDirectory, GameVariantsDirectoryPath); }
-        }
-        private DirectoryInfo gameVariantsDirectory;
+        public ServerSettings() {}
 
-        [JsonIgnore]
-        public DirectoryInfo MapVariantsDirectory {
-            get { return ConfirmAndRetrieveDirectoryInfo(mapVariantsDirectory, MapVariantsDirectoryPath); }
+        #region Properties
+
+        #region Server Connection
+
+        [JsonProperty]
+        public string Id { get; set; }
+
+        [JsonProperty]
+        public string Ip { get; set; } = "";
+
+        [JsonProperty]
+        public string InfoPort { get; set; } = "";
+
+        [JsonProperty]
+        public string RconPort { get; set; } = "";
+
+        [JsonProperty]
+        public string RconPassword { get; set; } = "";
+
+        [JsonProperty]
+        public string ServerPassword { get; set; } = "";
+
+        [JsonProperty]
+        public string Name { get; set; } = "";
+
+        [JsonProperty]
+        public List<string> SendOnConnectCommands { get; set; } = new List<string>();
+
+        [JsonProperty]
+        public TitleOption TitleDisplayOption = TitleOption.Game;
+
+        public string TitleDisplayStyle {
+			get {
+				switch (TitleDisplayOption)
+				{
+					case TitleOption.Name: return "Name";
+					case TitleOption.Game: return "Game";
+					case TitleOption.Ip: return "Ip";
+					case TitleOption.None: return "None";
+					default: return "Game";
+				}
+			}
+            set {
+                if (value == "Name") { TitleDisplayOption = TitleOption.Name; }
+                else if (value == "Game") { TitleDisplayOption = TitleOption.Game; }
+                else if (value == "Ip") { TitleDisplayOption = TitleOption.Ip; }
+                else if (value == "None") { TitleDisplayOption = TitleOption.None; }
+            }
         }
-        private DirectoryInfo mapVariantsDirectory;
+
+        #endregion
+
+        #region Discord Integration
+
+        [JsonProperty]
+        public string Webhook { get; set; }
+
+        [JsonProperty]
+        public string WebhookTrigger { get; set; }
+
+        [JsonProperty]
+        public string WebhookRole { get; set; }
+
+        #endregion
+
+        #region Local File Management
+
+        [JsonProperty]
+        public bool UseServerHook { get; set; } = false;
+
+        [JsonProperty]
+        public bool UseLocalFiles { get; set; } = true;
+
+        [JsonProperty]
+        public string ServerExecutableDirectoryPath { get; set; }
+
+        [JsonProperty]
+        public string VoteFilesDirectoryPath { get; set; }
+
+        [JsonProperty]
+        public string RelativeVotingPath { get; set; }
+
+        [JsonProperty]
+        public string GameVariantsDirectoryPath { get; set; }
+
+        [JsonProperty]
+        public string MapVariantsDirectoryPath { get; set; }
+
+        //public string VoteFilesJson {
+        //    get { if (VoteFiles == null) { VoteFiles = new List<VoteFile>(); } return JsonConvert.SerializeObject(VoteFiles); }
+        //    set { if (!string.IsNullOrWhiteSpace(value))
+        //        {
+        //            try { VoteFiles = JsonConvert.DeserializeObject<List<VoteFile>>(value); }
+        //            catch { VoteFiles = new List<VoteFile>(); }
+        //        } }
+        //}
+
+        //[JsonProperty]
+        public List<VoteFile> VoteFiles { get; set; } = new List<VoteFile>();
+                
+        public DateTime LastVoteFileLoadTime { get; set; }
+
+        public bool VoteFilesLoaded { get; set; } = false;
+
+        public bool CanQueryMapsAndGametypes { get { return CanQueryMaps && CanQueryGametypes; } }
+        public bool CanQueryMaps { get { return !string.IsNullOrWhiteSpace(MapVariantsDirectoryPath); } }
+        public bool CanQueryGametypes { get { return !string.IsNullOrWhiteSpace(GameVariantsDirectoryPath); } }
+
+        #endregion
+
+        #region Server Commands and Misc. Settings
+
+        [JsonProperty]
+        public bool ChatCommandKickPlayerEnabled { get; set; } = true;
+
+        [JsonProperty]
+        public bool ChatCommandShuffleTeamsEnabled { get; set; } = true;
+
+        [JsonProperty]
+        public bool ChatCommandEndGameEnabled { get; set; } = true;
+
+        public string ToolCommandsJson {
+            get { 
+                if (Commands == null) { Commands = new List<ToolCommand>(); } 
+                return JsonConvert.SerializeObject(Commands); 
+            }
+            set {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    try { Commands = JsonConvert.DeserializeObject<List<ToolCommand>>(value); }
+                    catch { Commands = new List<ToolCommand>(); }
+                }
+            }
+        }
+        [JsonProperty]
+        public List<ToolCommand> Commands { get; set; } = new List<ToolCommand>();
+
+        public string AuthorizedUIDsJson {
+            get { if (AuthorizedUIDs == null) { AuthorizedUIDs = new List<string>(); } return JsonConvert.SerializeObject(AuthorizedUIDs); }
+            set {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    try { AuthorizedUIDs = JsonConvert.DeserializeObject<List<string>>(value); }
+                    catch { AuthorizedUIDs = new List<string>(); }
+                }
+            }
+        }
+        [JsonProperty]
+        public List<string> AuthorizedUIDs { get; set; } = new List<string>();
+
+        public string AutoTranslateIgnoredPhrases { 
+            get { 
+                if ((AutoTranslateIgnoredPhrasesList?.Count ?? 0) == 0) {  return ""; }
+                else { return string.Join(AutoTranslateIgnoredPhrasesSeparator, AutoTranslateIgnoredPhrasesList); }
+            } 
+            set {
+                if (string.IsNullOrWhiteSpace(value)) { AutoTranslateIgnoredPhrasesList = new List<string>(); }
+                else { AutoTranslateIgnoredPhrasesList = value.Split("\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList(); }
+            } 
+        }
+        [JsonProperty]
+        public List<string> AutoTranslateIgnoredPhrasesList { get; set; } = new List<string>();
+
+        // By default, server language is set to english
+        // me: https://open.spotify.com/track/29ufIwomYfLbWBxPMdaUZm?si=0JtiFlHwS4mfEVmqHlwECw
+        [JsonProperty]
+        public string ServerLanguage { get; set; } = "en";
+
+        [JsonProperty]
+        public bool TranslationEnabled { get; set; } = false;
+
+        [JsonProperty]
+        public bool AutoTranslateChatMessages { get; set; } = true;
+
+        public MatchMode ServerMatchMode { get; set; } = MatchMode.Voting;
+
+		#endregion
+        		
+
+		public DirectoryInfo ServerExecutableDirectory {
+            get { return string.IsNullOrWhiteSpace(ServerExecutableDirectoryPath) 
+                    ? null : new DirectoryInfo(ServerExecutableDirectoryPath); 
+            }
+        }        
+        
+        public DirectoryInfo VoteFilesDirectory {
+            get { return string.IsNullOrWhiteSpace(VoteFilesDirectoryPath)
+                    ? null : new DirectoryInfo(VoteFilesDirectoryPath); 
+            }
+        }        
+        
+        public DirectoryInfo GameVariantsDirectory {
+            get { return string.IsNullOrWhiteSpace(GameVariantsDirectoryPath) 
+                    ? null : new DirectoryInfo(GameVariantsDirectoryPath); 
+            }
+        }
+        
+        public DirectoryInfo MapVariantsDirectory {
+            get { return string.IsNullOrWhiteSpace(MapVariantsDirectoryPath)
+                    ? null : new DirectoryInfo(MapVariantsDirectoryPath); 
+            }
+        }
 
         private static DirectoryInfo ConfirmAndRetrieveDirectoryInfo(DirectoryInfo directory, string path)
         {
             if (directory == null)
             {
-                if (!string.IsNullOrEmpty(path))
+                if (!string.IsNullOrWhiteSpace(path))
                 {
                     try
                     {
@@ -89,7 +237,7 @@ namespace RconTool
             }
             else
             {
-                if (!string.IsNullOrEmpty(path))
+                if (!string.IsNullOrWhiteSpace(path))
                 {
                     if (directory.FullName == path)
                     {
@@ -109,50 +257,33 @@ namespace RconTool
                 else { directory = null; return null; }
             }
         }
-
-        [JsonIgnore]
-        public string Identifier { 
+                
+        public string DisplayName { 
             get { 
                 return !string.IsNullOrWhiteSpace(Name)
                     ? Name 
-                    : Ip + ":" + ((RconPort ?? InfoPort) ?? "Unknown")
+                    : (Ip ?? "Unknown IP" ) + ":" + ((RconPort ?? InfoPort) ?? "Unknown Port")
                 ;
             } 
         }
-        
-        [JsonIgnore]
+                
         public bool RconWebSocketAddressIsValid {
             get {
                 return !(string.IsNullOrEmpty(Ip) || string.IsNullOrEmpty(RconPort));
             }
         }
-        [JsonIgnore]
+        
         public string RconWebSocketAddress {
             get { return "ws://" + Ip + ":" + RconPort; }
         }
-        [JsonIgnore]
+        
         public bool ServerInfoAddressIsValid { get {
                 return !(string.IsNullOrEmpty(Ip) || string.IsNullOrEmpty(InfoPort));
             } }
-        [JsonIgnore]
+        
         public string ServerInfoAddress { get {
                 return "http://" + Ip + ":" + InfoPort + "/";
         } }
-        [JsonIgnore]
-        public bool VoteFilesLoaded { get; set; } = false;
-        [JsonIgnore]
-        public DateTime LastVoteFileLoadTime { get; set; }
-        [JsonIgnore]
-        public MatchMode ServerMatchMode { get; set; } = MatchMode.Voting;
-
-        [OnDeserialized]
-        private void Validate(StreamingContext sc)
-        {
-            foreach (ToolCommand command in Commands)
-            {
-                command.AssociatedServer = this;
-            }
-        }
 
         public void InitializeCommands(Connection connection)
         {
@@ -172,28 +303,7 @@ namespace RconTool
             );
         }
 
-        public ServerSettings(string ip, string infoPort, string serverPassword, string rconPassword, string rconPort, string name, List<string> sendOnConnect)
-        {
-            this.Ip = ip;
-            this.InfoPort = infoPort;
-            this.ServerPassword = serverPassword;
-            this.RconPassword = rconPassword;
-            this.RconPort = rconPort;
-            this.Name = name;
-            this.sendOnConnect = sendOnConnect;
-        }
-
-        public string ToBase64()
-        {
-            string s = JsonConvert.SerializeObject(this);
-            return Base64Encode(s);
-        }
-
-        public static string Base64Encode(string plainText)
-        {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
-        }
+        #endregion
 
         public string VoteFilePath(string name)
         {
@@ -202,7 +312,7 @@ namespace RconTool
         public VoteFile GetDynamicVoteFileObject()
         {
 
-            if (!DynamicVotingFileManagement) {
+            if (!UseLocalFiles) {
                 throw new Exception("Attempted to retrieve dynamic voting file, but dynamic voting file management is disabled.");
             }
             if (VoteFilesDirectory == null) {
@@ -210,9 +320,9 @@ namespace RconTool
             }
 
             VoteFile voteFile = null;
-            if (voteFiles.Count != 0)
+            if (VoteFiles.Count != 0)
             {
-                voteFile = voteFiles.DefaultIfEmpty(null)?.FirstOrDefault(x => x.Name == "dynamic.json");
+                voteFile = VoteFiles.DefaultIfEmpty(null)?.FirstOrDefault(x => x.Name == "dynamic.json");
             }
             if (voteFile == null) 
             { 
@@ -223,7 +333,7 @@ namespace RconTool
                     throw new Exception("Failed to write or retrieve dynamic voting file.");
                 }
                 else {
-                    voteFiles.Add(voteFile);
+                    VoteFiles.Add(voteFile);
                     return voteFile; 
                 }
 
@@ -239,11 +349,11 @@ namespace RconTool
         {
             try { file.DeleteFromDisk(); }
             catch (Exception e) { App.Log(e.Message, this); }
-            voteFiles.Remove(file);
+            VoteFiles.Remove(file);
         }
         public void WriteAllVoteFilesToDisk()
         {
-            foreach (VoteFile voteFile in voteFiles)
+            foreach (VoteFile voteFile in VoteFiles)
             {
                 try { voteFile.WriteToDisk(); }
                 catch (Exception e) { App.Log(e.Message, this); }
@@ -251,9 +361,9 @@ namespace RconTool
         }
         public void LoadAllVoteFilesFromDisk()
         {
-            if (VoteFilesDirectory != null)
+            if (UseLocalFiles && VoteFilesDirectory != null)
             {
-                voteFiles.Clear();
+                VoteFiles.Clear();
                 foreach (FileInfo item in VoteFilesDirectory.GetFiles())
                 {
                     if (item.Name.EndsWith(".json"))
@@ -267,7 +377,7 @@ namespace RconTool
                         {
                             if (newVF.Validate(this))
                             {
-                                voteFiles.Add(newVF);
+                                VoteFiles.Add(newVF);
                             }
                         }
 
@@ -299,41 +409,11 @@ namespace RconTool
         
         public void ResetVotingSettings()
         {
-            if (voteFiles != null) { voteFiles.Clear(); }
-            else { voteFiles = new List<VoteFile>(); }
+            if (VoteFiles != null) { VoteFiles.Clear(); }
+            else { VoteFiles = new List<VoteFile>(); }
             RelativeVotingPath = "mods\\server";
-            DynamicVotingFileManagement = false;
+            UseLocalFiles = false;
             VoteFilesDirectoryPath = null;
-        }
-
-        public void SetCommandEnabledState(string name, bool state, string tag = null)
-        {
-            if (tag == null)
-            {
-                foreach (ToolCommand item in Commands)
-                {
-                    if (item.Name == name)
-                    {
-                        if (item.Enabled != state)
-                        {
-                            item.ToggleEnabled();
-                        }
-                    }
-                }
-            }
-            else
-            {
-                foreach (ToolCommand item in Commands)
-                {
-                    if (item.Tag.Contains(tag))
-                    {
-                        if (item.Enabled != state)
-                        {
-                            item.ToggleEnabled();
-                        }
-                    }
-                }
-            }
         }
 
         public enum MatchMode
@@ -343,5 +423,14 @@ namespace RconTool
             Queue
         }
 
+        public enum TitleOption
+		{
+            Name,
+            Game,
+            Ip,
+            None
+		}
+
     }
+
 }

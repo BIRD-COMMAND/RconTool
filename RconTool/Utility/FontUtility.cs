@@ -20,14 +20,30 @@ namespace RconTool
     public class FontUtility
     {
 
-        public static Font GetMonospaceFont(CustomFont font, float size)
+        public static StringFormat RightJustifySF { get; set; } = new StringFormat()
+        {
+            Alignment = StringAlignment.Far,
+            LineAlignment = StringAlignment.Center
+        };
+        public static StringFormat CenterJustifySF { get; set; } = new StringFormat()
+        {
+            Alignment = StringAlignment.Center,
+            LineAlignment = StringAlignment.Center
+        };
+        public static StringFormat LeftJustifySF { get; set; } = new StringFormat()
+        {
+            Alignment = StringAlignment.Near,
+            LineAlignment = StringAlignment.Center
+        };
+
+        public static Font GetFont(CustomFont font, float emSize)
         {
             Font result;
-            try { result = Create(font, size); }
+            try { result = Create(font, emSize); }
             catch (Exception e)
             {
                 App.Log("Failed to load custom scoreboard font: " + e.Message);
-                result = new Font(FontFamily.GenericMonospace, size);
+                result = new Font(FontFamily.GenericMonospace, emSize);
             }
             return result;
         }
@@ -38,6 +54,7 @@ namespace RconTool
             sFonts = new PrivateFontCollection();
             AddFont(Properties.Resources.Font_Cascadia);
             AddFont(Properties.Resources.Font_Consolas);
+            AddFont(Properties.Resources.Font_Conduit);
             AddFont(Properties.Resources.Font_EnvyCodeR);
             AddFont(Properties.Resources.Font_Go);
             AddFont(Properties.Resources.Font_Inconsolata);
@@ -65,13 +82,14 @@ namespace RconTool
     public enum CustomFont
     {
         Cascadia = 0,
-        Consolas = 1,
-        EnvyCodeR = 2,
-        Go = 3,
-        Inconsolata = 4,
-        LiberationMono = 5,
-        SourceCodeProMedium = 6,
-        UbuntuMonoBird = 7,
+        Conduit = 1,
+        Consolas = 2,
+        EnvyCodeR = 3,
+        Go = 4,
+        Inconsolata = 5,
+        LiberationMono = 6,
+        SourceCodeProMedium = 7,
+        UbuntuMonoBird = 8,
     }
 
 }

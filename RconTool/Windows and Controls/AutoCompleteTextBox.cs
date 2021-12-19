@@ -12,8 +12,6 @@ namespace RconTool
     public class AutoCompleteTextBox : TextBox
     {
 
-        //TODO minor. clean up or stop using this AutoCompleteTextBox implementation
-
         private ListBoxExtended _listBox;
         private String[] _values;
         private String _formerValue = String.Empty;

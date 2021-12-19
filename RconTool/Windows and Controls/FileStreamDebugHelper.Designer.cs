@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileStreamDebugHelper));
 			this.textBoxFilePath = new System.Windows.Forms.TextBox();
 			this.labelFileToRead = new System.Windows.Forms.Label();
@@ -37,6 +38,8 @@
 			this.listBoxRead = new System.Windows.Forms.ListBox();
 			this.labelOffset = new System.Windows.Forms.Label();
 			this.buttonAutoRead = new System.Windows.Forms.Button();
+			this.tableByteLabels = new System.Windows.Forms.TableLayoutPanel();
+			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.SuspendLayout();
 			// 
 			// textBoxFilePath
@@ -46,7 +49,7 @@
 			this.textBoxFilePath.Name = "textBoxFilePath";
 			this.textBoxFilePath.Size = new System.Drawing.Size(326, 26);
 			this.textBoxFilePath.TabIndex = 0;
-			this.textBoxFilePath.Text = "C:\\Users\\AlexS\\Games\\Halo Online\\mods\\variants\\LPCVIP\\variant.vip";
+			this.textBoxFilePath.Text = "C:\\Users\\USERNAME\\Games\\Halo Online\\mods\\variants\\LPCVIP\\variant.vip";
 			// 
 			// labelFileToRead
 			// 
@@ -77,7 +80,7 @@
 			this.labelPositions.Name = "labelPositions";
 			this.labelPositions.Size = new System.Drawing.Size(522, 19);
 			this.labelPositions.TabIndex = 6;
-			this.labelPositions.Text = "OFFSET    00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15";
+			this.labelPositions.Text = "OFFSET    00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F";
 			// 
 			// buttonRead
 			// 
@@ -98,12 +101,14 @@
 			this.listBoxRead.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.listBoxRead.Enabled = false;
 			this.listBoxRead.FormattingEnabled = true;
 			this.listBoxRead.ItemHeight = 19;
 			this.listBoxRead.Location = new System.Drawing.Point(12, 103);
 			this.listBoxRead.Name = "listBoxRead";
-			this.listBoxRead.Size = new System.Drawing.Size(573, 403);
+			this.listBoxRead.Size = new System.Drawing.Size(573, 422);
 			this.listBoxRead.TabIndex = 7;
+			this.listBoxRead.Visible = false;
 			// 
 			// labelOffset
 			// 
@@ -129,11 +134,55 @@
 			this.buttonAutoRead.UseVisualStyleBackColor = true;
 			this.buttonAutoRead.Click += new System.EventHandler(this.buttonAutoRead_Click);
 			// 
+			// tableByteLabels
+			// 
+			this.tableByteLabels.ColumnCount = 17;
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 98F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+			this.tableByteLabels.Location = new System.Drawing.Point(12, 103);
+			this.tableByteLabels.Name = "tableByteLabels";
+			this.tableByteLabels.RowCount = 16;
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableByteLabels.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+			this.tableByteLabels.Size = new System.Drawing.Size(531, 433);
+			this.tableByteLabels.TabIndex = 10;
+			// 
 			// FileStreamDebugHelper
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(598, 519);
+			this.ClientSize = new System.Drawing.Size(598, 545);
+			this.Controls.Add(this.tableByteLabels);
 			this.Controls.Add(this.labelOffset);
 			this.Controls.Add(this.listBoxRead);
 			this.Controls.Add(this.labelPositions);
@@ -164,5 +213,7 @@
 		private System.Windows.Forms.ListBox listBoxRead;
 		private System.Windows.Forms.Label labelOffset;
 		private System.Windows.Forms.Button buttonAutoRead;
+		private System.Windows.Forms.TableLayoutPanel tableByteLabels;
+		private System.Windows.Forms.ToolTip toolTip;
 	}
 }

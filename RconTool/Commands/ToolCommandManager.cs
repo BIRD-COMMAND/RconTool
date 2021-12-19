@@ -32,7 +32,7 @@ namespace RconTool
             listBoxCommands.DisplayMember = "Command";
             listBoxCommands.ValueMember = "cmd";
 
-            foreach (ToolCommand command in GlobalToolCommands)
+            foreach (ToolCommand command in GlobalToolCommands.Value)
             {
                 listBoxCommands.Items.Add(
                     new Tuple<string, ToolCommand>("Global: " + command.Name, command)
@@ -59,9 +59,9 @@ namespace RconTool
                 var confirmResult = MessageBox.Show("Are you sure you want to delete the command?", "Warning", MessageBoxButtons.YesNo);
                 if (confirmResult == DialogResult.Yes)
                 {
-                    if (GlobalToolCommands.Contains(((Tuple<string, ToolCommand>)listBoxCommands.SelectedItem).Item2))
+                    if (GlobalToolCommands.Value.Contains(((Tuple<string, ToolCommand>)listBoxCommands.SelectedItem).Item2))
                     {
-                        GlobalToolCommands.Remove(((Tuple<string, ToolCommand>)listBoxCommands.SelectedItem).Item2);
+                        GlobalToolCommands.Value.Remove(((Tuple<string, ToolCommand>)listBoxCommands.SelectedItem).Item2);
                     }
                     else if (currentConnection != null && currentConnection.Settings.Commands.Contains(((Tuple<string, ToolCommand>)listBoxCommands.SelectedItem).Item2))
                     {

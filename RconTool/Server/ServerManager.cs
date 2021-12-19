@@ -14,13 +14,9 @@ namespace RconTool
 
             InitializeComponent();
 
-            comboBoxWindowTitle.SelectedIndex = comboBoxWindowTitle.Items.IndexOf(App.titleOption == "" ? "None" : App.titleOption);
-            listBoxServerList.DisplayMember = "Ip";
+            comboBoxWindowTitle.SelectedIndex = 0;/*comboBoxWindowTitle.Items.IndexOf(App.titleOption == "" ? "None" : App.titleOption);*/
+            listBoxServerList.DisplayMember = "ServerDisplayName";
             listBoxServerList.ValueMember = "connection";
-
-            textBoxWebHookURL.Text = App.webhook;
-            textBoxReportCommand.Text = App.webhookTrigger;
-            textBoxRoleID.Text = App.webhookRole;
 
             AddItems();
 
@@ -35,7 +31,8 @@ namespace RconTool
             {
                 listBoxServerList.Items.Add(new ServerManagerListBoxItem
                 {
-                    Ip = App.connectionList[x].Settings.Ip + ":" + App.connectionList[x].Settings.InfoPort,
+                    //if (App.connectionList[x].Settings.Na)
+                    ServerDisplayName = App.connectionList[x].Settings.DisplayName,
                     Connection = App.connectionList[x]
                 });
             }
@@ -80,9 +77,11 @@ namespace RconTool
                     }
 
                     
-                    ((ServerManagerListBoxItem)listBoxServerList.SelectedItem).Connection.DeleteConnection();
+                    ((ServerManagerListBoxItem)listBoxServerList.SelectedItem).Connection.Close();
                     connectionList.Remove(((ServerManagerListBoxItem)listBoxServerList.SelectedItem).Connection);
                     listBoxServerList.Items.Remove(listBoxServerList.SelectedItem);
+
+					foreach (Connection connection in connectionList) { connection.UpdateDisplay = true; }
 
                     SaveSettings();
 
@@ -99,13 +98,45 @@ namespace RconTool
             }
             else
             {
-                App.webhook = textBoxWebHookURL.Text;
-                App.webhookTrigger = textBoxReportCommand.Text;
-                App.webhookRole = textBoxRoleID.Text;
-                App.titleOption = comboBoxWindowTitle.SelectedItem.ToString();
-                this.Close();
+                Connection selectedConnection = ((ServerManagerListBoxItem)listBoxServerList.SelectedItem).Connection;
+                selectedConnection.Settings.Webhook = textBoxWebHookURL.Text ?? "";
+                selectedConnection.Settings.WebhookTrigger = textBoxReportCommand.Text ?? "";
+                selectedConnection.Settings.WebhookRole = textBoxRoleID.Text ?? "";
+                if (comboBoxWindowTitle.SelectedIndex == 0) { selectedConnection.Settings.TitleDisplayOption = ServerSettings.TitleOption.None; }
+                else if (comboBoxWindowTitle.SelectedIndex == 1) { selectedConnection.Settings.TitleDisplayOption = ServerSettings.TitleOption.Name; }
+                else if (comboBoxWindowTitle.SelectedIndex == 2) { selectedConnection.Settings.TitleDisplayOption = ServerSettings.TitleOption.Game; }
+                else if (comboBoxWindowTitle.SelectedIndex == 3) { selectedConnection.Settings.TitleDisplayOption = ServerSettings.TitleOption.Ip; }
+                try { selectedConnection.SaveSettings(); }
+                catch { throw new Exception("Error saving server settings to the local server database."); }
+                Close();
             }
         }
+
+        private void PopulateWebIntegrationFields()
+		{
+            if (listBoxServerList.SelectedIndex == -1)
+            {
+                textBoxWebHookURL.Text = "";
+                textBoxReportCommand.Text = "";
+                textBoxRoleID.Text = "";
+                comboBoxWindowTitle.SelectedIndex = 0;
+            }
+            else
+            {
+                Connection selectedConnection = ((ServerManagerListBoxItem)listBoxServerList.SelectedItem).Connection;
+                textBoxWebHookURL.Text = selectedConnection.Settings.Webhook ?? "";
+                textBoxReportCommand.Text = selectedConnection.Settings.WebhookTrigger ?? "";
+                textBoxRoleID.Text = selectedConnection.Settings.WebhookRole ?? "";
+                switch (selectedConnection.Settings.TitleDisplayOption)
+                {
+                    case ServerSettings.TitleOption.Name: comboBoxWindowTitle.SelectedIndex = 1; break;
+                    case ServerSettings.TitleOption.Game: comboBoxWindowTitle.SelectedIndex = 2; break;
+                    case ServerSettings.TitleOption.Ip: comboBoxWindowTitle.SelectedIndex = 3; break;
+                    case ServerSettings.TitleOption.None: comboBoxWindowTitle.SelectedIndex = 0; break;
+                    default: comboBoxWindowTitle.SelectedIndex = 0; break;
+                }
+            }
+		}
 
         protected override void OnClosed(EventArgs e)
         {
@@ -115,10 +146,13 @@ namespace RconTool
 
         public class ServerManagerListBoxItem
         {
-            public string Ip { get; set; }
+            public string ServerDisplayName { get; set; }
             public Connection Connection { get; set; }
         }
 
-
-    }
+		private void listBoxServerList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+            PopulateWebIntegrationFields();
+		}
+	}
 }

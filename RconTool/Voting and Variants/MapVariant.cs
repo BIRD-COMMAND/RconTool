@@ -12,7 +12,7 @@ namespace RconTool
 	public class MapVariant
 	{
 
-		public static List<string> BaseMapIDs = new List<string>()
+		public static readonly List<string> BaseMapStringIDs = new List<string>()
 		{
 			"guardian",
 			"riverworld",
@@ -27,10 +27,58 @@ namespace RconTool
 			"shrine",
 			"zanzibar",
 		};
+		public static readonly List<string> BaseMapNames = new List<string>()
+		{
+			"Standoff",
+			"Sandtrap",
+			"Icebox",
+			"Reactor",
+			"Narrows",
+			"High Ground",
+			"HighGround",
+			"Last Resort",
+			"LastResort",
+			"Valhalla",
+			"The Pit",
+			"ThePit",
+			"Guardian",
+			"Diamondback",
+			"Edge",
+		};
+		public static readonly Dictionary<string, BaseMap> BaseMapsByStringID = new Dictionary<string, BaseMap>()
+		{
+			{"guardian", BaseMap.Guardian },
+			{"riverworld", BaseMap.Valhalla },
+			{"s3d_avalanche", BaseMap.Diamondback },
+			{"s3d_edge", BaseMap.Edge },
+			{"s3d_reactor", BaseMap.Reactor },
+			{"s3d_turf", BaseMap.Icebox },
+			{"cyberdyne", BaseMap.ThePit },
+			{"chill", BaseMap.Narrows },
+			{"deadlock", BaseMap.HighGround },
+			{"bunkerworld", BaseMap.Standoff },
+			{"shrine", BaseMap.Sandtrap },
+			{"zanzibar", BaseMap.LastResort },
+		};
+		public static readonly Dictionary<BaseMap, string> InternalMapStringsByBaseMap = new Dictionary<BaseMap, string>()
+		{
+			{BaseMap.Guardian, "guardian" },
+			{BaseMap.Valhalla, "riverworld" },
+			{BaseMap.Diamondback, "s3d_avalanche" },
+			{BaseMap.Edge, "s3d_edge" },
+			{BaseMap.Reactor, "s3d_reactor" },
+			{BaseMap.Icebox, "s3d_turf" },
+			{BaseMap.ThePit, "cyberdyne" },
+			{BaseMap.Narrows, "chill" },
+			{BaseMap.HighGround, "deadlock" },
+			{BaseMap.Standoff, "bunkerworld" },
+			{BaseMap.Sandtrap, "shrine" },
+			{BaseMap.LastResort, "zanzibar" },
+		};
 		/// <summary>
 		/// Contains base map names indexed by the hexadecimal IDs used in the map variant files.
 		/// </summary>
-		public static Dictionary<int, string> BaseMapNamesByBasemapNumber = new Dictionary<int, string>()
+		public static readonly Dictionary<int, string> BaseMapNamesByBasemapNumber = new Dictionary<int, string>()
 		{
 			{ 320, "Guardian" },
 			{ 340, "Valhalla" },
@@ -45,7 +93,7 @@ namespace RconTool
 			{ 400, "Sandtrap" },
 			{ 30,  "Last Resort" }
 		};
-		public static Dictionary<int, string> BaseMapVoteFileNamesByBasemapNumber = new Dictionary<int, string>()
+		public static readonly Dictionary<int, string> BaseMapVoteFileNamesByBasemapNumber = new Dictionary<int, string>()
 		{
 			{ 320, "guardian" },
 			{ 340, "riverworld" },
@@ -60,22 +108,51 @@ namespace RconTool
 			{ 400, "shrine" },
 			{ 30,  "zanzibar" }
 		};
-		public static Dictionary<string, BaseMap> BaseMapIDsByName = new Dictionary<string, BaseMap>()
+		public static readonly Dictionary<string, BaseMap> BaseMapIDsByName = new Dictionary<string, BaseMap>()
 		{
 			{"Standoff",BaseMap.Standoff},
 			{"Sandtrap",BaseMap.Sandtrap},
+			{"Shrine",BaseMap.Sandtrap},
 			{"Icebox",BaseMap.Icebox},
+			{"Turf",BaseMap.Icebox},
 			{"Reactor",BaseMap.Reactor},
 			{"Narrows",BaseMap.Narrows},
 			{"High Ground",BaseMap.HighGround},
+			{"HighGround", BaseMap.HighGround},
 			{"Last Resort",BaseMap.LastResort},
+			{"LastResort", BaseMap.LastResort},
+			{"Zanzibar", BaseMap.LastResort},
 			{"Valhalla",BaseMap.Valhalla},
 			{"The Pit",BaseMap.ThePit},
+			{"ThePit", BaseMap.ThePit},
 			{"Guardian",BaseMap.Guardian},
 			{"Diamondback",BaseMap.Diamondback},
+			{"Sidewinder",BaseMap.Diamondback},
 			{"Edge",BaseMap.Edge}
 		};
-		public static Dictionary<string, BaseMap> BaseMapIDsByArgName = new Dictionary<string, BaseMap>()
+		public static readonly Dictionary<string, BaseMap> BaseMapIDsByNameLower = new Dictionary<string, BaseMap>()
+		{
+			{"standoff",BaseMap.Standoff},
+			{"sandtrap",BaseMap.Sandtrap},
+			{"shrine",BaseMap.Sandtrap},
+			{"icebox",BaseMap.Icebox},
+			{"turf",BaseMap.Icebox},
+			{"reactor",BaseMap.Reactor},
+			{"narrows",BaseMap.Narrows},
+			{"high ground",BaseMap.HighGround},
+			{"highground", BaseMap.HighGround},
+			{"last resort",BaseMap.LastResort},
+			{"lastresort", BaseMap.LastResort},
+			{"zanzibar", BaseMap.LastResort},
+			{"valhalla",BaseMap.Valhalla},
+			{"the pit",BaseMap.ThePit},
+			{"thepit", BaseMap.ThePit},
+			{"guardian",BaseMap.Guardian},
+			{"diamondback",BaseMap.Diamondback},
+			{"sidewinder",BaseMap.Diamondback},
+			{"edge",BaseMap.Edge}
+		};
+		public static readonly Dictionary<string, BaseMap> BaseMapIDsByArgName = new Dictionary<string, BaseMap>()
 		{
 			{"Standoff",BaseMap.Standoff},
 			{"Sandtrap",BaseMap.Sandtrap},
@@ -90,6 +167,41 @@ namespace RconTool
 			{"Diamondback",BaseMap.Diamondback},
 			{"Edge",BaseMap.Edge}
 		};
+		public static readonly Dictionary<BaseMap, string> BaseMapDescriptionsByBaseMap = new Dictionary<BaseMap, string>()
+		{
+			{BaseMap.Diamondback, "Hot winds blow over what should be a dead moon. A reminder of the power Forerunners once wielded. 6-16 players"},
+			{BaseMap.Edge, "The remote frontier world of Partition has provided this ancient databank with the safety of seclusion. 6-16 players"},
+			{BaseMap.Guardian, "Millennia of tending has produced trees as ancient as the Forerunner structures they have grown around. 2-6 players"},
+			{BaseMap.HighGround, "A relic of older conflicts, this base was reactivated after the New Mombasa Slipspace Event. 4-12 players"},
+			{BaseMap.Icebox, "Downtown Tyumen's Precinct 13 offers an ideal context for urban combat training. 4-10 players"},
+			{BaseMap.LastResort, "Remote industrial sites like this one are routinely requisitioned and razed as part of Spartan training exercises. 4-12 players"},
+			{BaseMap.Narrows, "Without cooling systems such as these, excess heat from The Ark's forges would render the construct uninhabitable. 2-8 players"},
+			{BaseMap.Reactor, "Being constructed just prior to the Invasion, its builders had to evacuate before it was completed. 6-16 players"},
+			{BaseMap.Sandtrap, "Although the Brute occupiers have been driven from this ancient structure, they left plenty to remember them by. 6-16 players"},
+			{BaseMap.Standoff, "Once, nearby telescopes listened for a message from the stars. Now, these silos contain our prepared response. 4-12 players"},
+			{BaseMap.ThePit, "Software simulations are held in contempt by the veteran instructors who run these training facilities. 4-10 players"},
+			{BaseMap.Valhalla, "The crew of V-398 barely survived their unplanned landing in this gorge... this curious gorge. 6-16 players"},
+		};
+
+		/// <summary>
+		///		Returns the internal map name corresponding to the map whose "display name" was passed, or null if a match is not found.<br>
+		///		Display names are 'Valhalla', 'Standoff', 'High Ground', etc. | Internal names are 'riverworld', 'bunkerworld', 'deadlock', etc.</br>
+		/// </summary>
+		/// <param name="mapDisplayName">
+		///		The display name of the map you would like to get the internal name for.<br>
+		///		Map display names are the official map names found in-game -'Valhalla', 'Standoff', 'High Ground', etc.</br>
+		/// </param>
+		/// <returns>Returns the internal map name if a match was found, otherwise returns null.</returns>
+		public static string TryGetBaseMapInternalNameFromDisplayName(string mapDisplayName)
+		{
+			if (BaseMapIDsByNameLower.TryGetValue(mapDisplayName?.Replace(" ", "").ToLowerInvariant() ?? "", out BaseMap baseMap)) {
+				return InternalMapStringsByBaseMap[baseMap];
+			}
+			else { 
+				return null; 
+			}
+		}
+
 		//public static Dictionary<int, string> BaseMapDescriptionsByID = new Dictionary<int, string>()
 		private const string UnknownVariantIdentifier = "Unknown";
 
@@ -175,6 +287,10 @@ namespace RconTool
 			{
 				return BaseMapIDsByArgName[name];
 			}
+			else if (BaseMapIDsByNameLower.ContainsKey(name))
+			{
+				return BaseMapIDsByNameLower[name];
+			}
 			else { return BaseMap.Unknown; }
 		}
 
@@ -253,8 +369,37 @@ namespace RconTool
 			this.IsValid = false;
 
 		}
-		
-		
+
+		/// <summary>
+		/// The map's description, capped with an ellipses (...) so that it fits in one chat message.
+		/// </summary>
+		public string Description_OneLine { 
+			get { 
+				if (description_OneLine == null) {
+					description_OneLine = $"{Name}({BaseMapString}): {Description}";
+					if (description_OneLine.Length > 122) { 
+						description_OneLine = description_OneLine.Substring(0, 119) + "...";
+					}
+				}
+				return description_OneLine;
+			} 
+		}
+		private string description_OneLine;
+		/// <summary>
+		/// The map's full description, separated into multiple lines if it wouldn't fit entirely in one chat message.
+		/// <br>If the full description does fit entirely in one chat message, the returned list will contain the full description as its only item.</br>
+		/// </summary>
+		public List<string> Description_Chunked {
+			get {
+				if (descriptions == null) {
+					descriptions = new List<string>(
+						$"{Name}({BaseMapString}): {Description}".Split(122)
+					);
+				}				
+				return descriptions;
+			}
+		}
+		private List<string> descriptions;
 
 		public enum BaseMap
 		{

@@ -14,8 +14,6 @@ namespace RconTool
     public class ListBoxExtended : ListBox
     {
 
-        //TODO minor. clean up or stop using this ListBoxExtended implementation
-
         private Control mParent;
         private Point mPos;
         private bool mInitialized;

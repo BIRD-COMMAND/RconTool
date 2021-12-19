@@ -38,6 +38,7 @@ namespace RconTool
 
         /// <summary>
         /// Prompts the user to enter an integer and returns that value. Only the <paramref name="text"/> and <paramref name="title"/> parameters are required.
+        /// <br>If the user closes the window using the X button, -1 will be returned for the result value.</br>
         /// </summary>
         /// <param name="text">The text to be displayed within the prompt. This text should explain what value is expected and ask the user to enter it.</param>
         /// <param name="title">The title of the prompt window.</param>
@@ -153,7 +154,7 @@ namespace RconTool
             switch (type)
             {
                 case PromptType.String: return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
-                case PromptType.Int: return prompt.ShowDialog() == DialogResult.OK ? (int)numericUpDown.Value : 0;
+                case PromptType.Int: return prompt.ShowDialog() == DialogResult.OK ? (int)numericUpDown.Value : -1;
                 default: return null;
             }
 

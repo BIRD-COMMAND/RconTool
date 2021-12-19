@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
@@ -90,7 +85,7 @@ namespace RconTool
             Brush thumb;
             if (Enabled)
             {
-                selectionBackground = SystemBrushes.ControlDark;
+                selectionBackground = SystemBrushes.GradientActiveCaption;
                 border = Pens.Black;
                 thumb = SystemBrushes.ControlDarkDark;
             }
@@ -173,7 +168,7 @@ namespace RconTool
                 movingMode = MovingMode.MovingMin;
             else
                 movingMode = MovingMode.MovingMax;
-            //call this to refreh the position of the selected thumb
+            //call this to refresh the position of the selected thumb
             SelectionRangeSlider_MouseMove(sender, e);
         }
 
@@ -185,10 +180,27 @@ namespace RconTool
             int pointedValue = (Min + (e.X + ((Width / (Max - Min)) / 2)) * (Max - Min) / Width);
             //if (movingMode == MovingMode.MovingValue)
             //    Value = pointedValue;
-            if (movingMode == MovingMode.MovingMin)
-                SelectedMin = pointedValue;
-            else if (movingMode == MovingMode.MovingMax)
-                SelectedMax = pointedValue;
+            if (movingMode == MovingMode.MovingMin) { 
+                if (SelectedMin > SelectedMax) {
+                    // swap sliders, move the max paddle instead
+                    SelectedMin = SelectedMax;
+                    movingMode = MovingMode.MovingMax;
+				}
+                else { SelectedMin = pointedValue; }
+            }
+            else if (movingMode == MovingMode.MovingMax) { 
+                if (SelectedMax < SelectedMin) {
+                    // swap sliders, move the min paddle instead
+                    SelectedMax = SelectedMin;
+                    movingMode = MovingMode.MovingMin;
+                }
+                else { SelectedMax = pointedValue; }
+            }
+
+            // Clamp Values
+            if (SelectedMin < Min) { SelectedMin = Min; }
+            if (SelectedMax > Max) { SelectedMax = Max; }
+
         }
 
         /// <summary>
@@ -404,6 +416,7 @@ namespace RconTool
                     visualStyleRenderer.SetParameters(element.ClassName, element.Part, state);
                 }
             }
+
         }
 
     }

@@ -53,6 +53,12 @@ namespace RconTool
 			openFileDialog.RestoreDirectory = true;
 			filePath = textBoxFilePath.Text;
 
+			for (int c = 0; c < 16; c++) {
+				for (int r = 0; r < 16; r++) {
+					tableByteLabels.Controls.Add(new Label() { Text = "00" }, c, r);
+				}
+			}
+
 			// Add some offsets
 			int offset = 112;
 			for (int i = 0; i < 100; i++)
@@ -77,6 +83,85 @@ namespace RconTool
 			}
 
 		}
+
+		public Label[] offsetLabels = new Label[16];
+		public Label[,] byteLabels = new Label[16, 16];
+
+		public FileStreamDebugHelper(IntPtr address, byte[] bytes)
+		{
+
+			for (int i = 0; i < 16; i++) {
+				offsetLabels[i] = new Label() { Text = "00000000", Font = tableByteLabels.Font };
+				tableByteLabels.Controls.Add(offsetLabels[i], 0, i);
+			}
+
+			for (int c = 0; c < 16; c++) {
+				for (int r = 0; r < 16; r++) {
+					byteLabels[c, r] = new Label() { Text = "00", Font = tableByteLabels.Font };
+					tableByteLabels.Controls.Add(byteLabels[c, r], (c+1), r);
+				}
+			}
+
+			DisplayBytes(address, bytes);
+
+		}
+
+		public void DisplayBytes(IntPtr address, byte[] bytes)
+		{
+
+			for (int i = 0; i < 16; i++) {
+				offsetLabels[i].Text = (address.ToInt32() + (i * 16)).ToString("X");
+			}
+
+			int b = 0; int l = bytes.Length;
+			for (int c = 0; c < 16; c++) {
+				for (int r = 0; r < 16; r++, b++) {
+					toolTip.SetToolTip(byteLabels[c, r], null);
+					byteLabels[c, r].ForeColor = SystemColors.ControlText;
+					if (b < l) { byteLabels[c, r].Text = bytes[b].ToString("X"); }
+					else { byteLabels[c, r].Text = "XX"; }
+				}
+			}
+
+		}
+
+		public void UpdateBytes(IntPtr address, byte[] bytes)
+		{
+
+			if (offsetLabels[0].Text != address.ToInt32().ToString("X")) {
+				throw new Exception("UpdateBytes Failed: Address Mismatch - Use DisplayBytes Instead");
+			}
+
+			for (int i = 0; i < 16; i++) {
+				offsetLabels[i].Text = (address.ToInt32() + (i * 16)).ToString("X");
+			}
+
+			int b = 0; int l = bytes.Length; string byteString;
+			for (int c = 0; c < 16; c++) {
+				for (int r = 0; r < 16; r++, b++) {
+					if (b < l) {
+						byteString = bytes[b].ToString("X");
+						// Byte same
+						if (byteString == byteLabels[c, r].Text) {
+							toolTip.SetToolTip(byteLabels[c, r], null);
+							byteLabels[c, r].ForeColor = SystemColors.ControlText;
+						}
+						// Byte changed
+						else {
+							toolTip.SetToolTip(byteLabels[c, r], byteLabels[c, r].Text);
+							byteLabels[c, r].ForeColor = Color.DarkRed;
+						}
+						byteLabels[c, r].Text = byteString;
+					}
+					else {
+						toolTip.SetToolTip(byteLabels[c, r], null);
+						byteLabels[c, r].ForeColor = SystemColors.ControlText;
+						byteLabels[c, r].Text = "XX"; 
+					}
+				}
+			}
+		}
+
 
 		private void buttonBrowseFile_Click(object sender, EventArgs e)
 		{
@@ -244,7 +329,7 @@ namespace RconTool
 							ReadNextByte();
 						}
 					}
-				}));
+				})) { IsBackground = true };
 				autoReadThread.Start();
 			}
 		}

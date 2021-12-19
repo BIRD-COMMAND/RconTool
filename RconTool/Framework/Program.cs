@@ -13,7 +13,8 @@ namespace RconTool
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new App());
+            try { Application.Run(new App()); }
+            catch (System.ObjectDisposedException e) { return; }
         }
     }
 }

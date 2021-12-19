@@ -56,10 +56,10 @@
 			// 
 			this.labelVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.labelVersion.AutoSize = true;
-			this.labelVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.labelVersion.Location = new System.Drawing.Point(24, 210);
+			this.labelVersion.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+			this.labelVersion.Location = new System.Drawing.Point(28, 240);
 			this.labelVersion.Name = "labelVersion";
-			this.labelVersion.Size = new System.Drawing.Size(84, 16);
+			this.labelVersion.Size = new System.Drawing.Size(82, 17);
 			this.labelVersion.TabIndex = 1;
 			this.labelVersion.Text = "Version: 3.50";
 			// 
@@ -67,21 +67,21 @@
 			// 
 			this.labelCopyright.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.labelCopyright.AutoSize = true;
-			this.labelCopyright.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.labelCopyright.Location = new System.Drawing.Point(149, 256);
+			this.labelCopyright.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+			this.labelCopyright.Location = new System.Drawing.Point(174, 295);
 			this.labelCopyright.Name = "labelCopyright";
-			this.labelCopyright.Size = new System.Drawing.Size(47, 16);
+			this.labelCopyright.Size = new System.Drawing.Size(44, 13);
 			this.labelCopyright.TabIndex = 2;
 			this.labelCopyright.Text = "© 2020";
 			// 
 			// labelCreatedBy
 			// 
 			this.labelCreatedBy.AutoSize = true;
-			this.labelCreatedBy.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.labelCreatedBy.Location = new System.Drawing.Point(33, 16);
+			this.labelCreatedBy.Font = new System.Drawing.Font("Segoe UI", 8F);
+			this.labelCreatedBy.Location = new System.Drawing.Point(41, 18);
 			this.labelCreatedBy.Margin = new System.Windows.Forms.Padding(0, 0, 0, 2);
 			this.labelCreatedBy.Name = "labelCreatedBy";
-			this.labelCreatedBy.Size = new System.Drawing.Size(132, 13);
+			this.labelCreatedBy.Size = new System.Drawing.Size(145, 13);
 			this.labelCreatedBy.TabIndex = 0;
 			this.labelCreatedBy.Text = "Original version created by";
 			// 
@@ -90,9 +90,9 @@
 			this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.pictureBox1.Image = global::RconTool.Properties.Resources.Image_LochNessMonster256x132;
-			this.pictureBox1.Location = new System.Drawing.Point(-3, 216);
+			this.pictureBox1.Location = new System.Drawing.Point(-3, 249);
 			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(202, 104);
+			this.pictureBox1.Size = new System.Drawing.Size(236, 120);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox1.TabIndex = 3;
 			this.pictureBox1.TabStop = false;
@@ -101,7 +101,7 @@
 			// 
 			this.labelBirdCommand.AutoSize = true;
 			this.labelBirdCommand.Font = new System.Drawing.Font("Segoe UI", 15F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.labelBirdCommand.Location = new System.Drawing.Point(12, 100);
+			this.labelBirdCommand.Location = new System.Drawing.Point(31, 116);
 			this.labelBirdCommand.Name = "labelBirdCommand";
 			this.labelBirdCommand.Size = new System.Drawing.Size(172, 28);
 			this.labelBirdCommand.TabIndex = 0;
@@ -110,20 +110,20 @@
 			// labelUpdatedBy
 			// 
 			this.labelUpdatedBy.AutoSize = true;
-			this.labelUpdatedBy.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.labelUpdatedBy.Location = new System.Drawing.Point(27, 87);
+			this.labelUpdatedBy.Font = new System.Drawing.Font("Segoe UI", 8F);
+			this.labelUpdatedBy.Location = new System.Drawing.Point(43, 102);
 			this.labelUpdatedBy.Margin = new System.Windows.Forms.Padding(0);
 			this.labelUpdatedBy.Name = "labelUpdatedBy";
-			this.labelUpdatedBy.Size = new System.Drawing.Size(138, 13);
+			this.labelUpdatedBy.Size = new System.Drawing.Size(148, 13);
 			this.labelUpdatedBy.TabIndex = 0;
 			this.labelUpdatedBy.Text = "Updated version created by";
 			// 
 			// logoLinkJaronDiscord
 			// 
 			this.logoLinkJaronDiscord.Image = global::RconTool.Properties.Resources.Image_DiscordLogoBlack32x32;
-			this.logoLinkJaronDiscord.Location = new System.Drawing.Point(139, 34);
+			this.logoLinkJaronDiscord.Location = new System.Drawing.Point(165, 39);
 			this.logoLinkJaronDiscord.Name = "logoLinkJaronDiscord";
-			this.logoLinkJaronDiscord.Size = new System.Drawing.Size(32, 32);
+			this.logoLinkJaronDiscord.Size = new System.Drawing.Size(37, 37);
 			this.logoLinkJaronDiscord.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.logoLinkJaronDiscord.TabIndex = 4;
 			this.logoLinkJaronDiscord.TabStop = false;
@@ -132,9 +132,9 @@
 			// logoLinkJaronGitHub
 			// 
 			this.logoLinkJaronGitHub.Image = global::RconTool.Properties.Resources.Image_GitHubLogo32x32;
-			this.logoLinkJaronGitHub.Location = new System.Drawing.Point(101, 34);
+			this.logoLinkJaronGitHub.Location = new System.Drawing.Point(121, 39);
 			this.logoLinkJaronGitHub.Name = "logoLinkJaronGitHub";
-			this.logoLinkJaronGitHub.Size = new System.Drawing.Size(32, 32);
+			this.logoLinkJaronGitHub.Size = new System.Drawing.Size(37, 37);
 			this.logoLinkJaronGitHub.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.logoLinkJaronGitHub.TabIndex = 4;
 			this.logoLinkJaronGitHub.TabStop = false;
@@ -143,10 +143,10 @@
 			// logoLinkBirdCommandDiscord
 			// 
 			this.logoLinkBirdCommandDiscord.Image = global::RconTool.Properties.Resources.Image_DiscordLogoBlack32x32;
-			this.logoLinkBirdCommandDiscord.Location = new System.Drawing.Point(139, 135);
-			this.logoLinkBirdCommandDiscord.Margin = new System.Windows.Forms.Padding(3, 7, 3, 3);
+			this.logoLinkBirdCommandDiscord.Location = new System.Drawing.Point(165, 156);
+			this.logoLinkBirdCommandDiscord.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
 			this.logoLinkBirdCommandDiscord.Name = "logoLinkBirdCommandDiscord";
-			this.logoLinkBirdCommandDiscord.Size = new System.Drawing.Size(32, 32);
+			this.logoLinkBirdCommandDiscord.Size = new System.Drawing.Size(37, 37);
 			this.logoLinkBirdCommandDiscord.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.logoLinkBirdCommandDiscord.TabIndex = 4;
 			this.logoLinkBirdCommandDiscord.TabStop = false;
@@ -155,9 +155,9 @@
 			// logoLinkBirdCommandGitHub
 			// 
 			this.logoLinkBirdCommandGitHub.Image = global::RconTool.Properties.Resources.Image_GitHubLogo32x32;
-			this.logoLinkBirdCommandGitHub.Location = new System.Drawing.Point(101, 135);
+			this.logoLinkBirdCommandGitHub.Location = new System.Drawing.Point(121, 156);
 			this.logoLinkBirdCommandGitHub.Name = "logoLinkBirdCommandGitHub";
-			this.logoLinkBirdCommandGitHub.Size = new System.Drawing.Size(32, 32);
+			this.logoLinkBirdCommandGitHub.Size = new System.Drawing.Size(37, 37);
 			this.logoLinkBirdCommandGitHub.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.logoLinkBirdCommandGitHub.TabIndex = 4;
 			this.logoLinkBirdCommandGitHub.TabStop = false;
@@ -166,9 +166,9 @@
 			// linkLabelProjectGitHub
 			// 
 			this.linkLabelProjectGitHub.AutoSize = true;
-			this.linkLabelProjectGitHub.Location = new System.Drawing.Point(18, 135);
+			this.linkLabelProjectGitHub.Location = new System.Drawing.Point(24, 156);
 			this.linkLabelProjectGitHub.Name = "linkLabelProjectGitHub";
-			this.linkLabelProjectGitHub.Size = new System.Drawing.Size(76, 13);
+			this.linkLabelProjectGitHub.Size = new System.Drawing.Size(85, 15);
 			this.linkLabelProjectGitHub.TabIndex = 5;
 			this.linkLabelProjectGitHub.TabStop = true;
 			this.linkLabelProjectGitHub.Text = "Project GitHub";
@@ -177,9 +177,9 @@
 			// linkLabelJoinTheDiscord
 			// 
 			this.linkLabelJoinTheDiscord.AutoSize = true;
-			this.linkLabelJoinTheDiscord.Location = new System.Drawing.Point(8, 154);
+			this.linkLabelJoinTheDiscord.Location = new System.Drawing.Point(15, 178);
 			this.linkLabelJoinTheDiscord.Name = "linkLabelJoinTheDiscord";
-			this.linkLabelJoinTheDiscord.Size = new System.Drawing.Size(86, 13);
+			this.linkLabelJoinTheDiscord.Size = new System.Drawing.Size(94, 15);
 			this.linkLabelJoinTheDiscord.TabIndex = 5;
 			this.linkLabelJoinTheDiscord.TabStop = true;
 			this.linkLabelJoinTheDiscord.Text = "Join the Discord!";
@@ -190,17 +190,17 @@
 			this.labelRconTool.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.labelRconTool.AutoSize = true;
 			this.labelRconTool.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.labelRconTool.Location = new System.Drawing.Point(23, 189);
+			this.labelRconTool.Location = new System.Drawing.Point(23, 218);
 			this.labelRconTool.Name = "labelRconTool";
-			this.labelRconTool.Size = new System.Drawing.Size(85, 21);
+			this.labelRconTool.Size = new System.Drawing.Size(92, 21);
 			this.labelRconTool.TabIndex = 1;
-			this.labelRconTool.Text = "Rcon Tool";
+			this.labelRconTool.Text = "RCON Tool";
 			// 
 			// labelJaron
 			// 
 			this.labelJaron.AutoSize = true;
 			this.labelJaron.Font = new System.Drawing.Font("Segoe UI", 15F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.labelJaron.Location = new System.Drawing.Point(19, 34);
+			this.labelJaron.Location = new System.Drawing.Point(28, 41);
 			this.labelJaron.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
 			this.labelJaron.Name = "labelJaron";
 			this.labelJaron.Size = new System.Drawing.Size(79, 28);
@@ -209,9 +209,9 @@
 			// 
 			// About
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(196, 312);
+			this.ClientSize = new System.Drawing.Size(229, 360);
 			this.Controls.Add(this.linkLabelJoinTheDiscord);
 			this.Controls.Add(this.linkLabelProjectGitHub);
 			this.Controls.Add(this.logoLinkBirdCommandGitHub);
@@ -226,13 +226,14 @@
 			this.Controls.Add(this.labelVersion);
 			this.Controls.Add(this.labelCopyright);
 			this.Controls.Add(this.pictureBox1);
+			this.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "About";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "About Rcon Tool";
+			this.Text = "About RCON Tool";
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.logoLinkJaronDiscord)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.logoLinkJaronGitHub)).EndInit();

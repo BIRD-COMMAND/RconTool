@@ -10,9 +10,8 @@ namespace RconTool
 	public class ServerMessenger
 	{
 
-        //TODO add an optional timeout parameter so the server messenger can disregard invalid messages and continue waiting for the correct response type
-        // additionally, the servermessenger could save all the responses it receives before the correct one, and send them all back as a list
-        // so it would be a Task<List<string>> ServerMessenger function instead of the Task<string> functions currently implemented
+        //PLUS add an optional timeout parameter so the server messenger can disregard invalid messages and continue waiting for the correct response type
+        //PLUS , feature, additionally, the servermessenger could save all the responses it receives before the correct one, and send them all back as a list so it would be a Task<List<string>> ServerMessenger function instead of the Task<string> functions currently implemented
 
         public ResponseType ExpectedResponseType { get; set; } = ResponseType.String;
         private bool ReceivedResponse { get; set; } = false;
@@ -23,9 +22,13 @@ namespace RconTool
         {
             return await GetResponse(ResponseType.Numeric, connection, message);
         }
+        public static async Task<string> GetJsonFileResponse(Connection connection, string message)
+        {
+            return await GetResponse(ResponseType.JsonFile, connection, message);
+        }
         public static async Task<string> GetJsonResponse(Connection connection, string message)
         {
-            return await GetResponse(ResponseType.EndsWithJson, connection, message);
+            return await GetResponse(ResponseType.JsonContent, connection, message);
         }
         public static async Task<string> GetChatResponse(Connection connection, string message)
         {
@@ -45,13 +48,16 @@ namespace RconTool
         {
             this.connection = connection;
             ExpectedResponseType = targetResponseType;
-            lock (connection.RconThreadLock)
-            {
+            connection.RconWebSocketMutex.WaitOne();
                 connection.RconWebSocket.OnMessage += OnMessage;
-            }
-            new Thread(new ThreadStart(() => { 
-                connection.SendToRcon(message);
-            })).Start();
+            connection.RconWebSocketMutex.ReleaseMutex();
+            connection.RconCommandQueue.Enqueue(
+                RconCommand.ConsoleLogCommand(
+                    message,
+                    message,
+                    "Server Messenger"
+                )
+            );
         }
 
         public async Task<string> GetResponse()
@@ -97,7 +103,17 @@ namespace RconTool
                     }
                     else { return; }
                     break;
-                case ResponseType.EndsWithJson:
+                case ResponseType.JsonContent:
+                    if (!string.IsNullOrWhiteSpace(message)
+                        && message.StartsWith("{")
+                        && message.EndsWith("}"))
+                    {
+                        ResponseString = message;
+                        ReceivedResponse = true;
+                    }
+                    else { return; }
+                break;
+                case ResponseType.JsonFile:
                     if (!string.IsNullOrEmpty(message))
                     // && message.EndsWith(".json")
                     {
@@ -109,20 +125,18 @@ namespace RconTool
             }
             
             ReceivedResponse = true;
-            lock (connection.RconThreadLock)
-            {
+            connection.RconWebSocketMutex.WaitOne();
                 connection.RconWebSocket.OnMessage -= OnMessage;
-            }
+            connection.RconWebSocketMutex.ReleaseMutex();
 
         }
 
         public enum ResponseType {
-
             Chat,
             String,
             Numeric,
-            EndsWithJson
-
+            JsonContent,
+            JsonFile
         }
 
     }

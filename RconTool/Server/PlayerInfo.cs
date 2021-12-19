@@ -11,6 +11,8 @@ namespace RconTool
     {
 
         public string ScoreboardName { get; set; } = "";
+        public string ScoreboardColorRGBA { get; set; } = "";
+        public string ScoreboardColorDarkRGBA { get; set; } = "";
         public System.Drawing.Color ScoreboardColor { 
             get { return scoreboardColor; }
             set { 
@@ -138,6 +140,9 @@ namespace RconTool
 
         public string TimeConnected { get; set; } = "0:00";
 
+        public string ReplyPlayer { get; set; } = "";
+
+
         //public string TeamString { 
         //    get 
         //    {
@@ -184,19 +189,32 @@ namespace RconTool
             Suicides = player.Suicides;
             BestStreak = player.BestStreak;
             PrimaryColor = player.PrimaryColor;
-            KillDeathRatio = (Deaths != 0 && Kills != 0) ? (double)Kills / Deaths : 0;
+
+            //Kill/Death Ratio            
+            if (Kills < 0) { KillDeathRatio = Kills; }
+            else if (Kills == 0) {
+                if (Deaths == 0) { KillDeathRatio = 0; }
+                else if (Deaths > 0) { KillDeathRatio = Deaths * -1; }
+                else { KillDeathRatio = Kills; }
+            }
+            else if (Kills > 0) {
+                if (Deaths == 0) { KillDeathRatio = Kills; }
+                else { KillDeathRatio = Kills / Deaths; }
+            }
+            else { KillDeathRatio = Kills; }
 
             ScoreboardKillDeathRatio = string.Format("{0:00.00}", KillDeathRatio);
             ScoreboardColor = System.Drawing.ColorTranslator.FromHtml(PrimaryColor);
+            ScoreboardColorRGBA = "rgba(" + ScoreboardColor.R + "," + ScoreboardColor.G + "," + ScoreboardColor.B+ ",230)";
+            ScoreboardColorDarkRGBA = "rgba(" + ScoreboardColorDark.R + "," + ScoreboardColorDark.G + "," + ScoreboardColorDark.B + ",230)";
             ScoreboardName = Name + " - " + new string(' ', 4 - ServiceTag.Length) + ServiceTag;
+
+            ReplyPlayer = player.ReplyPlayer;
 
             if (TimeSpentAlive != player.TimeSpentAlive) { TimeSpentAlive = player.TimeSpentAlive; }
 
             if (player.Rank > -1) { Rank = player.Rank; }
-            if (player.Emblem != null) {
-                // Resize Emblem
-                Emblem = App.ResizeImage(player.Emblem, Scoreboard.EmblemSize.X, Scoreboard.EmblemSize.Y);
-            }
+            if (player.Emblem != null) { Emblem = player.Emblem; }
 
         }
 
@@ -252,7 +270,7 @@ namespace RconTool
             return Uid.GetHashCode();
         }
 
-        public bool IsValid { get { return this.Team != -1; } }
+        public bool IsValid { get { return !String.IsNullOrWhiteSpace(this.Uid) && this.Uid != "-1"; } }
         public static PlayerInfo Blank()
         {
             return new PlayerInfo()

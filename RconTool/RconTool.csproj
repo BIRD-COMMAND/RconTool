@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>RconTool</RootNamespace>
     <AssemblyName>RconTool</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
@@ -29,6 +29,7 @@
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,6 +40,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>..\..\UnusedCodeDetection.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,19 +52,50 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Build|AnyCPU'">
     <OutputPath>bin\Build\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Testing|AnyCPU'">
     <OutputPath>bin\Testing\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\Images\Icon_RconTool.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.VisualBasic.Compatibility.Data" />
+    <Reference Include="Google.Api.Gax, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3ec5ea7f18953e47, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Api.Gax.3.2.0\lib\net461\Google.Api.Gax.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Api.Gax.Rest, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3ec5ea7f18953e47, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Api.Gax.Rest.3.2.0\lib\net461\Google.Api.Gax.Rest.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis, Version=1.49.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.49.0\lib\net45\Google.Apis.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth, Version=1.49.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.49.0\lib\net45\Google.Apis.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.49.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.49.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Core, Version=1.49.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Core.1.49.0\lib\net45\Google.Apis.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.49.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.49.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Translate.v2, Version=1.49.0.875, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Translate.v2.1.49.0.875\lib\net45\Google.Apis.Translate.v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Cloud.Translation.V2, Version=2.0.0.0, Culture=neutral, PublicKeyToken=185c282632e132a0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Cloud.Translation.V2.2.0.0\lib\net461\Google.Cloud.Translation.V2.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -68,29 +103,35 @@
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="websocket-sharp, Version=1.0.2.59611, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
       <HintPath>..\packages\WebSocketSharp.1.0.3-rc11\lib\websocket-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Arg.cs" />
+    <Compile Include="Commands\ParseResult.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Server\RconCommand.cs" />
+    <Compile Include="Utility\Message.cs" />
+    <Compile Include="Utility\PlayerStatsRecord.cs" />
+    <Compile Include="Utility\ProcessMemory.cs" />
+    <Compile Include="Utility\SavedRecord.cs" />
+    <Compile Include="Utility\SavedSetting.cs" />
+    <Compile Include="Utility\TextBoxAutoScroll.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\TranslationResult.cs" />
+    <Compile Include="Utility\Translation.cs" />
     <Compile Include="Windows and Controls\About.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +170,12 @@
       <DependentUpon>ConfigExport.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\Extensions.cs" />
+    <Compile Include="Windows and Controls\ByteView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows and Controls\ByteView.Designer.cs">
+      <DependentUpon>ByteView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows and Controls\FileStreamDebugHelper.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,18 +220,20 @@
     </Compile>
     <Compile Include="Framework\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\ServerSettingsEditor.cs">
+    <Compile Include="Voting and Variants\VoteFile.cs" />
+    <Compile Include="Windows and Controls\SetTranslationUsageTrackingData.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Server\ServerSettingsEditor.Designer.cs">
-      <DependentUpon>ServerSettingsEditor.cs</DependentUpon>
+    <Compile Include="Windows and Controls\SetTranslationUsageTrackingData.Designer.cs">
+      <DependentUpon>SetTranslationUsageTrackingData.cs</DependentUpon>
     </Compile>
-    <Compile Include="Voting and Variants\VoteFile.cs" />
     <EmbeddedResource Include="Windows and Controls\About.resx">
       <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Server\AddNewVotingFilePrompt.resx">
       <DependentUpon>AddNewVotingFilePrompt.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Commands\ToolCommandEditor.resx">
       <DependentUpon>ToolCommandEditor.cs</DependentUpon>
@@ -194,9 +243,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows and Controls\ConfigExport.resx">
       <DependentUpon>ConfigExport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows and Controls\ByteView.resx">
+      <DependentUpon>ByteView.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows and Controls\FileStreamDebugHelper.resx">
       <DependentUpon>FileStreamDebugHelper.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows and Controls\SelectionRangeSlider.resx">
       <DependentUpon>SelectionRangeSlider.cs</DependentUpon>
@@ -209,15 +264,23 @@
     </EmbeddedResource>
     <EmbeddedResource Include="App.resx">
       <DependentUpon>App.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Server\ServerSettingsEditor.resx">
-      <DependentUpon>ServerSettingsEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Windows and Controls\SetTranslationUsageTrackingData.resx">
+      <DependentUpon>SetTranslationUsageTrackingData.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
+    <None Include="app.config" />
+    <None Include="app.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
@@ -233,6 +296,7 @@
     <None Include="Framework\App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Fonts\Font_Conduit.ttf" />
     <None Include="Resources\TextFile_ServerCommandTriggers.txt" />
     <None Include="Resources\Images\Image_XMark32x32.png" />
     <None Include="Resources\Images\Image_WarningSign32x32.png" />
@@ -281,14 +345,114 @@
     <Content Include="Resources\Credits.txt" />
     <Content Include="Resources\Fonts\SIL Open Font License.txt" />
     <Content Include="Resources\Fonts\UBUNTU FONT LICENCE.txt" />
+    <Content Include="websocket-sharp.dll" />
+    <None Include="Resources\Images\Image_CheckMarkDisabled32x32.png" />
+    <None Include="Resources\Images\Image_XMarkDisabled32x32.png" />
+    <None Include="Resources\Images\deleteIcon12x12.png" />
+    <None Include="Resources\Images\deleteIcon14x14.png" />
+    <None Include="Resources\Images\deleteIcon16x16.png" />
+    <None Include="Resources\Images\deleteIcon64x64.png" />
+    <None Include="Resources\Images\scrollLockButtonEnabled16x16.png" />
+    <None Include="Resources\Images\scrollLockButtonDisabled16x16.png" />
+    <None Include="Resources\Images\scrollLockIconTrans16x16.png" />
+    <None Include="Resources\Images\scrollLockIcon16x16.png" />
+    <None Include="Resources\Images\scrollLockIcon17x17.png" />
+    <None Include="Resources\Images\scrollLockIconInvertedFaded20x20.png" />
+    <None Include="Resources\Images\scrollLockIconInverted20x20.png" />
+    <None Include="Resources\Images\scrollLockIconFaded20x20.png" />
+    <None Include="Resources\Images\scrollLockIcon20x20.png" />
+    <None Include="Resources\Images\SprintTiny_Unlimited.png" />
+    <None Include="Resources\Images\SprintTiny_Disabled.png" />
+    <None Include="Resources\Images\AssassinationTiny_Disabled.png" />
+    <None Include="Resources\Images\MapPreviews\Lobby.png" />
+    <None Include="Resources\Images\Image_StatusOverlay_Loading_126x40.png" />
+    <None Include="Resources\Images\Image_StatusOverlay_InLobby_126x40.png" />
+    <None Include="Resources\Images\Image_StatusOverlay_InGame_126x40.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_vip_black_20x20.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_territories_black_20x20.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_slayer_black_20x20.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_oddball_black_20x20.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_koth_black_20x20.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_juggernaut_black_20x20.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_infection_black_20x20.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_forge_black_20x20.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_ctf_black_20x20.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_assault_black_20x20.png" />
+    <None Include="Resources\Images\Icon_Spartan20x20.png" />
+    <None Include="Resources\Images\Icon_StopSign64x64.png" />
+    <None Include="Resources\Images\Icon_StopSign32x32.png" />
+    <None Include="Resources\Images\Icon_StopSign16x16.png" />
+    <None Include="Resources\Images\Icon_GreenPlayArrow64x64.png" />
+    <None Include="Resources\Images\Icon_GreenPlayArrow32x32.png" />
+    <None Include="Resources\Images\Icon_GreenPlayArrow16x16.png" />
+    <None Include="Resources\Images\Icon_VoteCircle64x64_Red.png" />
+    <None Include="Resources\Images\Icon_VoteCircle32x32_Red.png" />
+    <None Include="Resources\Images\Icon_VoteCircle16x16_Red.png" />
+    <None Include="Resources\Images\Icon_VoteCircle64x64.png" />
+    <None Include="Resources\Images\Icon_VoteCircle32x32.png" />
+    <None Include="Resources\Images\Icon_VoteCircle16x16.png" />
+    <None Include="Resources\Images\Icon_VoteDiamond64x64.png" />
+    <None Include="Resources\Images\Icon_VoteDiamond32x32.png" />
+    <None Include="Resources\Images\Icon_VoteDiamond16x16.png" />
+    <None Include="Resources\Images\Icon_RadioButtonBlue64x64.png" />
+    <None Include="Resources\Images\Icon_RadioButtonBlue32x32.png" />
+    <None Include="Resources\Images\Icon_RadioButtonBlue16x16.png" />
+    <None Include="Resources\Images\Icon_ShuffleCircle144x144.png" />
+    <None Include="Resources\Images\Icon_ShuffleCircle64x64.png" />
+    <None Include="Resources\Images\Icon_ShuffleCircle32x32.png" />
+    <None Include="Resources\Images\Icon_ShuffleCircle16x16.png" />
+    <None Include="Resources\Images\Icon_RadioButton64x64.png" />
+    <None Include="Resources\Images\Icon_RadioButton32x32.png" />
+    <None Include="Resources\Images\Icon_RadioButton16x16.png" />
+    <None Include="Resources\Images\BannerInfoOverlayBackground.png" />
+    <None Include="Resources\Images\BannerBackgroundFull.png" />
+    <None Include="Resources\Images\MapPreviews\LobbyMapImage.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_vip_white_24x24.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_territories_white_24x24.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_slayer_white_24x24.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_oddball_white_24x24.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_koth_white_24x24.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_juggernaut_white_24x24.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_infection_white_24x24.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_forge_white_24x24.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_ctf_white_24x24.png" />
+    <None Include="Resources\GametypeIcons\gt_icon_assault_white_24x24.png" />
+    <None Include="Resources\Images\MapPreviews\Valhalla.png" />
+    <None Include="Resources\Images\MapPreviews\ThePit.png" />
+    <None Include="Resources\Images\MapPreviews\Standoff.png" />
+    <None Include="Resources\Images\MapPreviews\Sandtrap.png" />
+    <None Include="Resources\Images\MapPreviews\Reactor.png" />
+    <None Include="Resources\Images\MapPreviews\Narrows.png" />
+    <None Include="Resources\Images\MapPreviews\LastResort.png" />
+    <None Include="Resources\Images\MapPreviews\Icebox.png" />
+    <None Include="Resources\Images\MapPreviews\HighGround.png" />
+    <None Include="Resources\Images\MapPreviews\Edge.png" />
+    <None Include="Resources\Images\MapPreviews\Diamondback.png" />
+    <None Include="Resources\Images\InfoIconsPlacedTiny.png" />
+    <None Include="Resources\Images\SprintTiny.png" />
+    <None Include="Resources\Images\AssassinationTiny.png" />
+    <None Include="Resources\Images\MapPreviews\zanzibar.png" />
+    <None Include="Resources\Images\MapPreviews\shrine.png" />
+    <None Include="Resources\Images\MapPreviews\s3d_turf.png" />
+    <None Include="Resources\Images\MapPreviews\s3d_reactor.png" />
+    <None Include="Resources\Images\MapPreviews\s3d_edge.png" />
+    <None Include="Resources\Images\MapPreviews\s3d_avalanche.png" />
+    <None Include="Resources\Images\MapPreviews\riverworld.png" />
+    <None Include="Resources\Images\MapPreviews\guardian.png" />
+    <None Include="Resources\Images\MapPreviews\deadlock.png" />
+    <None Include="Resources\Images\MapPreviews\cyberdyne.png" />
+    <None Include="Resources\Images\MapPreviews\chill.png" />
+    <None Include="Resources\Images\MapPreviews\bunkerworld.png" />
+    <None Include="Resources\Images\SprintSmall.png" />
+    <None Include="Resources\Images\MapFrameSmall.png" />
+    <None Include="Resources\Images\AssassinationSmall.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <!--<Error Condition="!Exists('..\packages\Fody.6.0.6\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.0.6\build\Fody.targets'))" />-->
-    <!--<Error Condition="!Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />-->
   </Target>
   <!--<Import Project="..\packages\Fody.6.0.6\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.6\build\Fody.targets')" />-->
 </Project>

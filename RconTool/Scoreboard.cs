@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RconTool
 {
     public static class Scoreboard
     {
+
+        public static bool ScoreboardIsHTML { get; set; } = false;
 
         /// <summary>
         /// Current drawing context.
@@ -36,6 +38,7 @@ namespace RconTool
 
         public static List<ScoreboardColumn> Columns { get; set; } = new List<ScoreboardColumn>();
 
+        private static Color HeaderBackgroundColorAlpha = Color.FromArgb(230, 33, 33, 33);
         private static Color HeaderBackgroundColor = Color.FromArgb(33, 33, 33);
         private static Color DarkerGray = Color.FromArgb(66, 66, 66);
         private static Color DarkGray = Color.FromArgb(96, 96, 96);
@@ -43,6 +46,11 @@ namespace RconTool
         private static Color Gold = Color.FromArgb(204, 174, 44);
 
         public const int InitialFontSize = 14;
+
+        public static string ScoreboardCSSPath { get; set; } = new FileInfo("scoreboard.css").FullName;
+        public static string EmblemGenericPath { get; set; } = new FileInfo("ScoreboardImages/generic.png").FullName;
+        public static string EmblemDeadPath { get; set; } = new FileInfo("ScoreboardImages/dead.png").FullName;
+        public static string Rank0Path { get; set; } = new FileInfo("ScoreboardImages/0.png").FullName;
 
         public static bool HighlightAllRows { get; set; } = true;
         public static Bitmap EmblemDead { get; set; }
@@ -56,7 +64,9 @@ namespace RconTool
         public static List<Rectangle> RowRects { get; set; } = new List<Rectangle>(16);
         public static bool RegenerateNamesColumnImage { get; set; } = true;
         public static Bitmap NamesColumnImage { get; set; } = null;
-
+        public static List<ColumnID> DrawColumns { get; set; } = new List<ColumnID>() { 
+            ColumnID.Emblem, ColumnID.Name, ColumnID.Tag, ColumnID.Kills, ColumnID.Assists, ColumnID.Deaths, ColumnID.BestStreak, ColumnID.Score
+        };
 
         public static CustomFont DefaultScoreboardFont = CustomFont.UbuntuMonoBird;
 
@@ -65,39 +75,17 @@ namespace RconTool
         public static Size ImageColumnMargins { get; set; } = new Size(8, 8);
         public static Size ImageColumnPadding { get; set; } = new Size(8, 8);
         public static StringFormat HeaderSF { get; set; } = null;
-        public static StringFormat RightJustifySF { get; set; } = new StringFormat()
-        {
-            Alignment = StringAlignment.Far,
-            LineAlignment = StringAlignment.Center
-        };
-        public static StringFormat CenterJustifySF { get; set; } = new StringFormat()
-        {
-            Alignment = StringAlignment.Center,
-            LineAlignment = StringAlignment.Center
-        };
-        public static StringFormat LeftJustifySF { get; set; } = new StringFormat()
-        {
-            Alignment = StringAlignment.Near,
-            LineAlignment = StringAlignment.Center
-        };
         public static Alignment headerAlignment = Alignment.Center;
         public static Alignment scoreboardCellTextAlignment = Alignment.Right;
         public static Pen outlinePen = new Pen(Color.Black, 3f) { LineJoin = LineJoin.Bevel };
-        public static Font fontHeader = FontUtility.GetMonospaceFont(DefaultScoreboardFont, (InitialFontSize > 4) ? InitialFontSize - 4 : InitialFontSize);
-        public static Font fontRegular = FontUtility.GetMonospaceFont(DefaultScoreboardFont, InitialFontSize);
-        public static Font fontDeathIndicator = FontUtility.GetMonospaceFont(DefaultScoreboardFont, (InitialFontSize > 2) ? InitialFontSize - 2 : InitialFontSize);
-        public static int FontSize { 
-            get { return fontSize; }
-            set 
-            {
-                //if (value <= 8) { Margins = new SizeF(8,6); }
-                //else if (value <= 12) { Margins = new SizeF(12, 8); }
-                //else { Margins = new SizeF(16, 8); }
-                fontSize = value;
-                Layout();
-            }
-        }
-        private static int fontSize = InitialFontSize;
+        public static Font fontHeader = FontUtility.GetFont(DefaultScoreboardFont, (InitialFontSize > 4) ? InitialFontSize - 4 : InitialFontSize);
+        public static Font fontRegular = FontUtility.GetFont(DefaultScoreboardFont, InitialFontSize);
+        public static Font fontDeathIndicator = FontUtility.GetFont(DefaultScoreboardFont, (InitialFontSize > 2) ? InitialFontSize - 2 : InitialFontSize);
+        
+        public static SavedSetting<int> FontSize = new SavedSetting<int>("ScoreboardFontSize", InitialFontSize, true) {
+            OnValueChanged = (o, e) => { Layout(); }
+        };
+                
         public static float fontEmSize = 0;
         public static int rowHeight = 0;
         public static int Width { get; set; } = 0;
@@ -107,10 +95,9 @@ namespace RconTool
             get { return new Point(rowHeight - ImageColumnPadding.Width, rowHeight - ImageColumnPadding.Width); } 
         }
 
-
         static Scoreboard()
         {
-            HeaderSF = CenterJustifySF;
+            HeaderSF = FontUtility.CenterJustifySF;
             App.ResizeRequired = true;
         }
 
@@ -130,25 +117,25 @@ namespace RconTool
 
                 G = graphics;
 
-                fontHeader = FontUtility.GetMonospaceFont(DefaultScoreboardFont, (fontSize > 4) ? fontSize - 4 : fontSize);
-                fontRegular = FontUtility.GetMonospaceFont(DefaultScoreboardFont, fontSize);
-                fontDeathIndicator = FontUtility.GetMonospaceFont(DefaultScoreboardFont, (fontSize > 2) ? fontSize - 2 : fontSize);
+                fontHeader = FontUtility.GetFont(DefaultScoreboardFont, (FontSize.Value > 4) ? FontSize.Value - 4 : FontSize.Value);
+                fontRegular = FontUtility.GetFont(DefaultScoreboardFont, FontSize.Value);
+                fontDeathIndicator = FontUtility.GetFont(DefaultScoreboardFont, (FontSize.Value > 2) ? FontSize.Value - 2 : FontSize.Value);
 
                 graphics.InterpolationMode = InterpolationMode.High;
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
                 graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
 
-                SizeF temp = GetMonospaceTextRenderSize(1, graphics, fontDeathIndicator, RightJustifySF, Margins);
+                SizeF temp = GetMonospaceTextRenderSize(1, graphics, fontDeathIndicator, FontUtility.RightJustifySF, Margins);
                 isAliveIndicatorSize = new Size((int)temp.Width, (int)temp.Height);
 
                 // buffer: text outline is 4, above and below text (TOTAL  8)
                 // buffer: 8 more for margins of 4 above and below (TOTAL 16)
                 int buffer = 16;
-                rowHeight = (int)(GetMonospaceTextRenderSize(3, graphics, fontRegular, RightJustifySF, Margins).Height + buffer);
+                rowHeight = (int)(GetMonospaceTextRenderSize(3, graphics, fontRegular, FontUtility.RightJustifySF, Margins).Height + buffer);
                 Height = rowHeight /*Header Row*/ + rowHeight * 16;
 
-                int defaultWidth = (int)(GetMonospaceTextRenderSize(5, graphics, fontRegular, CenterJustifySF, Margins).Width + buffer); ;
+                int defaultWidth = (int)(GetMonospaceTextRenderSize(5, graphics, fontRegular, FontUtility.CenterJustifySF, Margins).Width + buffer); ;
 
                 // Emblem
                 AddColumn(ColumnID.Emblem, "", -1, Alignment.Center, false, BorderType.BlendRight, BorderType.BlendRight);
@@ -350,11 +337,377 @@ namespace RconTool
 
         }
 
+        private static List<Tuple<string, string>> Teams { get; set; } = new List<Tuple<string, string>>()
+        {
+            new Tuple<string, string>("red",     "#620B0B"),
+            new Tuple<string, string>("blue",    "#0B2362"),
+            new Tuple<string, string>("green",   "#1F3602"),
+            new Tuple<string, string>("orange",  "#BC4D00"),
+            new Tuple<string, string>("purple",  "#1D1052"),
+            new Tuple<string, string>("gold",    "#A77708"),
+            new Tuple<string, string>("brown",   "#1C0D02"),
+            new Tuple<string, string>("pink",    "#FF4D8A"),
+            new Tuple<string, string>("white",   "#D8D8D8"),
+            new Tuple<string, string>("black",   "#0B0B0B")
+        };
+
+        ///// <summary>
+        ///// Handle stylesheet resolve.
+        ///// </summary>
+        //public static void OnStylesheetLoad(object sender, HtmlStylesheetLoadEventArgs e)
+        //{
+        //    //e.SetSrc = "scoreboard.css";
+        //    e.SetStyleSheet = File.ReadAllText("scoreboard.css");
+
+        //    //var stylesheet = e.Src;
+        //    //if (stylesheet != null) { e.SetStyleSheet = stylesheet; }
+        //}
+
+        //public static Bitmap RenderScoreboardHTML(int width, int height)
+        //{
+
+        //    //Bitmap render = new Bitmap(800, 600, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+        //    Bitmap img;
+        //    TheArtOfDev.HtmlRenderer.WinForms.HtmlRender.AddFontFamily(FontUtility.GetFont(CustomFont.Conduit, 18f).FontFamily);
+        //    //TheArtOfDev.HtmlRenderer.WinForms.HtmlRender.ParseStyleSheet("scoreboard.css");
+        //    //img = TheArtOfDev.HtmlRenderer.WinForms.HtmlRender.RenderToImageGdiPlus(GenerateScoreboardHTML(), new Size(width, height), TextRenderingHint.AntiAlias, null, OnStylesheetLoad);
+        //    img = (Bitmap)TheArtOfDev.HtmlRenderer.WinForms.HtmlRender.RenderToImageGdiPlus(GenerateScoreboardHTML(), new Size(width, height), TextRenderingHint.AntiAlias);
+        //    //,new PointF(0f, 0f), TheArtOfDev.HtmlRenderer.Core.CssData.Parse(null, File.ReadAllText("scoreboard.css")), OnStylesheetLoad);
+
+        //    List<CssBox> boxes = HtmlRender.GetRenderBoxes(GenerateScoreboardHTML(), new Size(width, height), TextRenderingHint.AntiAlias);
+
+        //    //img.Save("testRender.png", System.Drawing.Imaging.ImageFormat.Png);
+        //    return img;
+
+        //}
+        public static string GenerateScoreboardHTML()
+        {
+
+            StringBuilder s = new StringBuilder();
+            s.Append("<!doctype html><html><head><title>ElDewrito Scoreboard</title><link rel=\"stylesheet\" type=\"text/css\" href=\"");
+            s.Append(ScoreboardCSSPath);
+            s.Append("\"/></head><body><div id=\"container\"><div class=\"page_content\"><div id=\"window\" style=\"width: 100%;\">");
+            s.Append("<table id=\"scoreboard\">");
+                s.Append("<thead>");
+                    s.Append("<tr id=\"header\" style=\"background-color:rgba(11,11,11,230);\">");
+                    s.Append("<th style=\"background-color:rgba(11,11,11,230);\"></th>");
+                    s.Append("<th class=\"name\" style=\"background-color:rgba(11,11,11,230); padding-left:10px;\" colspan=\"2\">Players</th>");
+                    s.Append("<th style=\"background-color:rgba(11,11,11,230);\">Kills</th>");
+                    s.Append("<th style=\"background-color:rgba(11,11,11,230);\">Assists</th>");
+                    s.Append("<th style=\"background-color:rgba(11,11,11,230);\">Deaths</th>");
+                    s.Append("<th style=\"background-color:rgba(11,11,11,230);\">Best Streak</th>");
+                    s.Append("<th style=\"background-color:rgba(11,11,11,230);\"></th>");
+                    s.Append("<th style=\"background-color:rgba(11,11,11,230);\">Score</th>");
+                s.Append("</tr>");
+            s.Append("</thead>");
+            s.Append("<tbody id=\"singlePlayers\">");
+
+
+            if (App.currentConnection.State.Teams)
+            {
+                
+                s.Append("</tbody>");
+                // add tables for teams
+                
+                int i = 1;
+                foreach (Tuple<Tuple<int, int>, List<PlayerInfo>> team in App.currentConnection.State.OrderedTeams)
+                {
+                    
+                    // team.Item1.Item1 = team index
+                    // team.Item1.Item2 = team total score
+                    // team.Item2 = list of players on team
+
+                    s.Append(
+                        "<tbody data-name=\"" +     App.TeamNames[team.Item1.Item1].ToLowerInvariant() +
+                        "\" data-score=\"" +        team.Item1.Item2 + 
+                        "\" data-totalscore=\"" +   team.Item1.Item2 + 
+                        "\" data-teamindex=\""+     App.TeamNames[team.Item1.Item1] + 
+                        "\" class=\"team\">"
+                    );
+
+                    s.Append(
+                        "<tr class=\"player teamHeader\" style=\"background-color:" + App.TeamColorsRGBA[team.Item1.Item1] +
+                        ";\"><td class=\"rank\" style=\"background-color:" + App.TeamColorsRGBA[team.Item1.Item1] + ";\">" + i.ToString() +
+                        "</td><td class=\"name\" colspan=\"7\" style=\"background-color:" + App.TeamColorsRGBA[team.Item1.Item1] + "; padding-left:10px;\">" + App.TeamNames[team.Item1.Item1] +
+                        " TEAM</td><td class=\"score\" data-name=\"score\" style=\"background-color:" + App.TeamColorsDarkRGBA[team.Item1.Item1] + ";\">" + team.Item1.Item2.ToString() + "</td></tr>");
+
+                    foreach (PlayerInfo player in team.Item2) { s.Append(GeneratePlayerRowHTML(player, team.Item1.Item1, true)); }
+
+                    s.Append("</tbody>");
+
+                    i++;
+                }                
+            }
+            else if(App.currentConnection.State.Players.Count > 0)
+            {
+                
+                // place, starts at 1 (1st place) and increases
+                int c = App.currentConnection.State.Players[0].Score, place = 1, i = 1;
+
+                // add rows for FFA players
+                foreach (PlayerInfo player in App.currentConnection.State.Players)
+                {
+
+                    if (player.Score < c) { c = player.Score; place = i; }
+                    s.Append(GeneratePlayerRowHTML(player, place, false));
+
+                    //if (player.Score < c) {
+                    //    c = player.Score; place++;
+                    //    s.Append(GeneratePlayerRowHTML(player, i, false));
+                    //}
+                    //else
+                    //{
+                    //    s.Append(GeneratePlayerRowHTML(player, place, false));
+                    //}
+
+                    //s.Append("</tbody>");
+
+                    i++;
+
+                }
+                s.Append("</tbody>");
+            }
+            else { s.Append("</tbody>"); }
+
+            s.Append("</table></div></div></div></body></html>");
+
+            //Clipboard.SetText(s.ToString());
+
+            return s.ToString();
+
+			#region translated mostly
+			//List<PlayerInfo> players = new List<PlayerInfo>();
+			//var teamGame = App.currentConnection.State.Teams;
+			//var emblemPath = "";
+			//var hostPath = "crown.png";
+			//var rankPath = "0.png";
+			//var where = "#singlePlayers";
+			//if (players.Count > 0)
+			//{
+			//	///*$*/('#singlePlayers').empty();
+			//	///*$*/('.team').remove();
+			//	for (var i = 0; i < players.Count; i++)
+			//	{
+
+			//		var bgColor = players[i].PrimaryColor;
+
+			//		if (teamGame)
+			//		{
+			//			var tInd = players[i].Team;
+			//			var teamName = App.TeamNames[tInd];
+			//			bgColor = App.TeamColorsHexStrings[tInd];
+
+			//			where = ".team[data - name = \"" + teamName + "\"]";
+
+			//			if (/*$*/(where).length == 0)
+			//			{
+
+			//				var teamHeader =
+			//				"<tbody data-name=\"" + teamName +
+			//				"\" data-score=\"" + App.currentConnection.State.TeamScores[tInd] +
+			//				"\" data-totalscore=\"" + App.currentConnection.State.TeamScores[tInd] +
+			//				"\" data-teamIndex=\"" + tInd +
+			//				"\" class=\"team\"><tr class=\"player teamHeader\" style=\"background-color:" + App.TeamColorsRGBA[tInd] +
+			//				";\"><td class=\"rank\"></td><td class=\"name\">" + App.TeamNames[tInd] + " TEAM</td>";
+			//				teamHeader += "<td class=\"score\" data-name=\"score\">" + App.currentConnection.State.TeamScores[tInd] + "</td></tr></tbody>";
+
+			//				/*$*/("#window table").append(teamHeader);
+
+			//				// don't have this information
+			//				//if ((teamHasObjective & (1 << tInd))) { /*$*/("#" + team.Item1 + " .teamHeader").append("<img class=\"emblem objective\" src=\"" + gameType + ".png\">") }
+			//			}
+			//		}
+
+			//		///*$*/(where).append(
+			//		///*$*/("<tr>", 
+			//		//{ 
+			//		//    css: { backgroundColor: App.TeamColorsRGBA[tInd] },
+			//		//    class: "player clickable",
+			//		//    "data-name": players[i].name,
+			//		//    "data-uid": players[i].UID,
+			//		//    "data-color": bgColor,
+			//		//    "data-score":players[i].score,
+			//		//    "data-totalScore":players[i].totalScore,
+			//		//    "data-playerIndex":players[i].playerIndex,
+			//		//    "data-team":players[i].team,
+			//		//})
+			//		////.mouseover(function(){ col = /*$*/(this).attr('data-color'), bright = adjustColor(col, 30); /*$*/(this).css("background-color", hexToRgb(bright, cardOpacity)); })
+			//		////.mouseout(function(){ col = /*$*/(this).attr('data-color'); /*$*/(this).css("background-color", hexToRgb(col, cardOpacity)); })
+			//		//.append(/*$*/('<td class="rank" data-name="rank">'))
+			//		//.append(/*$*/('<td class="name" data-name="name">').text(players[i].name)) //name
+			//		//);
+
+			//		rankPath = players[i].Rank + ".png";
+			//		if (!players[i].IsAlive && !App.currentConnection.State.InLobby) { emblemPath = "dead.png"; }
+			//		else { emblemPath = string.IsNullOrEmpty(players[i].EmblemURL) ? emblemPath = "generic.png" : emblemPath = players[i].EmblemURL; }
+			//		///*$*/("[data-playerIndex='" + players[i].playerIndex + "'] .name").prepend('<img class="emblem player-emblem" src="'+emblemPath+'">');
+			//		///*$*/("[data-playerIndex='" + players[i].playerIndex + "']").append(/*$*/('<td class="serviceTag" data-name="serviceTag">').text(players[i].serviceTag))
+
+			//		switch (App.currentConnection.State.VariantType)
+			//		{
+			//			// case "oddball":
+			//			//     /*$*/("[data-playerIndex='" + players[i].playerIndex + "']").append(/*$*/('<td class="stat" data-name="kills">').text(players[i].kills)) //kills
+			//			//         .append(/*$*/('<td class="stat">').text(players[i].ballKills)) //ball kills
+			//			//     /*$*/('.teamHeader .name').attr('colspan',5);
+			//			//     break;
+			//			// case "infection":
+			//			//     /*$*/("[data-playerIndex='" + players[i].playerIndex + "']").append(/*$*/('<td class="stat" data-name="kills">').text(players[i].kills)) //kills
+			//			//         .append(/*$*/('<td class="stat">').text(players[i].humansInfected)) //infected
+			//			//         .append(/*$*/('<td class="stat">').text(players[i].zombiesKilled)) //zombies killed  
+			//			//     /*$*/('.teamHeader .name').attr('colspan',6);
+			//			//     break;
+			//			// case "ctf":
+			//			//     /*$*/("[data-playerIndex='" + players[i].playerIndex + "']").append(/*$*/('<td class="stat" data-name="kills">').text(players[i].kills)) //kills
+			//			//         .append(/*$*/('<td class="stat">').text(players[i].ballKills)) //flag kills
+			//			//     /*$*/('.teamHeader .name').attr('colspan',5);
+			//			//     break;
+			//			// case "koth":
+			//			//    /*$*/("[data-playerIndex='" + players[i].playerIndex + "']").append(/*$*/('<td class="stat" data-name="kills">').text(players[i].kills)) //kills
+			//			//     /*$*/("[data-playerIndex='" + players[i].playerIndex + "']").append(/*$*/('<td class="stat" data-name="kingsKilled">').text(players[i].kingsKilled)) //kings killed
+			//			//         .append(/*$*/('<td class="stat" data-name="timeInHill">').text(players[i].timeInHill)) //time in hill
+			//			//         .append(/*$*/('<td class="stat" data-name="timeControllingHill">').text(players[i].timeControllingHill)) //time controlling hill
+			//			//     /*$*/('.teamHeader .name').attr('colspan',7);
+			//			//     break;                   
+			//			// case "vip":
+			//			// case "juggernaut":
+			//			// case "assault":
+			//			default:
+			//				///*$*/("[data-playerIndex='" + players[i].playerIndex + "']").append(/*$*/('<td class="stat" data-name="kills">').text(players[i].kills)) //kills
+			//				//    .append(/*$*/('<td class="stat" data-name="assists">').text(players[i].assists)) //assists
+			//				//    .append(/*$*/('<td class="stat" data-name="deaths">').text(players[i].deaths)) //deaths 
+			//				//    .append(/*$*/('<td class="stat" data-name="bestStreak">').text(players[i].bestStreak)) //best streak 
+			//				// I think this just sets the 'colspan' attribute to 7 for items with these classes
+			//				///*$*/('.teamHeader .name').attr('colspan',7);
+			//				break;
+			//		}
+			//		///*$*/("[data-playerIndex='" + players[i].playerIndex + "']").append(/*$*/('<td class="playerRank" data-name="playerRank">'))
+			//		///*$*/("[data-playerIndex='" + players[i].playerIndex + "']").append(/*$*/('<td class="stat score" data-name="score">').text(players[i].score)) //score
+			//		///*$*/("[data-playerIndex='" + players[i].playerIndex + "'] .playerRank").prepend('<img class="rankimg" src="'+rankPath+'">');
+			//	}
+			//	//if(teamGame) {
+			//	//    sortMe("#scoreboard","tbody", multiRound);
+			//	//    for(var i = 0; i< 8; i++) 
+			//	//    { 
+			//	//        sortMe(".team[data - name = \"/*$*/{teamArray[i].name}\"]", "tr", multiRound); 
+			//	//    }
+			//	//} 
+			//	//else { sortMe("#singlePlayers","tr", multiRound); }
+			//	//rankMe(teamGame, multiRound);
+
+			//}
+			#endregion
+
+		}        
+        private static string GeneratePlayerRowHTML(PlayerInfo player, int index, bool teams)
+        {
+            string bg = "style=\"background-color: " + (teams ? App.TeamColorsRGBA[index] : player.ScoreboardColorRGBA) + "; text-shadow: black 1px 1px 1px;\"";
+            string bgDark = "style=\"background-color: " + (teams ? App.TeamColorsDarkRGBA[index] : player.ScoreboardColorDarkRGBA) + "; text-shadow: black 1px 1px 1px; \"";
+            return "<tr " + bg + " class=\"player clickable\" " +
+                    "data-name=\"" + player.Name +
+                    "\" data-uid=\"" + player.Uid +
+                    "\" data-color=\"" + player.PrimaryColor +
+                    "\" data-score=\"" + player.Score +
+                    "\" data-totalscore=\"" + player.Score +
+                    //"\" data-playerindex=\"" + player.Index + 
+                    "\" data-team=\"" + player.Team + "\">" +
+                    "<td style =\"background-color: " + (teams ? App.TeamColorsRGBA[index] : player.ScoreboardColorRGBA) + "; width:24px;\" class=\"rank\" data-name=\"rank\">" + (teams ? "" : index.ToString()) + "</td>" +
+                    "<td style =\"background-color: " + (teams ? App.TeamColorsRGBA[index] : player.ScoreboardColorRGBA) + "; padding-left:10px;\" class=\"name\" data-name=\"name\"><img class=\"emblem player-emblem\" src=\"" + ((player.IsAlive) ? EmblemGenericPath : EmblemDeadPath) + "\">" + player.Name + "</td>" +
+                    "<td " + bgDark + " class=\"serviceTag stat\" data-name=\"serviceTag\">" + player.ServiceTag + "</td>" +
+                    "<td " + bg + " class=\"stat\" data-name=\"kills\">" + player.Kills + "</td>" +
+                    "<td " + bg + " class=\"stat\" data-name=\"assists\">" + player.Assists + "</td>" +
+                    "<td " + bg + " class=\"stat\" data-name=\"deaths\">" + player.Deaths + "</td>" +
+                    "<td " + bg + " class=\"stat\" data-name=\"bestStreak\">" + player.BestStreak + "</td>" +
+                    //"<td class=\"playerRank\" data-name=\"playerRank\"><img class=\"rankimg\" src=\"" + player.Rank + ".png\"></td>" +
+                    "<td " + bgDark + " class=\"playerRank\" data-name=\"playerRank\"><img class=\"rankimg\" src=\"" + Rank0Path + "\"></td>" +
+                    "<td " + bgDark + " class=\"stat score\" data-name=\"score\">" + player.Score + "</td>" +
+                    "</tr>\n"
+            ;
+        }
+
+        private static void GenerateHeaderRowImageAlpha()
+        {
+
+            if (HeaderRowImage != null) { HeaderRowImage.Dispose(); }
+            HeaderRowImage = new Bitmap(Width, rowHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            using (Graphics graphics = System.Drawing.Graphics.FromImage(HeaderRowImage))
+            {
+
+                graphics.InterpolationMode = InterpolationMode.High;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+
+                graphics.Clear(Color.Transparent);
+
+                // Draw Headers
+                Point origin = new Point(0, 0);
+                //foreach (ScoreboardColumn column in Columns)
+                //{
+                //    if (column.DrawHeader)
+                //    {
+                //        graphics.FillRectangle(new SolidBrush(HeaderBackgroundColor), column.Header);
+                //        if (HighlightAllRows) { graphics.DrawImage(RowHighlightRectangle, column.Header, 0, 0, column.Header.Width, column.Header.Height, GraphicsUnit.Pixel); }
+                //        if (!string.IsNullOrEmpty(column.Name)) { DrawString(graphics, column.Header, column.HeaderContentOrigin, column.HeaderStringFormat, column.Name, HeaderBackgroundColor, Color.White, column.HeaderFont, Color.Black); }
+                //    }
+                //}
+
+                ScoreboardColumn column = null;
+                foreach (ColumnID id in DrawColumns)
+                {
+                    column = GetColumn(id);
+                    graphics.FillRectangle(new SolidBrush(HeaderBackgroundColor), column.Header);
+                    if (HighlightAllRows) { graphics.DrawImage(RowHighlightRectangle, column.Header, 0, 0, column.Header.Width, column.Header.Height, GraphicsUnit.Pixel); }
+                    if (!string.IsNullOrEmpty(column.Name)) { DrawString(graphics, column.Header, column.HeaderContentOrigin, column.HeaderStringFormat, column.Name, HeaderBackgroundColor, Color.White, column.HeaderFont, Color.Black); }
+                }
+
+            }
+
+        }
+        private static void GenerateScoreboardImageAlpha()
+        {
+
+            if (ScoreboardImage != null) { ScoreboardImage.Dispose(); }
+
+            Connection currentConnection = App.currentConnection;
+            ScoreboardImage = new Bitmap(Width, rowHeight * 16, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            using (Graphics graphics = System.Drawing.Graphics.FromImage(ScoreboardImage))
+            {
+
+                G = graphics;
+
+                // Settings that improve scoreboard text appearance
+                fontEmSize = G.DpiY * FontSize.Value / 72;
+                G.InterpolationMode = InterpolationMode.High;
+                //G.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                G.SmoothingMode = SmoothingMode.HighQuality;
+                G.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                G.CompositingQuality = CompositingQuality.HighQuality;
+                //G.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+
+
+                // Draw Rows
+                lock (currentConnection.State.ServerStateLock)
+                {
+                    int rowIndex = 0;
+                    foreach (PlayerInfo player in currentConnection.State.Players)
+                    {
+                        DrawScoreboardRow(rowIndex, currentConnection, player, Color.Gray, Color.White);
+                        rowIndex++;
+                    }
+                    while (rowIndex < 16) { DrawEmptyScoreboardRow(rowIndex, Gray); rowIndex++; }
+                }
+
+            }
+
+        }
+
         private static void GenerateHeaderRowImage()
         {
 
             if (HeaderRowImage != null) { HeaderRowImage.Dispose(); }
-
             HeaderRowImage = new Bitmap(Width, rowHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             using (Graphics graphics = System.Drawing.Graphics.FromImage(HeaderRowImage))
@@ -396,7 +749,7 @@ namespace RconTool
                 G = graphics;
 
                 // Settings that improve scoreboard text appearance
-                fontEmSize = G.DpiY * fontSize / 72;
+                fontEmSize = G.DpiY * FontSize.Value / 72;
                 G.InterpolationMode = InterpolationMode.High;
                 //G.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 G.SmoothingMode = SmoothingMode.HighQuality;
@@ -404,8 +757,6 @@ namespace RconTool
                 G.CompositingQuality = CompositingQuality.HighQuality;
                 //G.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 
-
-
                 // Draw Rows
                 lock (currentConnection.State.ServerStateLock)
                 {
@@ -424,21 +775,30 @@ namespace RconTool
 
         private static void DrawScoreboardRow(int rowIndex, Connection currentConnection, PlayerInfo player, Color rectColor, Color textColor)
         {
-            Color TagColor;
-            if (currentConnection.State.InLobby)
-            { 
-                rectColor = DarkGray; 
-                TagColor = DarkerGray; 
+            Color TagColor; int teamIndex = -1;
+            if (currentConnection?.ServerHookEnabled ?? false) {
+                currentConnection.ServerHook_PlayerTeamsByUid.TryGetValue(player.Uid, out teamIndex);
+                currentConnection.ServerHook_PlayerTeamsByUid_LastDrawnColor[player.Uid] = teamIndex;
+                if (currentConnection.State.Teams && teamIndex > -1 && teamIndex < 8) {
+                    rectColor = App.TeamColors[teamIndex].Item2;
+                    TagColor = App.TeamColors[teamIndex].Item1;
+                }
+                else {
+                    rectColor = player.ScoreboardColor;
+                    TagColor = player.ScoreboardColorDark;
+                }
             }
-            else if (currentConnection.State.Teams && player.Team != -1) 
-            { 
-                rectColor = App.TeamColors[player.Team].Item2; 
-                TagColor = App.TeamColors[player.Team].Item1; 
+            else if (currentConnection.State.InLobby) {
+                rectColor = DarkGray;
+                TagColor = DarkerGray;
             }
-            else 
-            { 
-                rectColor = player.ScoreboardColor; 
-                TagColor = player.ScoreboardColorDark; 
+            else if (currentConnection.State.Teams && player.Team != -1) {
+                rectColor = App.TeamColors[player.Team].Item2;
+                TagColor = App.TeamColors[player.Team].Item1;
+            }
+            else {
+                rectColor = player.ScoreboardColor;
+                TagColor = player.ScoreboardColorDark;
             }
 
             int c = 0;
@@ -771,8 +1131,8 @@ namespace RconTool
                 HeaderAlignment = Alignment.Center;
                 ContentAlignment = Alignment.Center;
 
-                HeaderStringFormat = Scoreboard.CenterJustifySF;
-                CellStringFormat = Scoreboard.CenterJustifySF;
+                HeaderStringFormat = FontUtility.CenterJustifySF;
+                CellStringFormat = FontUtility.CenterJustifySF;
 
                 HeaderFont = fontRegular;
 
@@ -797,18 +1157,18 @@ namespace RconTool
                 HeaderAlignment = headerAlignment;
                 switch (HeaderAlignment)
                 {
-                    case Alignment.Left: HeaderStringFormat = Scoreboard.LeftJustifySF; break;
-                    case Alignment.Center: HeaderStringFormat = Scoreboard.CenterJustifySF; break;
-                    case Alignment.Right: HeaderStringFormat = Scoreboard.RightJustifySF; break;
+                    case Alignment.Left: HeaderStringFormat = FontUtility.LeftJustifySF; break;
+                    case Alignment.Center: HeaderStringFormat = FontUtility.CenterJustifySF; break;
+                    case Alignment.Right: HeaderStringFormat = FontUtility.RightJustifySF; break;
                     default: break;
                 }
 
                 ContentAlignment = contentAlignment;
                 switch (ContentAlignment)
                 {
-                    case Alignment.Left: CellStringFormat = Scoreboard.LeftJustifySF; break;
-                    case Alignment.Center: CellStringFormat = Scoreboard.CenterJustifySF; break;
-                    case Alignment.Right: CellStringFormat = Scoreboard.RightJustifySF; break;
+                    case Alignment.Left: CellStringFormat = FontUtility.LeftJustifySF; break;
+                    case Alignment.Center: CellStringFormat = FontUtility.CenterJustifySF; break;
+                    case Alignment.Right: CellStringFormat = FontUtility.RightJustifySF; break;
                     default: break;
                 }
                 
@@ -823,8 +1183,8 @@ namespace RconTool
                 else
                 {
 
-                    float nameWidth = GetMonospaceTextRenderSize(Name.Length, G, fontRegular, RightJustifySF, Margins).Width;
-                    float charWidth = GetMonospaceTextRenderSize(characterLimit, G, fontRegular, RightJustifySF, Margins).Width;
+                    float nameWidth = GetMonospaceTextRenderSize(Name.Length, G, fontRegular, FontUtility.RightJustifySF, Margins).Width;
+                    float charWidth = GetMonospaceTextRenderSize(characterLimit, G, fontRegular, FontUtility.RightJustifySF, Margins).Width;
 
                     Width = (int)charWidth;
 
@@ -834,8 +1194,8 @@ namespace RconTool
                         float decrement = 0.5f;
                         while ((int)nameWidth > Width)
                         {
-                            HeaderFont = FontUtility.GetMonospaceFont(DefaultScoreboardFont, HeaderFont.Size - decrement);
-                            nameWidth = GetMonospaceTextRenderSize(Name.Length, G, HeaderFont, RightJustifySF, Margins).Width;
+                            HeaderFont = FontUtility.GetFont(DefaultScoreboardFont, HeaderFont.Size - decrement);
+                            nameWidth = GetMonospaceTextRenderSize(Name.Length, G, HeaderFont, FontUtility.RightJustifySF, Margins).Width;
                             decrement += 0.5f;
                         }
                     }
