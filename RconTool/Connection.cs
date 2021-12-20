@@ -1607,28 +1607,34 @@ namespace RconTool
         public void SendMapDescriptions(MapVariant.BaseMap baseMap, string playerName, Message chatMessage = null)
         {
 
-            if (baseMap == MapVariant.BaseMap.Unknown) { Respond(playerName, new List<string>() { "Invalid Base Map Received." }, chatMessage); return; }
-            if (MapVariants.Count == 0) { Respond(playerName, new List<string>() { "There are no Map Variants to list." }, chatMessage); return; }
+            if (baseMap == MapVariant.BaseMap.Unknown) { Respond(playerName, new string[] { "Invalid Base Map Received." }, chatMessage); return; }
+            if (MapVariants.Count == 0) { Respond(playerName, new string[] { "There are no Map Variants to list." }, chatMessage); return; }
 
-            List<MapVariant> variants;
+            List<string> descriptions = new List<string>();
+
+            // Add descriptions for all base maps
             if (baseMap == MapVariant.BaseMap.All)
             {
-                variants = MapVariants;
+				foreach (MapVariant variant in MapVariants) {
+                    descriptions.Add(variant.Description_OneLine);
+                }
+                if (descriptions.Count == 0) { 
+                    descriptions.Add("There are no Map Variants to list."); 
+                }
             }
-            else
-            {
-                variants = new List<MapVariant>();
+            // Add descriptions for maps with specific base map
+            else {
                 foreach (MapVariant variant in MapVariants)
                 {
-                    if (variant.BaseMapID == baseMap)
-                    {
-                        variants.Add(variant);
+                    if (variant.BaseMapID == baseMap) {
+                        descriptions.Add(variant.Description_OneLine);
                     }
+                }
+                if (descriptions.Count == 0) { 
+                    descriptions.Add($"There are no {MapVariant.BaseMapDisplayNamesByBaseMap[baseMap]} Map Variants to list."); 
                 }
             }
 
-            List<string> descriptions = new List<string>();
-            foreach (MapVariant map in variants) { descriptions.Add(map.Description_OneLine); }
             Respond(playerName, descriptions, chatMessage);
 
         }
@@ -1665,28 +1671,32 @@ namespace RconTool
         public void SendGameDescriptions(GameVariant.BaseGame baseGame, string playerName, Message chatMessage = null)
         {
 
-            if (baseGame == GameVariant.BaseGame.Unknown) { Respond(playerName, new List<string>() { "Invalid Base Game Received." }, chatMessage); return; }
-            if (GameVariants.Count == 0) { Respond(playerName, new List<string>() { "There are no Game Variants to list." }); return; }
-
-            List<GameVariant> variants;
-            if (baseGame == GameVariant.BaseGame.All)
-            {
-                variants = GameVariants;
-            }
-            else
-            {
-                variants = new List<GameVariant>();
-                foreach (GameVariant variant in GameVariants)
-                {
-                    if (variant.BaseGameID == baseGame)
-                    {
-                        variants.Add(variant);
-                    }
-                }
-            }
+            if (baseGame == GameVariant.BaseGame.Unknown) { Respond(playerName, new string[] { "Invalid Base Game Received." }, chatMessage); return; }
+            if (GameVariants.Count == 0) { Respond(playerName, new string[] { "There are no Game Variants to list." }, chatMessage); return; }
 
             List<string> descriptions = new List<string>();
-            foreach (GameVariant game in variants) { descriptions.Add(game.Description_OneLine); }
+
+            // Add descriptions for all base gametypes
+            if (baseGame == GameVariant.BaseGame.All) {
+                foreach (GameVariant variant in GameVariants) {
+                    descriptions.Add(variant.Description_OneLine);
+                }
+                if (descriptions.Count == 0) { 
+                    descriptions.Add("There are no Game Variants to list."); 
+                }
+            }
+            // Add descriptions for games with specific base gametype
+            else {                
+                foreach (GameVariant variant in GameVariants) {
+                    if (variant.BaseGameID == baseGame) {
+                        descriptions.Add(variant.Description_OneLine);
+                    }
+                }
+                if (descriptions.Count == 0) { 
+                    descriptions.Add($"There are no {GameVariant.BaseGameShortDisplayNamesByBaseGame[baseGame]} Game Variants to list."); 
+                }
+            }
+            
             Respond(playerName, descriptions, chatMessage);
 
         }
@@ -1706,23 +1716,39 @@ namespace RconTool
 
         public GameVariant GetGameVariant(string game)
         {
-            if (string.IsNullOrWhiteSpace(game)) { return null; }
-            GameVariant builtInVariant = GameVariant.TryGetBuiltInVariant(game);
-            if (builtInVariant == null) {
-                return GameVariants.Find(x => x.Name == game);
+
+            if (string.IsNullOrWhiteSpace(game)) { 
+                return null; 
             }
-            else { return builtInVariant; }
+
+            // If a built in game variant is matched, just skip to the return
+            if (!GameVariant.TryGetBuiltInVariant(game, out GameVariant match)) { 
+                // Try to find exact name match
+                match = GameVariants.Find(x => x.Name == game);
+                if (match != null) { return match; }
+                // Fall back to case-invariant match
+                match = GameVariants.Find(x => x.Name.ToLowerInvariant() == game.ToLowerInvariant());
+            }
+            return match;
+
         }
         public MapVariant GetMapVariant(string map)
         {
-            if (string.IsNullOrWhiteSpace(map)) { return null; }
-            MapVariant m = MapVariant.DetermineBaseMap(map);
-            if (m != null) { 
-                return m; 
+
+            if (string.IsNullOrWhiteSpace(map)) { 
+                return null; 
             }
-            else {
-                return MapVariants.Find(x => x.Name == map);
-            }
+
+            // If a built in map variant is matched, just skip to the return
+			if (!MapVariant.TryGetBuiltInMapVariant(map, out MapVariant match)) {
+				// Try to find exact name match
+				match = MapVariants.Find(x => x.Name == map);
+				if (match != null) { return match; }
+				// Fall back to case-invariant match
+				match = MapVariants.Find(x => x.Name.ToLowerInvariant() == map.ToLowerInvariant());
+			}
+			return match;
+
         }
 
         public bool IsValidGameVariant(string name, out GameVariant game)
@@ -1764,7 +1790,7 @@ namespace RconTool
         {
 
             if (VoteInProgress) {
-                Respond(voteStarterPlayer?.Name, new List<string>() { "Unable to start another vote while a vote is currently in progress." }, chatMessage);
+                Respond(voteStarterPlayer?.Name, new string[] { "Unable to start another vote while a vote is currently in progress." }, chatMessage);
                 return;
             }
 

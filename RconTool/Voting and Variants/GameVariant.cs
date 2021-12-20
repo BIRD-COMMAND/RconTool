@@ -199,6 +199,42 @@ namespace RconTool
 			{ BaseGame.Juggernaut,		new List<BuiltInVariant>() { BuiltInVariant.Juggernaut, BuiltInVariant.MadDash, BuiltInVariant.Ninjanaut,} },
 			{ BaseGame.VIP,				new List<BuiltInVariant>() { BuiltInVariant.VIP, BuiltInVariant.OneSidedVIP, BuiltInVariant.Escort, BuiltInVariant.InfluentialVIP,} },
 		};
+
+		public static readonly Dictionary<BuiltInVariant, GameVariant> BuiltInGameVariantsByBuiltInVariant = new Dictionary<BuiltInVariant, GameVariant>()
+		{
+			{ BuiltInVariant.Slayer         , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Slayer, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Slayer], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Slayer], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Slayer], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Slayer], IsValid = true } },
+			{ BuiltInVariant.TeamSlayer     , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Slayer, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Slayer], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.TeamSlayer], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.TeamSlayer], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.TeamSlayer], IsValid = true } },
+			{ BuiltInVariant.Rockets        , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Slayer, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Slayer], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Rockets], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Rockets], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Rockets], IsValid = true } },
+			{ BuiltInVariant.Elimination    , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Slayer, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Slayer], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Elimination], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Elimination], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Elimination], IsValid = true } },
+			{ BuiltInVariant.Duel           , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Slayer, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Slayer], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Duel], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Duel], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Duel], IsValid = true } },
+			{ BuiltInVariant.Oddball        , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Oddball, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Oddball], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Oddball], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Oddball], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Oddball], IsValid = true } },
+			{ BuiltInVariant.TeamOddball    , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Oddball, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Oddball], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.TeamOddball], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.TeamOddball], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.TeamOddball], IsValid = true }  },
+			{ BuiltInVariant.Lowball        , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Oddball, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Oddball], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Lowball], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Lowball], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Lowball], IsValid = true }  },
+			{ BuiltInVariant.Ninjaball      , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Oddball, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Oddball], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Ninjaball], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Ninjaball], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Ninjaball], IsValid = true }  },
+			{ BuiltInVariant.Rocketball     , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Oddball, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Oddball], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Rocketball], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Rocketball], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Rocketball], IsValid = true }  },
+			{ BuiltInVariant.MultiFlag      , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.CaptureTheFlag, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.CaptureTheFlag], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.MultiFlag], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.MultiFlag], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.MultiFlag], IsValid = true }  },
+			{ BuiltInVariant.OneFlag        , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.CaptureTheFlag, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.CaptureTheFlag], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.OneFlag], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.OneFlag], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.OneFlag], IsValid = true }  },
+			{ BuiltInVariant.TankFlag       , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.CaptureTheFlag, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.CaptureTheFlag], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.TankFlag], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.TankFlag], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.TankFlag], IsValid = true }  },
+			{ BuiltInVariant.AttritionCTF   , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.CaptureTheFlag, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.CaptureTheFlag], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.AttritionCTF], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.AttritionCTF], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.AttritionCTF], IsValid = true }  },
+			{ BuiltInVariant.Assault        , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Assault, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Assault], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Assault], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Assault], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Assault], IsValid = true }  },
+			{ BuiltInVariant.NeutralBomb    , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Assault, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Assault], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.NeutralBomb], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.NeutralBomb], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.NeutralBomb], IsValid = true }  },
+			{ BuiltInVariant.OneBomb        , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Assault, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Assault], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.OneBomb], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.OneBomb], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.OneBomb], IsValid = true }  },
+			{ BuiltInVariant.AttritionBomb  , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Assault, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Assault], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.AttritionBomb], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.AttritionBomb], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.AttritionBomb], IsValid = true }  },
+			{ BuiltInVariant.Infection      , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Infection, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Infection], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Infection], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Infection], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Infection], IsValid = true }  },
+			{ BuiltInVariant.SaveOneBullet  , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Infection, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Infection], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.SaveOneBullet], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.SaveOneBullet], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.SaveOneBullet], IsValid = true }  },
+			{ BuiltInVariant.AlphaZombie    , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Infection, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Infection], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.AlphaZombie], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.AlphaZombie], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.AlphaZombie], IsValid = true }  },
+			{ BuiltInVariant.HideandSeek    , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Infection, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Infection], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.HideandSeek], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.HideandSeek], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.HideandSeek], IsValid = true }  },
+			{ BuiltInVariant.CrazyKing      , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.KingOfTheHill, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.KingOfTheHill], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.CrazyKing], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.CrazyKing], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.CrazyKing], IsValid = true }  },
+			{ BuiltInVariant.TeamKing       , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.KingOfTheHill, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.KingOfTheHill], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.TeamKing], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.TeamKing], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.TeamKing], IsValid = true }  },
+			{ BuiltInVariant.MoshPit        , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.KingOfTheHill, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.KingOfTheHill], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.MoshPit], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.MoshPit], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.MoshPit], IsValid = true }  },
+			{ BuiltInVariant.Juggernaut     , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Juggernaut, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Juggernaut], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Juggernaut], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Juggernaut], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Juggernaut], IsValid = true }  },
+			{ BuiltInVariant.MadDash        , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Juggernaut, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Juggernaut], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.MadDash], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.MadDash], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.MadDash], IsValid = true }  },
+			{ BuiltInVariant.Ninjanaut      , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.Juggernaut, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.Juggernaut], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Ninjanaut], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Ninjanaut], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Ninjanaut], IsValid = true }  },
+			{ BuiltInVariant.VIP            , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.VIP, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.VIP], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.VIP], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.VIP], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.VIP], IsValid = true }  },
+			{ BuiltInVariant.OneSidedVIP    , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.VIP, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.VIP], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.OneSidedVIP], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.OneSidedVIP], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.OneSidedVIP], IsValid = true }  },
+			{ BuiltInVariant.Escort         , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.VIP, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.VIP], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.Escort], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.Escort], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.Escort], IsValid = true }  },
+			{ BuiltInVariant.InfluentialVIP , new GameVariant() { Author = "Bungie", BaseGameID = BaseGame.VIP, BaseGameTypeString = BaseGameInternalNamesByBaseGame[BaseGame.VIP], Description = BuiltInVariantDescriptionsByBuiltInVariant[BuiltInVariant.InfluentialVIP], Name = BuiltInVariantDisplayNamesByBuiltInVariant[BuiltInVariant.InfluentialVIP], TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[BuiltInVariant.InfluentialVIP], IsValid = true }  },
+		};
 		public static readonly Dictionary<BuiltInVariant, string> BuiltInVariantNameStringsByBuiltInVariant = new Dictionary<BuiltInVariant, string>()
 		{
 			{ BuiltInVariant.Slayer         , "slayer"             },
@@ -233,6 +269,103 @@ namespace RconTool
 			{ BuiltInVariant.OneSidedVIP    , "one sided vip"      },
 			{ BuiltInVariant.Escort         , "escort"             },
 			{ BuiltInVariant.InfluentialVIP , "influential vip"    },
+		};
+		public static readonly Dictionary<string, BuiltInVariant> BuiltInVariantsByNameLower = new Dictionary<string, BuiltInVariant>()
+		{
+			{"slayer"           , BuiltInVariant.Slayer         }, // { BuiltInVariant.Slayer         , "slayer"             },
+			{"team slayer"      , BuiltInVariant.TeamSlayer     }, // { BuiltInVariant.TeamSlayer     , "team slayer"        },
+			{"rockets"          , BuiltInVariant.Rockets        }, // { BuiltInVariant.Rockets        , "rockets"            },
+			{"elimination"      , BuiltInVariant.Elimination    }, // { BuiltInVariant.Elimination    , "elimination"        },
+			{"duel"             , BuiltInVariant.Duel           }, // { BuiltInVariant.Duel           , "duel"               },
+			{"oddball"          , BuiltInVariant.Oddball        }, // { BuiltInVariant.Oddball        , "oddball"            },
+			{"team oddball"     , BuiltInVariant.TeamOddball    }, // { BuiltInVariant.TeamOddball    , "team oddball"       },
+			{"lowball"          , BuiltInVariant.Lowball        }, // { BuiltInVariant.Lowball        , "lowball"            },
+			{"ninjaball"        , BuiltInVariant.Ninjaball      }, // { BuiltInVariant.Ninjaball      , "ninjaball"          },
+			{"rocketball"       , BuiltInVariant.Rocketball     }, // { BuiltInVariant.Rocketball     , "rocketball"         },
+			{"multi flag"       , BuiltInVariant.MultiFlag      }, // { BuiltInVariant.MultiFlag      , "multi flag"         },
+			{"one flag"         , BuiltInVariant.OneFlag        }, // { BuiltInVariant.OneFlag        , "one flag"           },
+			{"tank flag"        , BuiltInVariant.TankFlag       }, // { BuiltInVariant.TankFlag       , "tank flag"          },
+			{"attrition ctf"    , BuiltInVariant.AttritionCTF   }, // { BuiltInVariant.AttritionCTF   , "attrition ctf"      },
+			{"assault"          , BuiltInVariant.Assault        }, // { BuiltInVariant.Assault        , "assault"            },
+			{"neutral assault"  , BuiltInVariant.NeutralBomb    }, // { BuiltInVariant.NeutralBomb    , "neutral assault"    },
+			{"one bomb"         , BuiltInVariant.OneBomb        }, // { BuiltInVariant.OneBomb        , "one bomb"           },
+			{"attrition assault", BuiltInVariant.AttritionBomb  }, // { BuiltInVariant.AttritionBomb  , "attrition assault"  },
+			{"infection"        , BuiltInVariant.Infection      }, // { BuiltInVariant.Infection      , "infection"          },
+			{"save one bullet"  , BuiltInVariant.SaveOneBullet  }, // { BuiltInVariant.SaveOneBullet  , "save one bullet"    },
+			{"alpha zombie"     , BuiltInVariant.AlphaZombie    }, // { BuiltInVariant.AlphaZombie    , "alpha zombie"       },
+			{"hide and seek"    , BuiltInVariant.HideandSeek    }, // { BuiltInVariant.HideandSeek    , "hide and seek"      },
+			{"crazy king"       , BuiltInVariant.CrazyKing      }, // { BuiltInVariant.CrazyKing      , "crazy king"         },
+			{"team king"        , BuiltInVariant.TeamKing       }, // { BuiltInVariant.TeamKing       , "team king"          },
+			{"mosh pit"         , BuiltInVariant.MoshPit        }, // { BuiltInVariant.MoshPit        , "mosh pit"           },
+			{"juggernaut"       , BuiltInVariant.Juggernaut     }, // { BuiltInVariant.Juggernaut     , "juggernaut"         },
+			{"mad dash"         , BuiltInVariant.MadDash        }, // { BuiltInVariant.MadDash        , "mad dash"           },
+			{"ninjanaut"        , BuiltInVariant.Ninjanaut      }, // { BuiltInVariant.Ninjanaut      , "ninjanaut"          },
+			{"vip"              , BuiltInVariant.VIP            }, // { BuiltInVariant.VIP            , "vip"                },
+			{"one sided vip"    , BuiltInVariant.OneSidedVIP    }, // { BuiltInVariant.OneSidedVIP    , "one sided vip"      },
+			{"escort"           , BuiltInVariant.Escort         }, // { BuiltInVariant.Escort         , "escort"             },
+			{"influential vip"  , BuiltInVariant.InfluentialVIP }, // { BuiltInVariant.InfluentialVIP , "influential vip"    },
+			//{ "slayer",             BuiltInVariant.Slayer         }, //{ BuiltInVariant.Slayer         , "slayer"             },
+			//{ "teamslayer",         BuiltInVariant.TeamSlayer     }, //{ BuiltInVariant.TeamSlayer     , "team slayer"        },
+			//{ "rockets",            BuiltInVariant.Rockets        }, //{ BuiltInVariant.Rockets        , "rockets"            },
+			//{ "rocketslayer",       BuiltInVariant.Rockets        }, //{ BuiltInVariant.Elimination    , "elimination"        },
+			//{ "elimination",        BuiltInVariant.Elimination    }, //{ BuiltInVariant.Duel           , "duel"               },
+			//{ "eliminationslayer",  BuiltInVariant.Elimination    }, //{ BuiltInVariant.Oddball        , "oddball"            },
+			//{ "duel",               BuiltInVariant.Duel           }, //{ BuiltInVariant.TeamOddball    , "team oddball"       },
+			//{ "oddball",            BuiltInVariant.Oddball        }, //{ BuiltInVariant.Lowball        , "lowball"            },
+			//{ "teamoddball",        BuiltInVariant.TeamOddball    }, //{ BuiltInVariant.Ninjaball      , "ninjaball"          },
+			//{ "lowball",            BuiltInVariant.Lowball        }, //{ BuiltInVariant.Rocketball     , "rocketball"         },
+			//{ "lowoddball",         BuiltInVariant.Lowball        }, //{ BuiltInVariant.MultiFlag      , "multi flag"         },
+			//{ "ninjaball",          BuiltInVariant.Ninjaball      }, //{ BuiltInVariant.OneFlag        , "one flag"           },
+			//{ "ninjaoddball",       BuiltInVariant.Ninjaball      }, //{ BuiltInVariant.TankFlag       , "tank flag"          },
+			//{ "rocketball",         BuiltInVariant.Rocketball     }, //{ BuiltInVariant.AttritionCTF   , "attrition ctf"      },
+			//{ "rocketoddball",      BuiltInVariant.Rocketball     }, //{ BuiltInVariant.Assault        , "assault"            },
+			//{ "ctf",                BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.NeutralBomb    , "neutral assault"    },
+			//{ "multiflag",          BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.OneBomb        , "one bomb"           },
+			//{ "multiflagctf",       BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.AttritionBomb  , "attrition assault"  },
+			//{ "teammultiflag",      BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.Infection      , "infection"          },
+			//{ "teammultiflagctf",   BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.SaveOneBullet  , "save one bullet"    },
+			//{ "teamctf",            BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.AlphaZombie    , "alpha zombie"       },
+			//{ "capturetheflag",     BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.HideandSeek    , "hide and seek"      },
+			//{ "oneflag",            BuiltInVariant.OneFlag        }, //{ BuiltInVariant.CrazyKing      , "crazy king"         },
+			//{ "oneflagctf",         BuiltInVariant.OneFlag        }, //{ BuiltInVariant.TeamKing       , "team king"          },
+			//{ "singleflag",         BuiltInVariant.OneFlag        }, //{ BuiltInVariant.MoshPit        , "mosh pit"           },
+			//{ "singleflatctf",      BuiltInVariant.OneFlag        }, //{ BuiltInVariant.Juggernaut     , "juggernaut"         },
+			//{ "tankflag",           BuiltInVariant.TankFlag       }, //{ BuiltInVariant.MadDash        , "mad dash"           },
+			//{ "attritionctf",       BuiltInVariant.AttritionCTF   }, //{ BuiltInVariant.Ninjanaut      , "ninjanaut"          },
+			//{ "assault",            BuiltInVariant.Assault        }, //{ BuiltInVariant.VIP            , "vip"                },
+			//{ "teamassault",        BuiltInVariant.Assault        }, //{ BuiltInVariant.OneSidedVIP    , "one sided vip"      },
+			//{ "multibomb",          BuiltInVariant.Assault        }, //{ BuiltInVariant.Escort         , "escort"             },
+			//{ "multibombassault",   BuiltInVariant.Assault        }, //{ BuiltInVariant.InfluentialVIP , "influential vip"    },
+			//{ "neutralassault",     BuiltInVariant.NeutralBomb    },
+			//{ "neutralbomb",        BuiltInVariant.NeutralBomb    },
+			//{ "neutralbombassault", BuiltInVariant.NeutralBomb    },
+			//{ "onebomb",            BuiltInVariant.OneBomb        },
+			//{ "onebombassault",     BuiltInVariant.OneBomb        },
+			//{ "singlebomb",         BuiltInVariant.OneBomb        },
+			//{ "singlebombassault",  BuiltInVariant.OneBomb        },
+			//{ "attritionassault",   BuiltInVariant.AttritionBomb  },
+			//{ "infection",          BuiltInVariant.Infection      },
+			//{ "zombies",            BuiltInVariant.Infection      },
+			//{ "saveonebullet",      BuiltInVariant.SaveOneBullet  },
+			//{ "alphazombie",        BuiltInVariant.AlphaZombie    },
+			//{ "hideandseek",        BuiltInVariant.HideandSeek    },
+			//{ "crazyking",          BuiltInVariant.CrazyKing      },
+			//{ "crazykingofthehill", BuiltInVariant.CrazyKing      },
+			//{ "teamking",           BuiltInVariant.TeamKing       },
+			//{ "kingofthehill",      BuiltInVariant.TeamKing       },
+			//{ "moshpit",            BuiltInVariant.MoshPit        },
+			//{ "juggernaut",         BuiltInVariant.Juggernaut     },
+			//{ "maddash",            BuiltInVariant.MadDash        },
+			//{ "ninjanaut",          BuiltInVariant.Ninjanaut      },
+			//{ "vip",                BuiltInVariant.VIP            },
+			//{ "teamvip",            BuiltInVariant.VIP            },
+			//{ "onesidedvip",        BuiltInVariant.OneSidedVIP    },
+			//{ "onevip",             BuiltInVariant.OneSidedVIP    },
+			//{ "singlevip",          BuiltInVariant.OneSidedVIP    },
+			//{ "escort",             BuiltInVariant.Escort         },
+			//{ "escortvip",          BuiltInVariant.Escort         },
+			//{ "vipescort",          BuiltInVariant.Escort         },
+			//{ "influentialvip",     BuiltInVariant.InfluentialVIP },
 		};
 		public static readonly Dictionary<BuiltInVariant, string> BuiltInVariantDisplayNamesByBuiltInVariant = new Dictionary<BuiltInVariant, string>()
 		{
@@ -339,103 +472,7 @@ namespace RconTool
 			{ BuiltInVariant.Escort,         "Escort: Only one team has a VIP, who scores points by reaching a destination. If he dies, the round ends." },
 			{ BuiltInVariant.InfluentialVIP, "Influential VIP: Staying near your VIP makes you stronger, so move as a group. 10 points to win." },
 		};
-		public static readonly Dictionary<string, BuiltInVariant> BuiltInVariantsByNameLower = new Dictionary<string, BuiltInVariant>()
-		{
-			{"slayer"           , BuiltInVariant.Slayer         },
-			{"team slayer"      , BuiltInVariant.TeamSlayer     },
-			{"rockets"          , BuiltInVariant.Rockets        },
-			{"elimination"      , BuiltInVariant.Elimination    },
-			{"duel"             , BuiltInVariant.Duel           },
-			{"oddball"          , BuiltInVariant.Oddball        },
-			{"team oddball"     , BuiltInVariant.TeamOddball    },
-			{"lowball"          , BuiltInVariant.Lowball        },
-			{"ninjaball"        , BuiltInVariant.Ninjaball      },
-			{"rocketball"       , BuiltInVariant.Rocketball     },
-			{"multi flag"       , BuiltInVariant.MultiFlag      },
-			{"one flag"         , BuiltInVariant.OneFlag        },
-			{"tank flag"        , BuiltInVariant.TankFlag       },
-			{"attrition ctf"    , BuiltInVariant.AttritionCTF   },
-			{"assault"          , BuiltInVariant.Assault        },
-			{"neutral assault"  , BuiltInVariant.NeutralBomb    },
-			{"one bomb"         , BuiltInVariant.OneBomb        },
-			{"attrition assault", BuiltInVariant.AttritionBomb  },
-			{"infection"        , BuiltInVariant.Infection      },
-			{"save one bullet"  , BuiltInVariant.SaveOneBullet  },
-			{"alpha zombie"     , BuiltInVariant.AlphaZombie    },
-			{"hide and seek"    , BuiltInVariant.HideandSeek    },
-			{"crazy king"       , BuiltInVariant.CrazyKing      },
-			{"team king"        , BuiltInVariant.TeamKing       },
-			{"mosh pit"         , BuiltInVariant.MoshPit        },
-			{"juggernaut"       , BuiltInVariant.Juggernaut     },
-			{"mad dash"         , BuiltInVariant.MadDash        },
-			{"ninjanaut"        , BuiltInVariant.Ninjanaut      },
-			{"vip"              , BuiltInVariant.VIP            },
-			{"one sided vip"    , BuiltInVariant.OneSidedVIP    },
-			{"escort"           , BuiltInVariant.Escort         },
-			{"influential vip"  , BuiltInVariant.InfluentialVIP },
-			//{ "slayer",             BuiltInVariant.Slayer         }, //{ BuiltInVariant.Slayer         , "slayer"             },
-			//{ "teamslayer",         BuiltInVariant.TeamSlayer     }, //{ BuiltInVariant.TeamSlayer     , "team slayer"        },
-			//{ "rockets",            BuiltInVariant.Rockets        }, //{ BuiltInVariant.Rockets        , "rockets"            },
-			//{ "rocketslayer",       BuiltInVariant.Rockets        }, //{ BuiltInVariant.Elimination    , "elimination"        },
-			//{ "elimination",        BuiltInVariant.Elimination    }, //{ BuiltInVariant.Duel           , "duel"               },
-			//{ "eliminationslayer",  BuiltInVariant.Elimination    }, //{ BuiltInVariant.Oddball        , "oddball"            },
-			//{ "duel",               BuiltInVariant.Duel           }, //{ BuiltInVariant.TeamOddball    , "team oddball"       },
-			//{ "oddball",            BuiltInVariant.Oddball        }, //{ BuiltInVariant.Lowball        , "lowball"            },
-			//{ "teamoddball",        BuiltInVariant.TeamOddball    }, //{ BuiltInVariant.Ninjaball      , "ninjaball"          },
-			//{ "lowball",            BuiltInVariant.Lowball        }, //{ BuiltInVariant.Rocketball     , "rocketball"         },
-			//{ "lowoddball",         BuiltInVariant.Lowball        }, //{ BuiltInVariant.MultiFlag      , "multi flag"         },
-			//{ "ninjaball",          BuiltInVariant.Ninjaball      }, //{ BuiltInVariant.OneFlag        , "one flag"           },
-			//{ "ninjaoddball",       BuiltInVariant.Ninjaball      }, //{ BuiltInVariant.TankFlag       , "tank flag"          },
-			//{ "rocketball",         BuiltInVariant.Rocketball     }, //{ BuiltInVariant.AttritionCTF   , "attrition ctf"      },
-			//{ "rocketoddball",      BuiltInVariant.Rocketball     }, //{ BuiltInVariant.Assault        , "assault"            },
-			//{ "ctf",                BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.NeutralBomb    , "neutral assault"    },
-			//{ "multiflag",          BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.OneBomb        , "one bomb"           },
-			//{ "multiflagctf",       BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.AttritionBomb  , "attrition assault"  },
-			//{ "teammultiflag",      BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.Infection      , "infection"          },
-			//{ "teammultiflagctf",   BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.SaveOneBullet  , "save one bullet"    },
-			//{ "teamctf",            BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.AlphaZombie    , "alpha zombie"       },
-			//{ "capturetheflag",     BuiltInVariant.MultiFlag      }, //{ BuiltInVariant.HideandSeek    , "hide and seek"      },
-			//{ "oneflag",            BuiltInVariant.OneFlag        }, //{ BuiltInVariant.CrazyKing      , "crazy king"         },
-			//{ "oneflagctf",         BuiltInVariant.OneFlag        }, //{ BuiltInVariant.TeamKing       , "team king"          },
-			//{ "singleflag",         BuiltInVariant.OneFlag        }, //{ BuiltInVariant.MoshPit        , "mosh pit"           },
-			//{ "singleflatctf",      BuiltInVariant.OneFlag        }, //{ BuiltInVariant.Juggernaut     , "juggernaut"         },
-			//{ "tankflag",           BuiltInVariant.TankFlag       }, //{ BuiltInVariant.MadDash        , "mad dash"           },
-			//{ "attritionctf",       BuiltInVariant.AttritionCTF   }, //{ BuiltInVariant.Ninjanaut      , "ninjanaut"          },
-			//{ "assault",            BuiltInVariant.Assault        }, //{ BuiltInVariant.VIP            , "vip"                },
-			//{ "teamassault",        BuiltInVariant.Assault        }, //{ BuiltInVariant.OneSidedVIP    , "one sided vip"      },
-			//{ "multibomb",          BuiltInVariant.Assault        }, //{ BuiltInVariant.Escort         , "escort"             },
-			//{ "multibombassault",   BuiltInVariant.Assault        }, //{ BuiltInVariant.InfluentialVIP , "influential vip"    },
-			//{ "neutralassault",     BuiltInVariant.NeutralBomb    },
-			//{ "neutralbomb",        BuiltInVariant.NeutralBomb    },
-			//{ "neutralbombassault", BuiltInVariant.NeutralBomb    },
-			//{ "onebomb",            BuiltInVariant.OneBomb        },
-			//{ "onebombassault",     BuiltInVariant.OneBomb        },
-			//{ "singlebomb",         BuiltInVariant.OneBomb        },
-			//{ "singlebombassault",  BuiltInVariant.OneBomb        },
-			//{ "attritionassault",   BuiltInVariant.AttritionBomb  },
-			//{ "infection",          BuiltInVariant.Infection      },
-			//{ "zombies",            BuiltInVariant.Infection      },
-			//{ "saveonebullet",      BuiltInVariant.SaveOneBullet  },
-			//{ "alphazombie",        BuiltInVariant.AlphaZombie    },
-			//{ "hideandseek",        BuiltInVariant.HideandSeek    },
-			//{ "crazyking",          BuiltInVariant.CrazyKing      },
-			//{ "crazykingofthehill", BuiltInVariant.CrazyKing      },
-			//{ "teamking",           BuiltInVariant.TeamKing       },
-			//{ "kingofthehill",      BuiltInVariant.TeamKing       },
-			//{ "moshpit",            BuiltInVariant.MoshPit        },
-			//{ "juggernaut",         BuiltInVariant.Juggernaut     },
-			//{ "maddash",            BuiltInVariant.MadDash        },
-			//{ "ninjanaut",          BuiltInVariant.Ninjanaut      },
-			//{ "vip",                BuiltInVariant.VIP            },
-			//{ "teamvip",            BuiltInVariant.VIP            },
-			//{ "onesidedvip",        BuiltInVariant.OneSidedVIP    },
-			//{ "onevip",             BuiltInVariant.OneSidedVIP    },
-			//{ "singlevip",          BuiltInVariant.OneSidedVIP    },
-			//{ "escort",             BuiltInVariant.Escort         },
-			//{ "escortvip",          BuiltInVariant.Escort         },
-			//{ "vipescort",          BuiltInVariant.Escort         },
-			//{ "influentialvip",     BuiltInVariant.InfluentialVIP },
-		};
+		
 
 		public static readonly Dictionary<string, string> VariantGametypeExtensionAssociations = new Dictionary<string, string>() {
 			{ ".slayer", "Slayer" },
@@ -525,6 +562,18 @@ namespace RconTool
 			{BaseGame.VIP, "VIP"},
 			{BaseGame.Unknown, "Unknown" }
 		};
+		public static readonly Dictionary<BaseGame, string> BaseGameShortDisplayNamesByBaseGame = new Dictionary<BaseGame, string>()
+		{
+			{BaseGame.Slayer, "Slayer"},
+			{BaseGame.Oddball, "Oddball"},
+			{BaseGame.KingOfTheHill, "KotH"},
+			{BaseGame.CaptureTheFlag, "CTF"},
+			{BaseGame.Assault, "Assault"},
+			{BaseGame.Juggernaut, "Juggernaut"},
+			{BaseGame.Infection, "Infection"},
+			{BaseGame.VIP, "VIP"},
+			{BaseGame.Unknown, "Unknown" }
+		};
 		public static BaseGame GetBaseGame(string name)
 		{
 			if (BaseGamesByName.ContainsKey(name))
@@ -561,33 +610,16 @@ namespace RconTool
 			}
 		}
 
-		public static GameVariant TryGetBuiltInVariant(string game)
+		public static bool TryGetBuiltInVariant(string game, out GameVariant gameVariant)
 		{
-			if (BuiltInVariantsByNameLower.ContainsKey(game?.ToLowerInvariant() ?? "")) {
-				BuiltInVariant builtInVariant = BuiltInVariantsByNameLower[game.ToLowerInvariant()];
-				return CreateBuiltInVariant(builtInVariant);
+			if (BuiltInVariantsByNameLower.ContainsKey(game ?? "")) {
+				gameVariant = BuiltInGameVariantsByBuiltInVariant[BuiltInVariantsByNameLower[game]];
+				return true;
 			}
 			else {
-				return null;
+				gameVariant = null;
+				return false; 
 			}
-		}
-		private static GameVariant CreateBuiltInVariant(BuiltInVariant builtInVariant)
-		{
-			BaseGame bg = BaseGame.Unknown;
-			foreach (KeyValuePair<BaseGame, List<BuiltInVariant>> item in BuiltInVariantsByBaseGame) {
-				if (item.Value.Contains(builtInVariant)) { bg = item.Key; }
-			}
-			if (bg == BaseGame.Unknown) { return null; }
-			return new GameVariant()
-			{
-				Author = "Bungie",
-				BaseGameID = bg,
-				BaseGameTypeString = BaseGameDisplayNamesByBaseGame[bg],
-				Description = BuiltInVariantDescriptionsByBuiltInVariant[builtInVariant],
-				Name = BuiltInVariantDisplayNamesByBuiltInVariant[builtInVariant],
-				TypeNameForVotingFile = BuiltInVariantNameStringsByBuiltInVariant[builtInVariant],
-				IsValid = true
-			};
 		}
 
 		public static string GetBaseGametype(string filename)

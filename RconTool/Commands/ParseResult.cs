@@ -390,19 +390,22 @@ namespace RconTool
 			// Copy list so we don't mess with the original list
 			List<Tuple<string, string>> items = matchItems.Select(x => new Tuple<string, string>(x, x.ToLowerInvariant())).ToList();
 			string matchStringLower = matchString.ToLowerInvariant();
-			List<string> matches;
+			
+			List<Tuple<string, string>> matches;
 
 			// Match lower case versions of strings if allowed - more forgiving for capitalization errors
 			if (matchLowerInvariants) { 
-				matches = items.FindAll(x => matchStringLower.StartsWith(x.Item2)).Select(t => t.Item2).ToList(); }
+				matches = items.FindAll(x => matchStringLower.StartsWith(x.Item2)).ToList(); 
+			}
 			else {
-				matches = items.FindAll(x => matchString.StartsWith(x.Item1)).Select(t => t.Item1).ToList(); 
+				matches = items.FindAll(x => matchString.StartsWith(x.Item1)).ToList(); 
 			}
 
 			// Order by result length, the longest match is the most correct match
-			matches = matches.OrderByDescending(x => x.Length).ToList();
+			matches = matches.OrderByDescending(x => x.Item1.Length).ToList();
 
-			return matches;
+			// Return original matchItems, ordered by best (longest) match first
+			return matches.Select(x => x.Item1).ToList();
 
 		}
 

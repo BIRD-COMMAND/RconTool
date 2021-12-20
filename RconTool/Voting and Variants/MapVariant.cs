@@ -75,10 +75,26 @@ namespace RconTool
 			{BaseMap.Sandtrap, "shrine" },
 			{BaseMap.LastResort, "zanzibar" },
 		};
+		public static readonly Dictionary<BaseMap, string> BaseMapDisplayNamesByBaseMap = new Dictionary<BaseMap, string>()
+		{
+			{BaseMap.Guardian, "Guardian" },
+			{BaseMap.Valhalla, "Valhalla" },
+			{BaseMap.Diamondback, "Diamondback" },
+			{BaseMap.Edge, "Edge" },
+			{BaseMap.Reactor, "Reactor" },
+			{BaseMap.Icebox, "Icebox" },
+			{BaseMap.ThePit, "The Pit" },
+			{BaseMap.Narrows, "Narrows" },
+			{BaseMap.HighGround, "High Ground" },
+			{BaseMap.Standoff, "Standoff" },
+			{BaseMap.Sandtrap, "Sandtrap" },
+			{BaseMap.LastResort, "Last Resort" },
+			{BaseMap.Unknown, "Unknown" },
+		};
 		/// <summary>
 		/// Contains base map names indexed by the hexadecimal IDs used in the map variant files.
 		/// </summary>
-		public static readonly Dictionary<int, string> BaseMapNamesByBasemapNumber = new Dictionary<int, string>()
+		public static readonly Dictionary<int, string> BaseMapDisplayNamesByBasemapNumber = new Dictionary<int, string>()
 		{
 			{ 320, "Guardian" },
 			{ 340, "Valhalla" },
@@ -169,18 +185,36 @@ namespace RconTool
 		};
 		public static readonly Dictionary<BaseMap, string> BaseMapDescriptionsByBaseMap = new Dictionary<BaseMap, string>()
 		{
-			{BaseMap.Diamondback, "Hot winds blow over what should be a dead moon. A reminder of the power Forerunners once wielded. 6-16 players"},
-			{BaseMap.Edge, "The remote frontier world of Partition has provided this ancient databank with the safety of seclusion. 6-16 players"},
-			{BaseMap.Guardian, "Millennia of tending has produced trees as ancient as the Forerunner structures they have grown around. 2-6 players"},
+			{BaseMap.Diamondback,"Hot winds blow over what should be a dead moon. A reminder of the power Forerunners once wielded. 6-16 players"},
+			{BaseMap.Edge,		 "The remote frontier world of Partition has provided this ancient databank with the safety of seclusion. 6-16 players"},
+			{BaseMap.Guardian,	 "Millennia of tending has produced trees as ancient as the Forerunner structures they have grown around. 2-6 players"},
 			{BaseMap.HighGround, "A relic of older conflicts, this base was reactivated after the New Mombasa Slipspace Event. 4-12 players"},
-			{BaseMap.Icebox, "Downtown Tyumen's Precinct 13 offers an ideal context for urban combat training. 4-10 players"},
+			{BaseMap.Icebox,	 "Downtown Tyumen's Precinct 13 offers an ideal context for urban combat training. 4-10 players"},
 			{BaseMap.LastResort, "Remote industrial sites like this one are routinely requisitioned and razed as part of Spartan training exercises. 4-12 players"},
-			{BaseMap.Narrows, "Without cooling systems such as these, excess heat from The Ark's forges would render the construct uninhabitable. 2-8 players"},
-			{BaseMap.Reactor, "Being constructed just prior to the Invasion, its builders had to evacuate before it was completed. 6-16 players"},
-			{BaseMap.Sandtrap, "Although the Brute occupiers have been driven from this ancient structure, they left plenty to remember them by. 6-16 players"},
-			{BaseMap.Standoff, "Once, nearby telescopes listened for a message from the stars. Now, these silos contain our prepared response. 4-12 players"},
-			{BaseMap.ThePit, "Software simulations are held in contempt by the veteran instructors who run these training facilities. 4-10 players"},
-			{BaseMap.Valhalla, "The crew of V-398 barely survived their unplanned landing in this gorge... this curious gorge. 6-16 players"},
+			{BaseMap.Narrows,	 "Without cooling systems such as these, excess heat from The Ark's forges would render the construct uninhabitable. 2-8 players"},
+			{BaseMap.Reactor,	 "Being constructed just prior to the Invasion, its builders had to evacuate before it was completed. 6-16 players"},
+			{BaseMap.Sandtrap,	 "Although the Brute occupiers have been driven from this ancient structure, they left plenty to remember them by. 6-16 players"},
+			{BaseMap.Standoff,	 "Once, nearby telescopes listened for a message from the stars. Now, these silos contain our prepared response. 4-12 players"},
+			{BaseMap.ThePit,	 "Software simulations are held in contempt by the veteran instructors who run these training facilities. 4-10 players"},
+			{BaseMap.Valhalla,	 "The crew of V-398 barely survived their unplanned landing in this gorge... this curious gorge. 6-16 players"},
+		};
+
+		public static readonly Dictionary<BaseMap, MapVariant> BaseMapVariantsByBaseMap = new Dictionary<BaseMap, MapVariant>()
+		{
+			{BaseMap.All, null }, 
+			{BaseMap.Unknown, null },
+			{BaseMap.Diamondback,	new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.Diamondback], Description = BaseMapDescriptionsByBaseMap[BaseMap.Diamondback], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.Diamondback], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.Diamondback], BaseMapID = BaseMap.Diamondback } },
+			{BaseMap.Edge,			new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.Edge], Description = BaseMapDescriptionsByBaseMap[BaseMap.Edge], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.Edge], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.Edge], BaseMapID = BaseMap.Edge } },
+			{BaseMap.Guardian,		new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.Guardian], Description = BaseMapDescriptionsByBaseMap[BaseMap.Guardian], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.Guardian], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.Guardian], BaseMapID = BaseMap.Guardian } },
+			{BaseMap.HighGround,	new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.HighGround], Description = BaseMapDescriptionsByBaseMap[BaseMap.HighGround], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.HighGround], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.HighGround], BaseMapID = BaseMap.HighGround } },
+			{BaseMap.Icebox,		new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.Icebox], Description = BaseMapDescriptionsByBaseMap[BaseMap.Icebox], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.Icebox], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.Icebox], BaseMapID = BaseMap.Icebox } },
+			{BaseMap.LastResort,	new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.LastResort], Description = BaseMapDescriptionsByBaseMap[BaseMap.LastResort], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.LastResort], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.LastResort], BaseMapID = BaseMap.LastResort } },
+			{BaseMap.Narrows,		new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.Narrows], Description = BaseMapDescriptionsByBaseMap[BaseMap.Narrows], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.Narrows], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.Narrows], BaseMapID = BaseMap.Narrows } },
+			{BaseMap.Reactor,		new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.Reactor], Description = BaseMapDescriptionsByBaseMap[BaseMap.Reactor], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.Reactor], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.Reactor], BaseMapID = BaseMap.Reactor } },
+			{BaseMap.Sandtrap,		new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.Sandtrap], Description = BaseMapDescriptionsByBaseMap[BaseMap.Sandtrap], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.Sandtrap], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.Sandtrap], BaseMapID = BaseMap.Sandtrap } },
+			{BaseMap.Standoff,		new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.Standoff], Description = BaseMapDescriptionsByBaseMap[BaseMap.Standoff], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.Standoff], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.Standoff], BaseMapID = BaseMap.Standoff } },
+			{BaseMap.ThePit,		new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.ThePit], Description = BaseMapDescriptionsByBaseMap[BaseMap.ThePit], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.ThePit], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.ThePit], BaseMapID = BaseMap.ThePit } },
+			{BaseMap.Valhalla,		new MapVariant() { Author = "Bungie", Name = BaseMapDisplayNamesByBaseMap[BaseMap.Valhalla], Description = BaseMapDescriptionsByBaseMap[BaseMap.Valhalla], TypeNameForVotingFile = InternalMapStringsByBaseMap[BaseMap.Valhalla], BaseMapString = BaseMapDisplayNamesByBaseMap[BaseMap.Valhalla], BaseMapID = BaseMap.Valhalla } },
 		};
 
 		/// <summary>
@@ -254,27 +288,23 @@ namespace RconTool
 		{
 			return new MapVariant()
 			{
-				Name = BaseMapNamesByBasemapNumber[(int)map],
-				Author = "DEFAULT",
+				Name = BaseMapDisplayNamesByBasemapNumber[(int)map],
+				Author = "Bungie",
 				Description = "DEFAULT",
 				TypeNameForVotingFile = BaseMapVoteFileNamesByBasemapNumber[(int)map],
-				BaseMapString = BaseMapNamesByBasemapNumber[(int)map],
+				BaseMapString = BaseMapDisplayNamesByBasemapNumber[(int)map],
 				BaseMapID = map
 			};
 		}
-		public static MapVariant DetermineBaseMap(string name)
+		public static bool TryGetBuiltInMapVariant(string name, out MapVariant mapVariant)
 		{
-			if (BaseMapIDsByName.ContainsKey(name))
-			{
-				return GetBaseMapVariant(BaseMapIDsByName[name]);
+			if (!string.IsNullOrWhiteSpace(name) && BaseMapIDsByName.ContainsKey(name)) {
+				mapVariant = BaseMapVariantsByBaseMap[BaseMapIDsByName[name]];
+				return true;
 			}
-			else if (BaseMapIDsByArgName.ContainsKey(name))
-			{
-				return GetBaseMapVariant(BaseMapIDsByArgName[name]);
-			}
-			else
-			{
-				return null;
+			else {
+				mapVariant = null;
+				return false; 
 			}
 		}
 		public static BaseMap GetBaseMap(string name)
@@ -347,7 +377,7 @@ namespace RconTool
 					int id;
 					try { id = (int)BitConverter.ToUInt32(mapBaseTypeIdBytes, 0); }
 					catch { fs.Close(); fs.Dispose(); throw new Exception("Error Decoding Base Map Type ID"); }
-					if (BaseMapNamesByBasemapNumber.ContainsKey(id)) { BaseMapString = BaseMapNamesByBasemapNumber[id]; BaseMapID = (BaseMap)id; }
+					if (BaseMapDisplayNamesByBasemapNumber.ContainsKey(id)) { BaseMapString = BaseMapDisplayNamesByBasemapNumber[id]; BaseMapID = (BaseMap)id; }
 					else { throw new Exception("Base Map Type Not Found For ID "+ id); }
 					
 

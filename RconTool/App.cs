@@ -33,7 +33,7 @@ namespace RconTool
 
         public static string AppLogText = "";
 
-        public const string toolversion = "3.50";
+        public const string toolversion = "3.51";
         public const string InternalAppName = "RCON Tool";
         public const string ChatMessageDateTimeFormatString = "MM/dd/yy HH:mm:ss";
 
@@ -72,7 +72,7 @@ namespace RconTool
         /// <summary>
         /// Returns true if the current connection exists and has its server hook enabled.
         /// </summary>
-        public static bool currentConnectionHooked { get { return currentConnection?.ServerHookEnabled ?? false; } }
+        public static bool CurrentConnectionHooked { get { return currentConnection?.ServerHookEnabled ?? false; } }
 
         public static SavedSetting<List<PlayerStatsRecord>> PlayerStatsRecords = new SavedSetting<List<PlayerStatsRecord>>(SettingsKeys.PlayerStatsRecords, new List<PlayerStatsRecord>());
 
@@ -251,11 +251,6 @@ namespace RconTool
             {"shrine",         Resources.map_icon_Sandtrap},
             {"zanzibar",       Resources.map_icon_LastResort},
         };
-
-
-        private static string[] contextMaps = new string[] { "Diamondback", "Edge", "Guardian", "High Ground", "Icebox", "Last Resort", "Narrows", "Reactor", "Sandtrap", "Standoff", "The Pit", "Valhalla" };
-        private static string[] contextGames = new string[] { "Slayer", "Oddball", "Capture the Flag", "Assault", "Infection", "King of the Hill", "Juggernaut", "VIP", "Unknown" };
-        private static int[] builtInVariantsPerBaseGame = new int[] { 5, 5, 4, 4, 4, 3, 3, 4 };
 
         private System.Windows.Forms.Timer InterfaceUpdateTimer = new System.Windows.Forms.Timer();
         private System.Windows.Forms.Timer UpdateTranslationUsageTrackingDataTimer = new System.Windows.Forms.Timer();
@@ -756,7 +751,7 @@ namespace RconTool
                     }
 
                     // Set Lobby + Map Indicator images
-                    if (currentConnectionHooked) {
+                    if (CurrentConnectionHooked) {
                         if (pictureBoxMapAndStatusOverlay.Image != currentConnection.State.LobbyStateOverlay) {
                             pictureBoxMapAndStatusOverlay.Image = currentConnection.State.LobbyStateOverlay;
                         }
@@ -784,7 +779,7 @@ namespace RconTool
                     }
                     
                     // Set Map/Variant Icons and Labels
-                    if (currentConnectionHooked) {
+                    if (CurrentConnectionHooked) {
                         if (toolStripDropDownButtonGame.Text != (currentConnection?.LiveGameVariant?.Name ?? "Deciding Gametype")) {
                             toolStripDropDownButtonGame.Text = currentConnection?.LiveGameVariant?.Name ?? "Deciding Gametype";
                         }
@@ -910,8 +905,8 @@ namespace RconTool
                     toolStripStatusLabelRconConnection.Image = currentConnection.RconConnected ? CheckMarkImage : XMarkImage;
                 }
                 // Update ServerHook Status Image
-                if (toolStripStatusLabelServerHook.Image != (currentConnectionHooked ? CheckMarkImage : XMarkImage)) {
-                    toolStripStatusLabelServerHook.Image = currentConnectionHooked ? CheckMarkImage : XMarkImage;
+                if (toolStripStatusLabelServerHook.Image != (CurrentConnectionHooked ? CheckMarkImage : XMarkImage)) {
+                    toolStripStatusLabelServerHook.Image = CurrentConnectionHooked ? CheckMarkImage : XMarkImage;
                 }
 
                 #endregion
@@ -1287,7 +1282,7 @@ namespace RconTool
                             scoreBoardContextMenu.Items[7].Enabled = false;
                         }
 
-                        if (currentConnectionHooked) {
+                        if (CurrentConnectionHooked) {
                             if (currentConnection.ServerHook_PlayerTeamsByUid.TryGetValue(contextPlayer.Uid, out int teamIndex) && teamIndex > -1 && teamIndex < 8) {
                                 sendToTeamItem.Enabled = true;
                                 sendToTeamItem.Visible = true;
@@ -1855,7 +1850,7 @@ namespace RconTool
         private bool TryDirectConsoleCommand(string command)
 		{
             if (command.ToLowerInvariant().Trim().StartsWith("server.balanceteams")) {
-                if (currentConnectionHooked) {
+                if (CurrentConnectionHooked) {
                     try {
                         List<Tuple<PlayerInfo, int>> teamAssignments;
                         string numberOfTeamsParameter = command.TrimStart("server.balanceteams ".Length);
@@ -1877,7 +1872,7 @@ namespace RconTool
             }
             // Server.StatusPacket - print server status packet to the console
             else if (command.Trim().StartsWith("Server.StatusPacket")) {
-                if (currentConnectionHooked) {
+                if (CurrentConnectionHooked) {
                     textBoxConsoleTextEntry.Text += "\n" + currentConnection.GetServerStatusPacketStringFromMemory(true);
                 }
                 else {
@@ -1887,7 +1882,7 @@ namespace RconTool
             }
             // Application.VerifyServerHook - print details on verification that ServerHook server matches RCON connection server
             else if (command.Trim().StartsWith("Application.VerifyServerHook")) {
-                if (currentConnectionHooked) {
+                if (CurrentConnectionHooked) {
                     if (currentConnection.ServerProcessMatchesConnection()) {
                         textBoxConsoleTextEntry.Text = command.Trim() + ": ServerHook is valid.";
                     }
@@ -2311,6 +2306,37 @@ namespace RconTool
 
         }
 
+
+        private static int[] builtInVariantsPerBaseGame = new int[] { 5, 5, 4, 4, 4, 3, 3, 4 };
+        private static readonly Dictionary<GameVariant.BaseGame, int> gametypeContextMenuIndicesByBaseGame = new Dictionary<GameVariant.BaseGame, int>()
+        {
+            {GameVariant.BaseGame.Slayer, 0},           //[0]"Slayer",
+            {GameVariant.BaseGame.Oddball, 1},          //[1]"Oddball",
+            {GameVariant.BaseGame.CaptureTheFlag, 2},   //[2]"Capture The Flag",
+            {GameVariant.BaseGame.Assault, 3},          //[3]"Assault",
+            {GameVariant.BaseGame.Infection, 4},        //[4]"Infection",
+            {GameVariant.BaseGame.KingOfTheHill, 5},    //[5]"King Of The Hill",
+            {GameVariant.BaseGame.Juggernaut, 6},       //[6]"Juggernaut",
+            {GameVariant.BaseGame.VIP, 7},              //[7]"VIP",
+        };
+        private static string[] contextMaps = new string[] { "Diamondback", "Edge", "Guardian", "High Ground", "Icebox", "Last Resort", "Narrows", "Reactor", "Sandtrap", "Standoff", "The Pit", "Valhalla" };
+        private static readonly Dictionary<MapVariant.BaseMap, int> mapContextMenuIndicesByBaseMap = new Dictionary<MapVariant.BaseMap, int>()
+        {
+            {MapVariant.BaseMap.Diamondback, 00 },  //mapsCM.Items[00] = "Diamondback" /*"s3d_avalanche"*/
+            {MapVariant.BaseMap.Edge,        01 },  //mapsCM.Items[01] = "Edge"        /*"s3d_edge"*/
+            {MapVariant.BaseMap.Guardian,    02 },  //mapsCM.Items[02] = "Guardian"    /*"guardian"*/
+            {MapVariant.BaseMap.HighGround,  03 },  //mapsCM.Items[03] = "High Ground" /*"deadlock"*/
+            {MapVariant.BaseMap.Icebox,      04 },  //mapsCM.Items[04] = "Icebox"      /*"s3d_turf"*/
+            {MapVariant.BaseMap.LastResort,  05 },  //mapsCM.Items[05] = "Last Resort" /*"zanzibar"*/
+            {MapVariant.BaseMap.Narrows,     06 },  //mapsCM.Items[06] = "Narrows"     /*"chill"*/
+            {MapVariant.BaseMap.Reactor,     07 },  //mapsCM.Items[07] = "Reactor"     /*"s3d_reactor"*/
+            {MapVariant.BaseMap.Sandtrap,    08 },  //mapsCM.Items[08] = "Sandtrap"    /*"shrine"*/
+            {MapVariant.BaseMap.Standoff,    09 },  //mapsCM.Items[09] = "Standoff"    /*"bunkerworld"*/
+            {MapVariant.BaseMap.ThePit,      10 },  //mapsCM.Items[10] = "The Pit"     /*"cyberdyne"*/
+            {MapVariant.BaseMap.Valhalla,    11 },  //mapsCM.Items[11] = "Valhalla"    /*"riverworld"*/
+        };
+                
+
         private void toolStripDropDownButtonGame_DropDownOpening(object sender, EventArgs e)
         {
 
@@ -2327,9 +2353,8 @@ namespace RconTool
 
                 string variantName = currentConnection.State.Variant ?? "";
 
-                if (currentConnectionHooked) {
-                    GameVariant current = currentConnection.GetCurrentGameType();
-                    if (current != null) { variantName = current.Name; }
+                if (CurrentConnectionHooked) {
+                    variantName = currentConnection.GetCurrentGameType()?.Name ?? "";
                 }
 
                 // Remove all custom variants from the dropdowns and reset color and check states
@@ -2359,25 +2384,34 @@ namespace RconTool
 
                 // Go through map variants, add each one as a drop down menu item for their corresponding base map
                 // If that particular map variant is currently loaded, set its check state to true, and update the background color for its base map's context menu item
+                int ind = -1; ToolStripItem currentItem;
                 foreach (GameVariant variant in currentConnection.GameVariants) {
-                    if (variant == null || string.IsNullOrWhiteSpace(variant.Name) || string.IsNullOrWhiteSpace(variant.BaseGameTypeString)) { continue; }
+                    
+                    if (variant == null || 
+                        variant.BaseGameID == GameVariant.BaseGame.Unknown || 
+                        variant.BaseGameID == GameVariant.BaseGame.All || 
+                        string.IsNullOrWhiteSpace(variant.Name)
+                    ) 
+                    { continue; }
 
-                    for (int i = 0; i < 8; i++) {
-                        if (variant.BaseGameTypeString == contextGames[i]) {
-                            variantsCM.Items[i].DropDownItems().Add(variant.Name, null, (s, ev) => { 
-                                ContextLoadMap($"Game.GameType \"{variant.TypeNameForVotingFile}\"", s);
-                                toolStripDropDownButtonGame.ToolTipText = variant.Description;
-                            });
-                            variantsCM.Items[i].DropDownItems().LastItem().ToolTipText = variant.Description;
-                            if (variant.Name == variantName) {
-                                variantsCM.Items[i].BackColor = SystemColors.GradientActiveCaption;
-                                variantsCM.Items[i].Checked(false);
-                                variantsCM.Items[i].DropDownItems().LastItem().Checked(true);
-                                variantsCM.Items[i].DropDownItems().LastItem().BackColor = SystemColors.GradientActiveCaption;
-                            }
-                            break;
+                    ind = gametypeContextMenuIndicesByBaseGame[variant.BaseGameID];
+
+                    currentItem = variantsCM.Items[ind].DropDownItems().Add(
+                        variant.Name, null, (s, ev) => {
+                            ContextLoadMap($"Game.GameType \"{variant.TypeNameForVotingFile}\"", s);
+                            toolStripDropDownButtonGame.ToolTipText = variant.Description;
                         }
+                    );
+                    
+                    currentItem.ToolTipText = variant.Description;
+
+                    if (variant.Name == variantName) {
+                        variantsCM.Items[ind].BackColor = SystemColors.GradientActiveCaption;
+                        variantsCM.Items[ind].Checked(false);
+                        currentItem.BackColor = SystemColors.GradientActiveCaption;
+                        currentItem.Checked(true); 
                     }
+
                 }
 
             }
@@ -2433,6 +2467,7 @@ namespace RconTool
 
         private void UpdateMapsContextMenu()
 		{
+            
             if (!string.IsNullOrWhiteSpace(currentConnection?.State?.MapFile)) {
 
                 //mapsCM.Items[00] = "Diamondback" /*"s3d_avalanche"*/
@@ -2453,41 +2488,44 @@ namespace RconTool
                 // Set Base Maps colors and check state
                 for (int i = 0; i < 12; i++) {
                     mapsCM.Items[i].DropDownItems().Clear();
+                    mapsCM.Items[i].Checked(false);
                     mapsCM.Items[i].BackColor = SystemColors.Control;
                     if (mapName == contextMaps[i]) {
                         mapsCM.Items[i].Checked(true);
                         mapsCM.Items[i].BackColor = SystemColors.HotTrack;
                     }
-                    else {
-                        mapsCM.Items[i].Checked(false);
-                    }
                 }
 
                 // Go through map variants, add each one as a drop down menu item for their corresponding base map
                 // If that particular map variant is currently loaded, set its check state to true, and update the background color for its base map's context menu item
+                int ind = -1; ToolStripItem currentItem;
                 foreach (MapVariant map in currentConnection.MapVariants) {
-                    if (map == null || string.IsNullOrWhiteSpace(map.Name) || string.IsNullOrWhiteSpace(map.BaseMapString)) { continue; }
-                    for (int i = 0; i < 12; i++) {
-                        if (map.BaseMapString == contextMaps[i]) {
-                            mapsCM.Items[i].DropDownItems().Add(map.Name, null, (s, ev) => {
-                                ContextLoadMap($"Game.Map \"{map.Name}\"", s);
-                                toolStripDropDownButtonMap.ToolTipText = map.Description;
-                            });
-                            mapsCM.Items[i].DropDownItems().LastItem().ToolTipText = map.Description;
-                            if (map.Name == mapName) {
-                                mapsCM.Items[i].BackColor = SystemColors.GradientActiveCaption;
-                                mapsCM.Items[i].Checked(false);
-                                mapsCM.Items[i].DropDownItems().LastItem().Checked(true);
-                                mapsCM.Items[i].DropDownItems().LastItem().BackColor = SystemColors.GradientActiveCaption;
-                            }
-                            break;
-                        }
-                    }
-                }
+                    
+                    if (map == null || 
+                        string.IsNullOrWhiteSpace(map.Name) || 
+                        map.BaseMapID == MapVariant.BaseMap.All ||
+                        map.BaseMapID == MapVariant.BaseMap.Unknown
+                    ) 
+                    { continue; }
 
-                // Show the context menu, and adjust the positioning so that the bottom-left corner of the menu will be at the click location
-                //Point showLocation = pictureBoxMapAndStatusOverlay.PointToScreen(e.Location);
-                //this.mapsCM.Show(new Point(showLocation.X, showLocation.Y - mapsCM.Height));
+                    ind = mapContextMenuIndicesByBaseMap[map.BaseMapID];
+
+                    currentItem = mapsCM.Items[ind].DropDownItems().Add(
+                        map.Name, null, (s, ev) => {
+                            ContextLoadMap($"Game.Map \"{map.Name}\"", s);
+                            toolStripDropDownButtonMap.ToolTipText = map.Description;
+                        }
+                    );
+                    currentItem.ToolTipText = map.Description;
+
+                    if (map.Name == mapName) {
+                        mapsCM.Items[ind].BackColor = SystemColors.GradientActiveCaption;
+                        mapsCM.Items[ind].Checked(false);
+                        currentItem.BackColor = SystemColors.GradientActiveCaption;
+                        currentItem.Checked(true);
+                    }
+
+                }
 
             }
         }
@@ -2521,6 +2559,7 @@ namespace RconTool
             currentConnection?.QueueLiveGameVariantUpdate(2000);
 
         }
+
 
         #endregion
 

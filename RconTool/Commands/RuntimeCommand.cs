@@ -7,7 +7,7 @@ using WebSocketSharp;
 namespace RconTool
 {
 	/// <summary>
-	/// Base class for all custom server chat commands, usable by sending an in-game chat message in this format: '!triggerWord and space-delimited arguments'.
+	/// Base class for all custom server chat commands, usable by sending an in-game chat message in this format: '!triggerWord and arguments'.
 	/// </summary>
 	public class RuntimeCommand
 	{
