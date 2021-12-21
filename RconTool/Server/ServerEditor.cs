@@ -169,12 +169,13 @@ namespace RconTool
                         connection.Settings.GameVariantsDirectoryPath = "";
                         connection.Settings.VoteFilesDirectoryPath = "";
                     }
-
+                    int serverItemIndex = 
                     listbox.Items.Add(new ServerManagerListBoxItem
                     {
                         ServerDisplayName = connection.Settings.DisplayName,
                         Connection = connection
                     });
+                    listbox.SetSelected(serverItemIndex, true);
                     connection.ResetRconConnection();
                     if (checkBoxIncludeDefaultFilteredPhrases.Checked && !alreadyHasFilteredPhrases) {
 						foreach (string item in Translation.DefaultFilteredEnglishPhrases) {
@@ -246,11 +247,13 @@ namespace RconTool
 
                     Connection newConnection = new Connection(newServerSettings.Id, newServerSettings);
 
+                    int serverItemIndex =
                     listbox.Items.Add(new ServerManagerListBoxItem
                     {
                         ServerDisplayName = newServerSettings.DisplayName,
                         Connection = newConnection
                     });
+                    listbox.SetSelected(serverItemIndex, true);
 
                     newConnection.Settings.AutoTranslateChatMessages = checkBoxEnableAutoTranslate.Checked;
                     if (checkBoxIncludeDefaultFilteredPhrases.Checked) {                        
