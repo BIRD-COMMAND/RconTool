@@ -39,6 +39,7 @@ namespace RconTool
         public List<Tuple<Tuple<int, int>, List<PlayerInfo>>> OrderedTeams { get; set; } = new List<Tuple<Tuple<int, int>, List<PlayerInfo>>>();
         public List<Tuple<int, PlayerInfo>> RankedPlayers { get; set; } = new List<Tuple<int, PlayerInfo>>();
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
+        public Dictionary<string, PlayerInfo> PlayersByUid { get; set; } = new Dictionary<string, PlayerInfo>();
         private List<PlayerInfo> RemovePlayers { get; set; } = new List<PlayerInfo>();
         public bool IsDedicated { get; set; } = false;
         public string GameVersion { get; set; } = "";
@@ -275,6 +276,12 @@ namespace RconTool
                     }
 
                 }
+
+
+                // Update PlayersByUid Dict
+                PlayersByUid.Clear();
+				foreach (PlayerInfo player in newState.Players) { PlayersByUid.Add(player.Uid, player); }
+                newState.PlayersByUid = PlayersByUid;
 
             }
             

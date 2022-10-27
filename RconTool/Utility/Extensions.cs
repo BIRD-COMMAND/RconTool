@@ -439,6 +439,62 @@ namespace RconTool
 			catch { return str; }
 		}
 
+		public static string ToFastLogString(this DateTime dateTime, bool brackets = true)
+		{
+			if (brackets) {
+				return dateTime.ToString("[MM/dd/yy HH:mm:ss:fff]");
+			}
+			else {
+				return dateTime.ToString("MM/dd/yy HH:mm:ss:fff");
+			}
+		}
+
+		/// <summary>
+		/// Constructs string representation of the dictionary's current state, using the default ToString() for every object.
+		/// <br>You can adjust the formatting by setting the <paramref name="keysFirst"/> and <paramref name="multiLine"/> boolean parameters.</br>
+		/// </summary>
+		/// <param name="keysFirst">True by default. If true, for each KeyValuePair the key will be listed first.</param>
+		/// <param name="multiLine">True by default. If true, the string will be constructed in a multi-line format, similar to JSON.</param>
+		/// <returns>A string representation of the dictionary's current state, or "Failed to construct ToEntriesString." if the operation fails.</returns>
+		public static string ToEntriesString<a, b>(this Dictionary<a, b> dict, bool keysFirst = true, bool multiLine = false)
+		{
+			try {
+
+				StringBuilder sb = new StringBuilder();
+
+				if (keysFirst)	{ sb.Append($"<{typeof(a).Name}, {typeof(b).Name}> {{"); }
+				else			{ sb.Append($"<{typeof(b).Name}, {typeof(a).Name}> {{"); }
+
+				if (multiLine) {
+					sb.AppendLine();
+					if (keysFirst) { foreach (KeyValuePair<a, b> item in dict) {
+						sb.AppendLine($"\t[{item.Key}: {item.Value}],");
+					} }
+					else {			 foreach (KeyValuePair<a, b> item in dict) {
+						sb.AppendLine($"\t[{item.Value}: {item.Key}],");
+					} }
+					sb.Length -= 2;  // remove trailing comma
+					sb.AppendLine(); // re-add removed line break
+				}
+				else {
+					if (keysFirst) { foreach (KeyValuePair<a, b> item in dict) {
+						sb.Append($"[{item.Key}: {item.Value}], ");
+					} }
+					else {			 foreach (KeyValuePair<a, b> item in dict) {
+						sb.Append($"[{item.Value}: {item.Key}], ");
+					} }
+					sb.Length -= 2; // remove trailing comma
+					sb.Append(" "); // re-add removed space
+				}
+
+				sb.Append("}");
+
+				return sb.ToString();
+
+			}
+			catch { return "Failed to construct ToEntriesString."; }
+		}
+
 		#endregion
 
 		/// <summary>

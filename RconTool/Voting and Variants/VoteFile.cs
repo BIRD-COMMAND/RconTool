@@ -75,7 +75,7 @@ namespace RconTool
 						}
 						catch (Exception e)
 						{
-							App.Log("Failed to serialize default vote file from backup json | " + path + " | " + e.Message, settings);
+							App.Log("Failed to serialize default vote file from backup json | " + path + " | " + e.Message, App.GetConnection(settings));
 						}
 						newVF.Validate(settings);
 						if (newVF != null && newVF.IsValid)
@@ -92,7 +92,7 @@ namespace RconTool
 				}
 				catch (Exception e)
 				{
-					App.Log("Failed to load vote file \"" + path + "\" | " + e.Message, settings);
+					App.Log("Failed to load vote file \"" + path + "\" | " + e.Message, App.GetConnection(settings));
 					return null;
 				}
 			}
@@ -202,10 +202,10 @@ namespace RconTool
 								if (!IsFileLocked(file))
 								{
 									try { type.GameVariant = new GameVariant(directory); }
-									catch (Exception e) { App.Log(e.Message, settings); }
+									catch (Exception e) { App.Log(e.Message, App.GetConnection(settings)); }
 								}
 								else {
-									App.Log("Could not validate file \"" + file.FullName + "\"", settings);
+									App.Log("Could not validate file \"" + file.FullName + "\"", App.GetConnection(settings));
 									break; 
 								}
 							}
@@ -237,12 +237,12 @@ namespace RconTool
 				DirectoryInfo match = null;
 
 				try { mapExists = maps[i].Exists(settings.MapVariantsDirectory, out match); }
-				catch (Exception e) { App.Log("Failed to validate map \"" + maps[i].Name + "\" | " + e.Message, settings); mapExists = false; }
+				catch (Exception e) { App.Log("Failed to validate map \"" + maps[i].Name + "\" | " + e.Message, App.GetConnection(settings)); mapExists = false; }
 
 				if (mapExists)
 				{
 					try { maps[i] = new MapVariant(match); }
-					catch (Exception e) { App.Log("Failed to validate map \"" + maps[i].Name + "\" | " + e.Message, settings); }
+					catch (Exception e) { App.Log("Failed to validate map \"" + maps[i].Name + "\" | " + e.Message, App.GetConnection(settings)); }
 				}
 				else { losses++; }
 

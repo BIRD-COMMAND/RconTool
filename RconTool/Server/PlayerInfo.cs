@@ -73,7 +73,8 @@ namespace RconTool
             }
         }
         private int team;
-        public string Uid {
+        public int ServerHookTeam { get; set; } = -1;
+		public string Uid {
             get { return uid; }
             set { this.uid = value; /*NotifyPropertyChanged();*/ }
         }

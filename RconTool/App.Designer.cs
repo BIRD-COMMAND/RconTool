@@ -74,7 +74,7 @@
 			this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabelRconConnection = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabelStatsConnection = new System.Windows.Forms.ToolStripStatusLabel();
-			this.toolStripStatusLabelServerHook = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolStripSplitButtonServerHook = new System.Windows.Forms.ToolStripSplitButton();
 			this.toolStripSplitButtonAutoUpdate = new System.Windows.Forms.ToolStripSplitButton();
 			this.toolStripMenuItemAutoUpdateEnabled = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItemAutoUpdateDisabled = new System.Windows.Forms.ToolStripMenuItem();
@@ -417,7 +417,7 @@
             this.toolStripStatusLabelStatus,
             this.toolStripStatusLabelRconConnection,
             this.toolStripStatusLabelStatsConnection,
-            this.toolStripStatusLabelServerHook});
+            this.toolStripSplitButtonServerHook});
 			this.statusStripStatusInformation.Location = new System.Drawing.Point(0, 737);
 			this.statusStripStatusInformation.Name = "statusStripStatusInformation";
 			this.statusStripStatusInformation.Size = new System.Drawing.Size(605, 24);
@@ -652,16 +652,18 @@
 			this.toolStripStatusLabelStatsConnection.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.toolStripStatusLabelStatsConnection.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			// 
-			// toolStripStatusLabelServerHook
+			// toolStripSplitButtonServerHook
 			// 
-			this.toolStripStatusLabelServerHook.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.toolStripStatusLabelServerHook.Image = global::RconTool.Properties.Resources.Image_XMark32x32;
-			this.toolStripStatusLabelServerHook.Margin = new System.Windows.Forms.Padding(3, 3, 0, 2);
-			this.toolStripStatusLabelServerHook.Name = "toolStripStatusLabelServerHook";
-			this.toolStripStatusLabelServerHook.Size = new System.Drawing.Size(84, 19);
-			this.toolStripStatusLabelServerHook.Text = "ServerHook";
-			this.toolStripStatusLabelServerHook.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.toolStripStatusLabelServerHook.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+			this.toolStripSplitButtonServerHook.Image = global::RconTool.Properties.Resources.Image_XMark32x32;
+			this.toolStripSplitButtonServerHook.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripSplitButtonServerHook.Name = "toolStripSplitButtonServerHook";
+			this.toolStripSplitButtonServerHook.Size = new System.Drawing.Size(100, 22);
+			this.toolStripSplitButtonServerHook.Text = "ServerHook";
+			this.toolStripSplitButtonServerHook.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+			this.toolStripSplitButtonServerHook.ToolTipText = "Click to attempt to establish the ServerHook.\\nIn order to establish the ServerHo" +
+    "ok:\\n\\tThe server process must be running on this computer.\\n\\tThis application " +
+    "must have administrator privileges.";
+			this.toolStripSplitButtonServerHook.Click += new System.EventHandler(this.toolStripSplitButtonServerHook_Click);
 			// 
 			// toolStripSplitButtonAutoUpdate
 			// 
@@ -1212,7 +1214,7 @@
 		private System.Windows.Forms.ToolStrip toolStripMapSelect;
 		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonMap;
 		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonGame;
-		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelServerHook;
+		private System.Windows.Forms.ToolStripSplitButton toolStripSplitButtonServerHook;
 	}
 }
 

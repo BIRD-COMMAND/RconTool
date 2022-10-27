@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿#define DEBUG
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,11 @@ namespace RconTool
 
         public ServerSettings Settings { get { return settings?.Value ?? null; } }
         private SavedSetting<ServerSettings> settings;
+
+        public string ConnectionName { 
+            get { return Settings?.DisplayName ?? "UNKNOWN"; }
+        }
+        public string LogPrefix { get { return $"{DateTime.Now.ToUniversalTime().ToFastLogString()} ({ConnectionName})"; } }
 
         public SavedRecord<string> ConsoleMessages { get; set; }
         private string consoleText = "";
@@ -182,23 +189,12 @@ namespace RconTool
 
         public List<PlayerStatsRecord> LastMatchResults = new List<PlayerStatsRecord>();
 
-        public Dictionary<string, int> ServerHook_PlayerTeamsByUid_LastDrawnColor = new Dictionary<string, int>();
-        public Dictionary<string, int> ServerHook_PlayerTeamsByUid = new Dictionary<string, int>();
-        public void UpdateServerHook_PlayerTeamsByUid()
-		{
-            if (ServerHookEnabled) {
-                GetPlayerTeams();
-                foreach (string key in ServerHook_PlayerTeamsByUid.Keys) {
-                    if (ServerHook_PlayerTeamsByUid_LastDrawnColor.TryGetValue(key, out int result) && result != ServerHook_PlayerTeamsByUid[key]) {
-                        Scoreboard.RegenerateScoreboardImage = true;
-                        break;
-                    }
-                }
-            }
-		}
+        public void UpdateServerHook_PlayerTeamsByUid() { if (ServerHookEnabled) { GetPlayerTeams(); } }
 
         public DateTime TimeOfLastEmblemRequest { get; set; }
         public bool EmblemsNeeded { get; set; } = false;
+
+        private Dictionary<string, int> serverHookPlayerTeamIndices = new Dictionary<string, int>() { {"null", -1} };
 
         private PlayerJoinLeaveEventArgs LastPlayerJoinEventArgs { get; set; } = null;
         public Dictionary<int, RankEmblemData> RankAndEmblemData { get; set; } = new Dictionary<int, RankEmblemData>();
@@ -337,21 +333,21 @@ namespace RconTool
                 ChatMessages = new SavedRecord<Message>($"{connectionId}_Messages", null);
                 foreach (Message item in ChatMessages) { PrintToChat(item); }
             }
-            catch (Exception e) { App.Log($"Failed to load or initialize saved Chat Message list: {e}"); }
+            catch (Exception e) { AppLog($"Failed to load or initialize saved Chat Message list: {e}"); }
 
             // load saved console messages
             try {
                 ConsoleMessages = new SavedRecord<string>($"{connectionId}_ConsoleMessages", null);
                 foreach (string item in ConsoleMessages) { PrintToConsole(item, false, false); }
             }
-            catch (Exception e) { App.Log($"Failed to load or initialize saved Console Messages list: {e}"); }
+            catch (Exception e) { AppLog($"Failed to load or initialize saved Console Messages list: {e}"); }
 
             // load saved Player Log messages
             try {
                 PlayerLogMessages = new SavedRecord<string>($"{connectionId}_PlayerLogMessages", null);
                 foreach (string item in PlayerLogMessages) { PrintToPlayerLog(item, false, false); }
             }
-            catch (Exception e) { App.Log($"Failed to load or initialize saved Player Log Messages list: {e}"); }
+            catch (Exception e) { AppLog($"Failed to load or initialize saved Player Log Messages list: {e}"); }
 
             PrintToConsole("Connecting to server...");
 
@@ -401,6 +397,19 @@ namespace RconTool
             }
         }
 
+        public void AppLog(string message, [System.Runtime.CompilerServices.CallerMemberName] string calledFrom = "")
+		{
+
+            if (string.IsNullOrWhiteSpace(message)) { return; }
+
+            App.Log($"{LogPrefix}.{calledFrom}", message);
+
+#if DEBUG // Output more detailed info to the console when debugging
+            Console.WriteLine($"{LogPrefix}.{calledFrom} {message}");
+#endif
+
+        }
+
         private void ManageRconConnection()
         {
 
@@ -414,7 +423,7 @@ namespace RconTool
 
                 // If RconReconnect && it's been at least RconDisconnectedLogInterval minutes since last Attempting Connection notification, notify about connection attempt
                 if (RconReconnect && (DateTime.Now - lastRconDisconnectedLogTime) >= TimeSpan.FromMinutes(RconDisconnectedLogInterval)) { 
-                    App.Log($"Attempting RCON Connection for {Settings?.DisplayName ?? "Unknown Connection"}", this); 
+                    AppLog($"Attempting RCON Connection for {ConnectionName}"); 
                 }
 
                 if (AttemptConnection()) {
@@ -426,7 +435,7 @@ namespace RconTool
                         Thread.Sleep(1000);
 
                         // Check should reset
-                        if (RconReconnect) { App.Log("Resetting RCON Connection", this); break; }
+                        if (RconReconnect) { AppLog("Resetting RCON Connection"); break; }
 
                         // Check connection alive
                         RconWebSocketMutex.WaitOne();
@@ -492,7 +501,7 @@ namespace RconTool
             if (RconWebSocket != null) {
                 try { RconWebSocket.Close(); }
                 catch (Exception e) {
-                    App.Log("Error while resetting RCON Websocket connection. RconWebSocket.Close() Error: " + e.Message, this);
+                    AppLog($"Error while resetting RCON Websocket connection. RconWebSocket.Close() Error:\n{e}");
                 }
             }
 
@@ -509,7 +518,7 @@ namespace RconTool
                     RconWebSocket.Connect();
                 }
                 catch (Exception e) {
-                    App.Log("Error while attempting RCON WebSocket connection: " + e.Message, this);
+                    AppLog($"Error while attempting RCON WebSocket connection:\n{e}");
                     RconWebSocketMutex.ReleaseMutex();
                     return false;
                 }
@@ -542,7 +551,7 @@ namespace RconTool
             {
                 if (RconAutoReconnectEnabled)
                 {
-                    App.Log("RCON Connection Failed | Will automatically attempt to reconnect every " + RconAutoAttemptReconnectInterval + " seconds.", this);
+                    AppLog($"RCON Connection Failed | Will automatically attempt to reconnect every {RconAutoAttemptReconnectInterval} seconds.");
                 }
                 else
                 {
@@ -625,7 +634,7 @@ namespace RconTool
 
                     }
                 }
-                catch (Exception e) { App.Log($"Timed Command Error: {e.Message}", Settings); }
+                catch (Exception e) { AppLog($"Timed Command Error:\n{e}"); }
 
                 //NOTE if there's any weird behavior, see if re-enabling this App.form.Invalidate() fixes it. I'm disabling it because it doesn't make sense
                 //App.form.Invalidate();
@@ -655,7 +664,7 @@ namespace RconTool
                         if (RconCommandQueue.TryDequeue(out RconCommand command)) {
                             if (command.IsValid) {
                                 command.Log(this);
-                                Command(command.command);
+                                Command(command.command); // top tier code right here
                             }
                         }
                     } catch { break; }
@@ -680,7 +689,7 @@ namespace RconTool
                     serverHookReadWait++;
                     if (serverHookReadWait == serverHookReadInterval) {
                         serverHookReadWait = 0;
-                        try { UpdateServerHook_PlayerTeamsByUid(); }
+                        try { /*UpdateServerHook_PlayerTeamsByUid();*/ }
                         catch { }
 					}
 
@@ -696,8 +705,8 @@ namespace RconTool
                             )
                         ) { httpClient.DefaultRequestHeaders.Authorization = authHeader; }
                         else {
-                            App.Log($"Failed to create Authentication Header for Server Status HTTP Request for {Settings.DisplayName}");
-                            throw new Exception($"Failed to create Authentication Header for Server Status HTTP Request for {Settings.DisplayName}");
+                            AppLog($"Failed to create Authentication Header for Server Status HTTP Request for {ConnectionName}");
+                            throw new Exception($"Failed to create Authentication Header for Server Status HTTP Request for {ConnectionName}");
                         }
 
                         try { status = await httpClient.GetStringAsync(Settings.ServerInfoAddress); }
@@ -728,19 +737,17 @@ namespace RconTool
             try { newState = JsonConvert.DeserializeObject<ServerState>(ServerStateJson); }
             catch (Exception e)
             {
-                App.Log("Error decoding Server Status String: " + e.Message);
+                AppLog($"Error decoding Server Status String:\n{e}");
                 return;
             }
 
             if (!newState.IsValid)
             {
-                try
-                {
-                    App.Log("Invalid Server State: " + JsonConvert.SerializeObject(newState));
+                try {
+                    AppLog($"Invalid Server State:\n{JsonConvert.SerializeObject(newState)}");
                 }
-                catch (Exception jse)
-                {
-                    App.Log("Invalid Server State | Failed to convert server state to JSON for logging: " + jse.Message);
+                catch (Exception jse) {
+                    AppLog($"Invalid Server State: Failed to convert server state to JSON for logging:\n{jse}");
                 }
                 return;
             }
@@ -748,7 +755,8 @@ namespace RconTool
             State.Update(newState, this);
             if (!ServerHookEnabled && ShouldUseServerHook && !ServerHookAttempted && !string.IsNullOrWhiteSpace(State?.Name)) {
                 AttemptServerHook();
-			}
+                attemptingServerHook = false;
+            }
             HasPlayers = (State?.Players?.Count ?? 0) > 0;
             if (IsDisplayedCurrently) {
                 Scoreboard.RegenerateScoreboardImage = true;
@@ -795,7 +803,7 @@ namespace RconTool
                         rankEmblemData = null;
 
                         try { rankEmblemData = JsonConvert.DeserializeObject<Dictionary<int, RankEmblemData>>(rankAndEmblemJson); }
-                        catch (Exception e) { App.Log($"Failed to interpret rank and emblem data: {e}"); }
+                        catch (Exception e) { AppLog($"Failed to interpret rank and emblem data:\n{e}"); }
 
                         bool invalidResult = true;
                         lock (State.ServerStateLock) {
@@ -929,10 +937,10 @@ namespace RconTool
             }
 			catch (Exception e) {
 				if (autoTranslating) {
-					App.Log($"Error while attempting auto-translation: {e.Message}");
+					AppLog($"Error while attempting auto-translation:\n{e}");
 				}
 				else {
-					App.Log($"Message Translation Error: {e.Message}");
+					AppLog($"Message Translation Error:\n{e}");
 				}
 				chatMessage.DetectedLanguage = "";
 				return null;
@@ -951,7 +959,7 @@ namespace RconTool
 					chatMessage.Translation.SetTranslation(targetLanguageCode, translation);
 					//ServerSay($"Detected Language: {translation.DetectedLanguageCode}");
 					//ServerSay($"Translation(en): {translation.TranslatedText}");
-					//App.Log($"Detected Language: {chatMessage.DetectedLanguage}");
+					//AppLog($"Detected Language: {chatMessage.DetectedLanguage}");
 					if (targetLanguageCode == Settings.ServerLanguage) {
 						chatMessage.ServerLanguageTranslation = translation;
 						chatMessage.HasServerLanguageTranslation = true;
@@ -976,12 +984,12 @@ namespace RconTool
 
         public void OnRconWebsocketClose(object sender, CloseEventArgs e)
         {
-            //App.Log("Rcon WebSocket Closed", this);
+            //AppLog("Rcon WebSocket Closed");
         }
 
         public void OnRconWebsocketOpen(object sender, EventArgs e)
         {
-            //App.Log("Rcon WebSocket Opened", this);
+            //AppLog("Rcon WebSocket Opened");
             //PrintToConsole("Sending RCON Password");
             RconCommandQueue.Enqueue(
                 RconCommand.ConsoleLogCommand(
@@ -997,7 +1005,7 @@ namespace RconTool
             string message = e?.Data;
             if (message == null) { return; }
 
-            //App.Log("OnMessage TEXT:" + e.IsText + "|PING:" + e.IsPing + "|DATA:" + e.IsBinary + "|: [" + App.DateTimeUTC() + "]:\n" + message + (e.IsBinary ? "|" + Encoding.UTF8.GetString(e.RawData) : ""));
+            //AppLog($"OnMessage TEXT:{e.IsText}|PING:{e.IsPing}|DATA:{e.IsBinary}|: [{App.DateTimeUTC()}]:\n{message}{(e.IsBinary ? "|" + Encoding.UTF8.GetString(e.RawData) : "")}");
 
             // By default the tool ignores JSON messages, identified by a first character of '{'
             if (message.StartsWith("{")) {
@@ -1013,8 +1021,7 @@ namespace RconTool
             {
 
                 // Indicate successful connection
-                App.Log($"{Settings?.DisplayName + " " ?? ""}Successfully Connected to RCON", this);
-                PrintToConsole("Successfully Connected to RCON");
+                AppLog($"Successfully Connected to RCON");
 
                 // Send 'OnConnect' commands to the server (if there are any for this server)
                 if (Settings.SendOnConnectCommands != null && Settings.SendOnConnectCommands.Count > 0)
@@ -1105,7 +1112,7 @@ namespace RconTool
 
         public void OnRconWebsocketError(object sender, EventArgs e)
         {
-            //App.Log("WebSocket Error\nError Message: \n" + eventArgs.Message + "\nException Message: " + (eventArgs.Exception?.Message ?? "none") + "\n", this);
+            //AppLog("WebSocket Error\nError Message: \n" + eventArgs.Message + "\nException Message: " + (eventArgs.Exception?.Message ?? "none") + "\n");
         }
 
 		#endregion
@@ -1131,7 +1138,7 @@ namespace RconTool
             result = $"{Environment.NewLine}{result}";
             if (IsDisplayedCurrently) { App.AppendConsole(result); }
             consoleText += result;
-            Console.WriteLine((Settings?.DisplayName ?? "Unknown Connection") + ": " + result);
+            Console.WriteLine($"{LogPrefix}: {result.Trim()}");
         }
 
         public void ClearConsole()
@@ -1154,7 +1161,7 @@ namespace RconTool
             result = $"{Environment.NewLine}[{chatMessage.DateTimeString}] {result}";
             if (IsDisplayedCurrently) { App.AppendChat(result); }
             chatText += result;
-            Console.WriteLine((Settings?.DisplayName ?? "Unknown Connection") + ": " + result);
+            Console.WriteLine($"{LogPrefix}: {result.Trim()}");
         }
         public void PrintToChat(string playerName, string message)
         {
@@ -1165,7 +1172,7 @@ namespace RconTool
             result = $"{Environment.NewLine}[{App.DateTimeUTC()}] {result}";
             if (IsDisplayedCurrently) { App.AppendChat(result); }
             chatText += result;
-            Console.WriteLine((Settings?.DisplayName ?? "Unknown Connection") + ": " + result);
+            Console.WriteLine($"{LogPrefix}: {result.Trim()}");
         }
 
         public void ClearChat()
@@ -1287,7 +1294,7 @@ namespace RconTool
             bool retVal = true;
             try { MatchQueue = new System.Collections.Concurrent.ConcurrentQueue<MatchInfo>(); }
             catch (Exception e) {
-                App.Log($"Failed to clear MatchQueue.\nException: {e.Message}", this);
+                AppLog($"Failed to clear MatchQueue.\nException:\n{e}");
                 retVal = false;
             }
             if (reenableVoting) { Command_ServerVotingEnable("Match Queue Cleared"); }
@@ -1540,7 +1547,7 @@ namespace RconTool
                 {
                     MapVariant newMV;
                     try { newMV = new MapVariant(directory); }
-                    catch (Exception e) { App.Log("Error Parsing MapVariant at " + directory.FullName + " | " + e.Message, this); continue; }
+                    catch (Exception e) { AppLog($"Error Parsing MapVariant at '{directory.FullName}'\n{e}"); continue; }
                     if (!mapVariants.Contains(newMV)) { mapVariants.Add(newMV); }
                 }
 
@@ -1555,7 +1562,7 @@ namespace RconTool
             }
             else
             {
-                App.Log("Failed to get map variants. MapVariants Directory could not be found.", this);
+                AppLog("Failed to get map variants. MapVariants Directory could not be found.");
                 return;
             }
         }
@@ -1568,7 +1575,7 @@ namespace RconTool
                 {
                     GameVariant newGV;
                     try { newGV = new GameVariant(directory); }
-                    catch (Exception e) { App.Log("Error Parsing GameVariant at " + directory.FullName + " | " + e.Message, this); continue; }
+                    catch (Exception e) { AppLog($"Error Parsing GameVariant at '{directory.FullName}'\n{e}"); continue; }
                     if (!gameVariants.Contains(newGV)) { gameVariants.Add(newGV); }
                 }
 
@@ -1583,7 +1590,7 @@ namespace RconTool
             }
             else
             {
-                App.Log("Failed to get game variants. GameVariants Directory could not be found.", this);
+                AppLog("Failed to get game variants. GameVariants Directory could not be found.");
                 return;
             }
         }
@@ -1951,12 +1958,12 @@ namespace RconTool
             if (RconWebSocket.IsAlive) {                    
                 try {
                     if (App.Debug_RconCommandQueueLog) {
-                        App.Log($"RCON SEND: \"{cmd}\"", this);
+                        AppLog($"RCON SEND: \"{cmd}\"");
 					}
                     RconWebSocket.Send(Encoding.UTF8.GetBytes(cmd));
                 }
                 catch (Exception e) {
-                    App.Log("WebSocket Command Transmission Error: " + e.Message + " | Command issued: " + cmd, this);
+                    AppLog($"WebSocket Command Transmission Error\nCommand issued: {cmd}\n{e}");
                 }                    
             }
             RconWebSocketMutex.ReleaseMutex();
@@ -2417,6 +2424,21 @@ namespace RconTool
 			}
 		}
 
+        public int GetTeamIndex(PlayerInfo player)
+		{
+            if (player == null) { return -1; }
+            else { 
+                if (ServerHookEnabled) {
+                    return serverHookPlayerTeamIndices.TryGetValue(player.Uid ?? "null", out int teamIndex) 
+                        ? teamIndex 
+                        : player.Team;
+                }
+                else {
+                    return player.Team;
+				}
+            }
+		}
+
         //PLUS give these methods well-defined behavior in the result of a tie (which will be very common)
 
         public string GetMVPName()
@@ -2547,21 +2569,25 @@ namespace RconTool
         #region ServerHook
 
         private Int32[] teamIndexAddresses = new Int32[16];
-        public DateTime LastServerHookAttempt = DateTime.Now - TimeSpan.FromMinutes(60);
         public bool ShouldUseServerHook = true, ServerHookAttempted = false;
-        public bool ServerHookEnabled = false;
-        private System.Diagnostics.Process ServerProcess = null;
+        public bool ServerHookEnabled = false; public bool attemptingServerHook = false;
         private ProcessMemory ServerMemory = null;
         private IntPtr MtnDewModuleBaseAddress, ServerProcessBaseAddress;
         private static readonly byte[] CustomShuffleMessageOriginalStringBytes = new byte[] { 0x6C, 0x69, 0x66, 0x65, 0x5F, 0x63, 0x79, 0x63, 0x6C, 0x65, 0x5F, 0x73, 0x74, 0x61, 0x74, 0x65, 0x5F, 0x68, 0x61, 0x6E, 0x64, 0x6C, 0x65, 0x72, 0x5F, 0x6D, 0x61, 0x74, 0x63, 0x68, 0x6D, 0x61, 0x6B, 0x69, 0x6E, 0x67, 0x5F, 0x66, 0x69, 0x6E, 0x64, 0x5F, 0x61, 0x6E, 0x64, 0x5F, 0x61, 0x73, 0x73, 0x65, 0x6D, 0x62, 0x6C, 0x65, 0x5F, 0x6D, 0x61, 0x74, 0x63, 0x68 };
         private const int CustomShuffleMessageMaxLength = 60;
 
-        private void AttemptServerHook()
+        public void AttemptServerHook()
         {
+            
+            ServerHookEnabled = false;
+
+            if (attemptingServerHook) { return; }
+            attemptingServerHook = true;
 
             ServerHookEnabled = false;
 			ServerHookAttempted = true;
-            LastServerHookAttempt = DateTime.Now;
+
+            AppLog($"Attempting Server Hook...");
 
             foreach (System.Diagnostics.Process process in System.Diagnostics.Process.GetProcesses()/*("eldorado.exe (32 bit)")*/) {
 
@@ -2587,57 +2613,243 @@ namespace RconTool
                     foreach (ProcessMemory.ModuleInfo module in modules) {
                         if (module.baseName == "mtndew.dll") {
                             MtnDewModuleBaseAddress = module.baseOfDll;
-                            gotMtnDewModule = true;
-                            break;
+                            if (ServerProcessMatchesConnection(true)) {
+                                AppLog($"Found Server Process");
+                                gotMtnDewModule = true;
+                                break;
+                            }
                         }
                     }
 
-                    // Validate server matches connection
-                    if (gotMtnDewModule && ServerProcessMatchesConnection(true)) {
-                        
-                        teamIndexAddresses[00] = 0x1A4ED58 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[01] = 0x1A503A0 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[02] = 0x1A519E8 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[03] = 0x1A53030 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[04] = 0x1A54678 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[05] = 0x1A55CC0 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[06] = 0x1A57308 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[07] = 0x1A58950 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[08] = 0x1A59F98 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[09] = 0x1A5B5E0 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[10] = 0x1A5CC28 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[11] = 0x1A5E270 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[12] = 0x1A5F8B8 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[13] = 0x1A60F00 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[14] = 0x1A62548 - (Int32)ServerProcessBaseAddress;
-                        teamIndexAddresses[15] = 0x1A63B90 - (Int32)ServerProcessBaseAddress;
-                        
+                    if (gotMtnDewModule) {
+                        try {
+                            teamIndexAddresses[00] = 0x1A4ED58 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[01] = 0x1A503A0 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[02] = 0x1A519E8 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[03] = 0x1A53030 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[04] = 0x1A54678 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[05] = 0x1A55CC0 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[06] = 0x1A57308 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[07] = 0x1A58950 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[08] = 0x1A59F98 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[09] = 0x1A5B5E0 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[10] = 0x1A5CC28 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[11] = 0x1A5E270 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[12] = 0x1A5F8B8 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[13] = 0x1A60F00 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[14] = 0x1A62548 - (Int32)ServerProcessBaseAddress;
+                            teamIndexAddresses[15] = 0x1A63B90 - (Int32)ServerProcessBaseAddress;
+                        }
+                        catch (Exception e) {
+                            AppLog($"Failed to record player properties addresses.\n{e}");
+                            return;
+                        }
+
+
+#if DEBUG               // One-time modification of shuffle teams function so that it works even if there's only one player
+                        //ToggleShuffleTeamsPlayerCountRequirement();
+#endif
+
+                        // Modifies the shuffle teams function such that:
+                        // if {0x90, 0x90} (nop, nop) is written at mtndew.dll+12390F
+                        // the function skips random team assignment
+                        // *but then corrects the bytes that were just nop'd back to their original values*
+                        // so the *next* time you call the shuffle teams function, it works correctly
+
+                        // originally this byte[] was hardcoded, but DWORD 2 is actually an address
+                        // that can vary slightly, so that address needs to be calculated at runtime
+
+                        // new byte[] { 0xEB, 0x0C, 0xC7, 0x05,
+                        //          --> 0x0D, 0x39, 0xF7, 0x79, <-- address
+                        //              0x85, 0xDB, 0xEB, 0x0D,
+                        //              0xEB, 0x21, 0x90, 0x7E,
+                        //              0x1E }
+
+                        // The original bytecode for the shuffle teams function looks like this:
+                        // https://i.imgur.com/iJa5hgZ.png
+                        // The modified bytecode looks like this:
+                        // https://i.imgur.com/co1KQQA.png
+
+                        List<byte> shuffleModificationBytes = new List<byte>() { 0xEB, 0x0C, 0xC7, 0x05, 0x85, 0xDB, 0xEB, 0x0C, 0xEB, 0x21, 0x90, 0x7E, 0x1E };
+                        shuffleModificationBytes.InsertRange(4, BitConverter.GetBytes((Int32)MtnDewModuleBaseAddress + 0x12390D));
+
+                        if (true) {
+                            AppLog("Skipping ShuffleTeams function modification.\n");
+                        }
+                        else {
+                            try { ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, shuffleModificationBytes.ToArray()); }
+                            catch (Exception e) {
+                                AppLog($"Failed to modify ShuffleTeams function.\n{e}");
+                                return;
+                            }
+                        }
+
+                        #region One-time modification of ShuffleTeams message from 'Teams have been shuffled.' to 'Teams updated.'
+						
+                        //byte[] teamShuffleMessagePointerBytes;
+
+                        //// Record the bytes for the Teams-Shuffled-Message string pointer
+                        //// mtndew.dll+0x123948: record pointer bytes
+                        //try { teamShuffleMessagePointerBytes = ServerMemory.Read((Int32)MtnDewModuleBaseAddress + 0x123948, 4); }
+                        //catch (Exception e) { 
+                        //    AppLog($"Failed to acquire pointer to default teams-shuffled message string.\n{e}");
+                        //    return; 
+                        //}
+
+                        //// Update protections on Teams shuffled string to ReadWrite
+                        //try { ServerMemory.SetReadWriteProtection((IntPtr)BitConverter.ToInt32(teamShuffleMessagePointerBytes, 0), 25); }
+                        //catch (Exception e) { 
+                        //    AppLog($"Failed to set ReadWrite protections on memory region where teams-shuffled message string resides.\n{e}");
+                        //    return; 
+                        //}
+
+                        //// modify string
+                        //try { ServerMemory.Write(BitConverter.ToInt32(teamShuffleMessagePointerBytes, 0), Encoding.ASCII.GetBytes("Teams updated.           ")); }
+                        //catch (Exception e) { 
+                        //    AppLog($"Failed to modify default teams-shuffled string.\n{e}");
+                        //    return; 
+                        //}
+
+                        //// Update protections on Teams shuffled string to ReadOnly
+                        //try { ServerMemory.SetReadOnlyProtection((IntPtr)BitConverter.ToInt32(teamShuffleMessagePointerBytes, 0), 25); }
+                        //catch (Exception e) { 
+                        //    AppLog($"Failed to set ReadWrite protections on memory region where teams-shuffled message string resides.\n{e}");
+                        //    return; 
+                        //}
+
+                        //// modify byte indicating the shuffle teams message length (2 places: 0x123946 and 0x1239C0)
+                        //try { 
+                        //    ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x123946, new byte[] { 0x0E });
+                        //    ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x1239C0, new byte[] { 0x0E });
+                        //}
+                        //catch (Exception e) {
+                        //    AppLog($"Failed to modify value dictating teams-shuffled message length.\n{e}");
+                        //    return;
+                        //}
+
+                        #endregion
+
                         ServerHookEnabled = true;
+
+                        AppLog("Found and modified process successfully");
 
                         break;
                     }
                     else {
-                        ServerProcessBaseAddress = IntPtr.Zero; MtnDewModuleBaseAddress = IntPtr.Zero;
-                        if (ServerMemory != null) { ServerMemory.Dispose(); ServerMemory = null; }
+                        try {
+                            AppLog($"Found non-matching game instance");
+                            ServerProcessBaseAddress = IntPtr.Zero;
+                            MtnDewModuleBaseAddress = IntPtr.Zero;
+                            if (ServerMemory != null) {
+                                ServerMemory.Dispose();
+                                ServerMemory = null;
+                            }
+                        }
+                        catch (Exception e) {
+                            AppLog($"Failed to reset variables needed to check next process.\n{e}");
+                            return;
+                        }
                         continue; 
                     }
 
                 }
-                catch (Exception e) { PrintToConsole($"Exception raised while attempting ServerHook: {e}"); continue; }
+                catch (Exception e) {
+                    AppLog($"Exception raised while checking processes:\n{e}");
+                    continue; 
+                }
             }
 
             if (ServerMemory == null) {
-                PrintToConsole("AttemptServerHook Failed: Unable to locate server process.\nThe app will continue running with ServerHook functionality disabled.");
+                AppLog("Failed: Unable to locate server process.\nThe app will continue running with ServerHook functionality disabled.");
+                return;
+            }
+            else { AppLog($"Server Hook Successful"); }
+
+        }
+
+        public int ToggleShuffleTeamsPlayerCountRequirement()
+		{
+
+            if (!ServerHookEnabled) { return 2; }
+            
+            int playerCountRequiredToShuffleTeams = 2;
+
+            // try to get current required player count value
+            try { 
+                byte[] result = ServerMemory.Read((Int32)MtnDewModuleBaseAddress + 0x1237BF, 1);
+                if (result != null && result.Length == 1) { playerCountRequiredToShuffleTeams = result[0]; }
+			}
+            catch (Exception e) {
+                AppLog($"Failed to read minimum player count value in ShuffleTeams function.\n{e}");
+            }
+
+            // toggle value from 1->2 or 2->1 or just set it to 2 if something went wrong
+            if (playerCountRequiredToShuffleTeams == 1) { playerCountRequiredToShuffleTeams++; }
+            else if (playerCountRequiredToShuffleTeams == 2) { playerCountRequiredToShuffleTeams--; }
+            else { playerCountRequiredToShuffleTeams = 2; }
+
+            SetShuffleTeamsPlayerCountRequirement(playerCountRequiredToShuffleTeams);
+
+            return playerCountRequiredToShuffleTeams;
+
+        }
+        public void SetShuffleTeamsPlayerCountRequirement(int requiredPlayerCount)
+		{
+
+            if (!ServerHookEnabled) { return; }
+
+            // ensure valid argument
+            if (requiredPlayerCount < 1 || requiredPlayerCount > 16) { 
+                requiredPlayerCount = 2; 
+            }
+
+            // write required player count value
+            try { ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, new byte[] { (byte)requiredPlayerCount }); }
+            catch (Exception e) {
+                AppLog($"Failed to modify shuffleTeams function to require at least {requiredPlayerCount} player(s) in the lobby.\n{e}");
             }
 
         }
 
+        /// <summary>
+        /// Disables the random team-reassignment of the shuffle teams function, allowing it to be used to manually assign players to specific teams by editing their team values in the server's application memory and then calling ShuffleTeams.
+        /// </summary>
+        /// <param name="autoreset">True by default. If true, the team randomization will be automatically re-enabled after 3 seconds.</param>
+        public void DisableShuffleTeamsRandomization(bool autoreset = true)
+		{
+            if (!ServerHookEnabled) { return; }
+
+            // if {0xEB, 0x0D} (jmp, offset) is written at mtndew.dll+12390F the function skips random team assignment
+            try { ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, new byte[] { 0xEB, 0x0D }); }
+            catch (Exception e) {
+                AppLog($"Failed to disable team-randomization in shuffleTeams function.\n{e}");
+            }
+
+            if (autoreset) {
+                new Thread(new ThreadStart(() => {
+                    Thread.Sleep(3000);
+                    EnableShuffleTeamsRandomization();
+                })).Start();
+            }
+        }
+        public void EnableShuffleTeamsRandomization()
+		{
+            if (!ServerHookEnabled) { return; }
+
+            // if {0x7E, 0x2D} (jle, offset) is written at mtndew.dll+12390F the function performs random team assignment normally
+            try { ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, new byte[] { 0x7E, 0x2D }); }
+            catch (Exception e) {
+                AppLog($"Failed to disable team-randomization in shuffleTeams function.\n{e}");
+            }
+        }
+
         public void GetPlayerTeams()
         {
-            if (!ServerHookEnabled) { return; }
+            if (!ServerHookEnabled || State == null) { return; }
+            //Console.WriteLine($"{LogPrefix}.GetPlayerTeams() Start");
             try {
 
-                byte[] result;
+                byte[] result; bool teamUpdate = false;
                 StringBuilder sb = new StringBuilder();
 
                 // Use the UID value from the PlayerInfo parameter to determine the relevant memory address
@@ -2654,165 +2866,127 @@ namespace RconTool
                     // get the non-client team index from this PlayerProperties block
                     result = ServerMemory.Read((Int32)ServerProcessBaseAddress + teamIndexAddresses[i] + 0x3C, 1);
 
-                    ServerHook_PlayerTeamsByUid[sb.ToString().ToLowerInvariant()] = result[0];
+                    // Update serverHookPlayerTeamIndices for Scoreboard use
+                    if (serverHookPlayerTeamIndices.TryGetValue(sb.ToString().ToLowerInvariant(), out int teamIndex)) {
+                        if (teamIndex != result[0]) { teamUpdate = true; } // existing player is on different team
+                    }
+                    else { teamUpdate = true; } // new player joined
+                    serverHookPlayerTeamIndices[sb.ToString().ToLowerInvariant()] = result[0];
 
                 }
+
+                if (teamUpdate) { Scoreboard.RegenerateScoreboardImage = true; }
+
             }
-            catch (System.ComponentModel.Win32Exception) { ServerHookEnabled = false; return; }
-            catch (Exception e) { return; }
+            catch (System.ComponentModel.Win32Exception e32) { ServerHookEnabled = false; AppLog($"Failed:\n{e32}"); }
+            catch (Exception e) { ServerHookEnabled = false; AppLog($"Failed:\n{e}"); }
+            //Console.WriteLine($"{LogPrefix}.ServerHookPlayerTeamIndices:\n{serverHookPlayerTeamIndices.ToEntriesString()}");
         }
 
         public void SetPlayerTeam(PlayerInfo player, int teamIndex)
         {
             SetPlayerTeam(null, new Tuple<PlayerInfo, int>(player, teamIndex));
         }
-
-        public bool SetPlayerTeamInProgress = false;
+        
         public void SetPlayerTeam(string customMessage = null, params Tuple<PlayerInfo, int>[] args)
         {
 
-            if (SetPlayerTeamInProgress || !ServerHookEnabled) { return; }
+            //Console.WriteLine($"{LogPrefix}.SetPlayerTeam() Start");
+
+            // If ServerHook not enabled, return
+            if (!ServerHookEnabled) { 
+                AppLog($"Failed: ServerHook not active."); 
+                return; 
+            }
 
             // If there are no players on the server, return
             if (!HasPlayers) {
-                PrintToConsole("SetPlayerTeam Failed: No players detected on server.");
+                AppLog($"Failed: No players present.");
                 return;
             }
-
-            // modify the team shuffle function in the Mtndew module
-            Dictionary<int, Tuple<PlayerInfo, int>> playerUpdates = new Dictionary<int, Tuple<PlayerInfo, int>>();
-            StringBuilder sb = new StringBuilder(); string shuffleMessage; byte[] result, teamShuffleMessagePointerBytes;
-
-            // Use the UID value from the PlayerInfo parameter to determine the relevant memory address
-            for (int i = 0; i < 16; i++) {
-
-                sb.Clear();
-
-                // Read the UID value from the PlayerProperties in memory
-                result = ServerMemory.Read((Int32)ServerProcessBaseAddress + (teamIndexAddresses[i] + 0x10), 8);
-
-                // The hex bytes of the UID are reversed, so flip 'em
-                for (int j = result.Length - 1; j >= 0; j--) { sb.Append(result[j].ToString("X2")); }
-
-                foreach (Tuple<PlayerInfo, int> arg in args) {
-                    if (sb.ToString().ToLowerInvariant() == arg.Item1.Uid) {
-                        // add update entry for this PlayerProperties index
-                        playerUpdates.Add(i, arg); break;
-                    }
-                }
-
-                // If there is one update entry per player, we've found all the addresses we need
-                if (playerUpdates.Count == args.Length) { break; }
-
-            }
-
-            // We should have one updateIndex per player arg, if not, fail
-            if (playerUpdates.Count != args.Length) {
-                if (args.Length == 1) { PrintToConsole("SetPlayerTeam Failed: Unabled to determine PlayerProperties Index. Operation aborted."); }
-                else { PrintToConsole("SetPlayerTeams Failed: Unable to determine all PlayerProperties Indices. Operation aborted."); }
-                SetPlayerTeamInProgress = false;
-                return;
-            }
-
-            // Set the custom ShuffleTeams replacement message
-            if (!string.IsNullOrEmpty(customMessage)) { shuffleMessage = customMessage; }
-            else if (args.Length == 1) { shuffleMessage = $"{args[0].Item1.Name} sent to {App.TeamDisplayNames[args[0].Item2]} team"; }
-            else { shuffleMessage = "Teams have been updated"; }
-            byte[] shuffleMessageBytes = Encoding.ASCII.GetBytes(shuffleMessage.ToCharArray());
-
-            SetPlayerTeamInProgress = true;
 
             try {
 
-                // Modify each player's team index
+                Dictionary<int, Tuple<PlayerInfo, int>> playerUpdates = new Dictionary<int, Tuple<PlayerInfo, int>>();
+                StringBuilder sb = new StringBuilder();
+                byte[] result;
+
+                // Use the UID value from the PlayerInfo parameter to determine the relevant memory address
+                for (int i = 0; i < 16; i++) {
+
+                    sb.Clear();
+
+                    // Read the UID value from the PlayerProperties in memory
+                    result = ServerMemory.Read((Int32)ServerProcessBaseAddress + (teamIndexAddresses[i] + 0x10), 8);
+
+                    // The hex bytes of the UID are reversed, so flip 'em
+                    for (int j = result.Length - 1; j >= 0; j--) { sb.Append(result[j].ToString("X2")); }
+
+                    foreach (Tuple<PlayerInfo, int> arg in args) {
+                        if (sb.ToString().ToLowerInvariant() == arg.Item1.Uid) {
+                            // add update entry for this PlayerProperties index
+                            playerUpdates.Add(i, arg); break;
+                        }
+                    }
+
+                    // If there is one update entry per player, we've found all the addresses we need
+                    if (playerUpdates.Count == args.Length) { break; }
+
+                }
+
+                // We should have one updateIndex per player arg, if not, fail
+                if (playerUpdates.Count != args.Length) {
+                    if (args.Length == 1) { PrintToConsole("SetPlayerTeam Failed: Unabled to determine PlayerProperties Index. Operation aborted."); }
+                    else { PrintToConsole("SetPlayerTeams Failed: Unable to determine all PlayerProperties Indices. Operation aborted."); }
+                    Console.WriteLine($"{LogPrefix}.SetPlayerTeam() Update/PlayerCount Mismatch Abort");
+                    return;
+                }
+
+                // Modify each player's team index -
+                // The modified ShuffleTeams function will
+                // inform all clients that someone has changed teams
+
                 foreach (int addressIndex in playerUpdates.Keys.ToList()) {
                     // modify the team index byte in the ClientPlayerProperties
-                    // eldorado.exe+0x164ED58: update from whatever to your teamIndex
-                    // bytesWritten = 0;
                     ServerMemory.Write(
                         (Int32)ServerProcessBaseAddress + teamIndexAddresses[addressIndex],
                         new byte[] { (byte)playerUpdates[addressIndex].Item2 }
                     );
                 }
 
-                // Record the bytes for the Teams-Shuffled-Message string pointer
-                // mtndew.dll+0x123948: record pointer bytes
-                teamShuffleMessagePointerBytes = ServerMemory.Read((Int32)MtnDewModuleBaseAddress + 0x123948, 4);
+                #region Obsolete broken flag method that utilized a "permanent" modification of the shuffle teams function
+                // 'flag' the shuffleTeams bytecode so it skips assigning random team indices the next time it's called
+                // the previously modified bytecode will revert the two 'flag' bytes back to their original values
+                // before skipping the random assignment, so shuffleTeams functions normally the next time it's called
 
-                // modify the player check to work even if there's only one player
-                // mtndew.dll+0x1237BF: update from 02 -> 01
-                ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x1237BF, new byte[] { 0x01 });
+                // mtndew.dll+0x12390F: update from 7E 2D -> 90 90
+                // // ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, new byte[] { 0x90, 0x90 });
+                #endregion
 
-                // modify the random-assignment loop so that it just skips assigning random team indices
-                // mtndew.dll+0x12390F: update from 7E -> EB
-                ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, new byte[] { 0xEB });
+                DisableShuffleTeamsRandomization();
 
-                // modify the characters-to-load value byte to reflect the number of characters in the custom message
-                // mtndew.dll+0x123946: update from 0x19 -> customShuffleMessage.Length
-                if (shuffleMessage.Length > CustomShuffleMessageMaxLength) { shuffleMessage = shuffleMessage.Substring(0, 60); }
-                ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x123946, new byte[] { (byte)shuffleMessage.Length });
-
-                // modify the string reference for the 'Teams have been shuffled' message string to point to our custom message string
-                // mtndew.dll+0x123948: update from new byte[] {0x7C, 0x8F, 0xCE, 0x7A} -> BitConverter.GetBytes((int)ServerProcessBaseAddress + 0x1460C2E)
-                ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x123948, BitConverter.GetBytes((Int32)ServerProcessBaseAddress + 0x1460C2E));
-
-                // modify the string at this address to be our custom message string
-                // eldorado.exe+0x1460C2E: update from CustomShuffleMessageOriginalStringBytes -> shuffleMessageBytes
-                ServerMemory.Write((Int32)ServerProcessBaseAddress + 0x1460C2E, shuffleMessageBytes);
-
-                // Call Server.ShuffleTeams
-                RconCommandQueue.Enqueue(RconCommand.Command("Server.ShuffleTeams"));
+				// Call Server.ShuffleTeams
+				RconCommandQueue.Enqueue(RconCommand.Command("Server.ShuffleTeams"));
 
             }
-            catch { ServerHookEnabled = false; return; }
+            catch (Exception e) { 
+                AppLog($"Failed:\n{e}");
+                ServerHookEnabled = false; 
+            }
 
-            new Thread(new ThreadStart(() => {
-                try {
-
-                    // Give server time to shuffle
-                    Thread.Sleep(3000);
-
-                    // Reset the values to their original states
-
-                    // modify the player check to require at least 2 players
-                    // mtndew.dll+0x1237BF: update from 01 -> 02
-                    ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x1237BF, new byte[] { 0x02 });
-
-                    // modify the random-assignment loop so that it does not skips assigning random team indices
-                    // mtndew.dll+0x12390F: update from EB -> 7E
-                    ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, new byte[] { 0x7E });
-
-                    // modify the characters-to-load value byte to its original value, 25
-                    // mtndew.dll+0x123946: update from customShuffleMessage.Length -> 0x19
-                    ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x123946, new byte[] { 0x19 });
-
-                    // modify the string reference for the 'Teams have been shuffled' message string to point to the original string
-                    // mtndew.dll+0x123948: update to original value, new byte[] {0x7C, 0x8F, 0xCE, 0x7A}<- original {0x7A, 0xCE, 0x8F, 0x7C}<-attempting fix
-                    ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x123948, teamShuffleMessagePointerBytes);
-
-                    // modify the string at this address back to its original value
-                    // mtndew.dll+0x12390F: update from shuffleMessage -> CustomShuffleMessageOriginalStringBytes
-                    ServerMemory.Write((Int32)ServerProcessBaseAddress + 0x1460C2E, CustomShuffleMessageOriginalStringBytes);
-
-                    SetPlayerTeamInProgress = false;
-
-                    Scoreboard.RegenerateScoreboardImage = true;
-
-                }
-                catch (Exception e) {
-                    ServerHookEnabled = false;
-                    PrintToConsole("SetPlayerTeam: Error patching ShuffleTeams function back to original values. Operation aborted.\nError: " + e.ToString());
-                }
-            })).Start();
+            //Console.WriteLine($"{LogPrefix}.SetPlayerTeam() End");
 
         }
 
-        /// <summary>
-        /// Attempts to read GameType information from active memory and construct a GameVariant. Returns null if the operation fails for any reason.
-        /// </summary>
-        public GameVariant GetCurrentGameType()
+		/// <summary>
+		/// Attempts to read GameType information from active memory and construct a GameVariant. Returns null if the operation fails for any reason.
+		/// </summary>
+		public GameVariant GetCurrentGameType()
         {
             if (!ServerHookEnabled) { return null; }
+
+            Console.WriteLine($"{LogPrefix}.GetCurrentGameType() Start");
+
             try {
 
                 byte[] result;
@@ -2852,19 +3026,30 @@ namespace RconTool
                 result = ServerMemory.Read((int)ServerProcessBaseAddress + 0x181EF70, 16);
                 string variantAuthor = Encoding.ASCII.GetString(result).RemoveAll('\0').Trim();
 
+                Console.WriteLine($"{LogPrefix}.GetCurrentGameType() Success [{baseGame}: {variantName} ({variantDisplayName})]");
+
                 return new GameVariant(baseGame, variantName, variantDisplayName, variantDescription, variantAuthor);
 
             }
-            catch (System.ComponentModel.Win32Exception) { ServerHookEnabled = false; return null; }
-            catch (Exception e) {
-                PrintToConsole("GetCurrentGameType Failed: Failed to retrieve gametype data from memory.\n" + e.ToString());
-                return null;
+            catch (System.ComponentModel.Win32Exception) { 
+                ServerHookEnabled = false;
             }
+            catch (Exception e) {
+                ServerHookEnabled = false;
+                PrintToConsole("GetCurrentGameType Failed: Failed to retrieve gametype data from memory.\n" + e.ToString());
+            }
+
+            Console.WriteLine($"{LogPrefix}.GetCurrentGameType() Failed");
+
+            return null;
+
         }
 
         public bool ServerProcessMatchesConnection(bool suppressDetailLogging = false)
         {
             try {
+
+                if (!ServerHookEnabled && !attemptingServerHook) { return false; }
 
                 string status = GetServerStatusPacketStringFromMemory();
                 
@@ -2902,6 +3087,7 @@ namespace RconTool
             //mtndew.dll+40C700 -> pointer(4 bytes), a pointer to the server status packet string
             //mtndew.dll+40C710 -> integer(4 bytes), the number of bytes in the server status packet string
             // the server status packet string is UTF8, so byte-length can differ from string length, e.g. 🦀
+            if (!ServerHookEnabled && !attemptingServerHook) { return "GetServerStatusStringFromMemory Disabled."; }
 
             try {
                 int statusPacketByteCount =
@@ -2919,7 +3105,7 @@ namespace RconTool
 
         }
 
-        #endregion
+#endregion
 
         #region Events
 
@@ -2940,7 +3126,7 @@ namespace RconTool
             if (e.MatchBegan)
             {
 
-				#region Prune Reply-Tracking Dictionary
+#region Prune Reply-Tracking Dictionary
 
                 // Copy all player UIDs we are tracking reply names for to a list
 				List<string> replyUids = ReplyCommandPlayers.Keys.ToList();
@@ -2957,7 +3143,7 @@ namespace RconTool
                     if (ReplyCommandPlayers.ContainsKey(absentUid ?? "")) { ReplyCommandPlayers.Remove(absentUid); }
 				}
 
-				#endregion
+#endregion
 
 			}
 			else
@@ -2974,22 +3160,19 @@ namespace RconTool
         }
         public void OnPlayerTeamChanged(object sender, PlayerTeamChangeEventArgs e)
         {
+            if (IsDisplayedCurrently) { Scoreboard.RegenerateScoreboardImage = true; }
             if (State.Teams == false) { return; }
             if (State.Status == StatusStringInLobby) { return; }
             if (State.Status == StatusStringLoading) { return; }
 
-            if (State.Status != StatusStringInGame) { App.Log(State.Status + " | TEAM CHANGE"); }
+            if (State.Status != StatusStringInGame) { AppLog($"TEAM CHANGE: {State.Status}"); }
 
-            App.Log(
-                e.PlayerState.Name + " changed teams from " + 
-                App.TeamNames[e.PlayerStatePrevious.Team] + " team to " + 
-                App.TeamNames[e.PlayerState.Team] + " team."
-                , this
-            );
+            AppLog($"{e.PlayerState.Name} changed teams from {App.TeamNames[e.PlayerStatePrevious.Team]} team to { App.TeamNames[e.PlayerState.Team]} team.");
+
         }
         public void OnChatMessageReceived(ChatEventArgs e)
         {
-            //App.Log($"OnChatMessageReceived ({e.EventTime}): {e.SendingPlayer?.Name ?? "SERVER"}: {e.ChatMessage.Text}");
+            //AppLog($"{e.SendingPlayer?.Name ?? "SERVER"}: {e.ChatMessage.Text}");
             ChatMessageReceived?.Invoke(e.Connection, e);
         }
         public void OnPlayerJoined(PlayerJoinLeaveEventArgs e)

@@ -545,6 +545,7 @@ namespace RconTool
             ConsoleAutoCompleteStrings.Add("Server.ListPlayersJson");
             ConsoleAutoCompleteStrings.Add("Server.BalanceTeams");
             ConsoleAutoCompleteStrings.Add("Server.StatusPacket");
+            ConsoleAutoCompleteStrings.Add("Server.ToggleShuffleTeamsPlayerCountRequirement");
             ConsoleAutoCompleteStrings.Add("Application.VerifyServerHook");
             ConsoleAutoCompleteStrings.Add("Application.ShowServerJson");
             ConsoleAutoCompleteStrings.Add("Application.HideServerJson");
@@ -905,8 +906,12 @@ namespace RconTool
                     toolStripStatusLabelRconConnection.Image = currentConnection.RconConnected ? CheckMarkImage : XMarkImage;
                 }
                 // Update ServerHook Status Image
-                if (toolStripStatusLabelServerHook.Image != (CurrentConnectionHooked ? CheckMarkImage : XMarkImage)) {
-                    toolStripStatusLabelServerHook.Image = CurrentConnectionHooked ? CheckMarkImage : XMarkImage;
+                if (toolStripSplitButtonServerHook.Image != (CurrentConnectionHooked ? CheckMarkImage : XMarkImage)) {
+                    toolStripSplitButtonServerHook.Image = CurrentConnectionHooked ? CheckMarkImage : XMarkImage;
+                    toolStripSplitButtonServerHook.ToolTipText = CurrentConnectionHooked 
+                        ? "ServerHook Active"
+                        : "Click to attempt to establish the ServerHook.\nIn order to establish the ServerHook:\n\tThe server process must be running on this computer.\n\tThis application must have administrator privileges."
+                    ;
                 }
 
                 #endregion
@@ -952,28 +957,33 @@ namespace RconTool
             PlayerLogQueue.Enqueue(text); 
         }
 
-        public static void Log(string message, ServerSettings settings, bool save = false)
+        public static void Log(string message, Connection connection)
         {
-            
+            if (connection == null) { 
+                Log(message); 
+            }
+            else { 
+                Log($"[{DateTimeUTC()}] ({connection.ConnectionName})", message); 
+            }
+        }
+        public static void Log(string message) { 
+            Log($"[{DateTimeUTC()}] (APP)", message); 
+        }
+        public static void Log(string prefix, string message)
+		{
+
             if (string.IsNullOrWhiteSpace(message)) { return; }
 
-            if (settings == null) { message = $"[{DateTimeUTC()}] (APP): {message}"; }
-            else { message = $"[{DateTimeUTC()}] ({settings.DisplayName}): {message}"; }
+            prefix = Environment.NewLine + System.Text.RegularExpressions.Regex.Replace(
+                prefix, @"\r\n?|\n", Environment.NewLine
+            );
 
-            message = Environment.NewLine + System.Text.RegularExpressions.Regex.Replace(
+            message = System.Text.RegularExpressions.Regex.Replace(
                 message, @"\r\n?|\n", Environment.NewLine
             );
-            //Message m = new Message()
-            //{
-                
-            //};
-            //if (settings != null && save) {  }
 
-            AppLogQueue.Enqueue(message);
-        }
-        public static void Log(string message, Connection connection = null, bool save = false)
-        {
-            Log(message, connection?.Settings ?? null, save);
+            AppLogQueue.Enqueue($"{prefix}: {message}");
+
         }
 
         /// <summary>
@@ -1283,15 +1293,15 @@ namespace RconTool
                         }
 
                         if (CurrentConnectionHooked) {
-                            if (currentConnection.ServerHook_PlayerTeamsByUid.TryGetValue(contextPlayer.Uid, out int teamIndex) && teamIndex > -1 && teamIndex < 8) {
+                            currentConnection.GetPlayerTeams();
+                            int teamIndex = currentConnection.GetTeamIndex(contextPlayer);
+                            if (teamIndex > -1 && teamIndex < 8) {
                                 sendToTeamItem.Enabled = true;
                                 sendToTeamItem.Visible = true;
                                 foreach (ToolStripItem item in sendToTeamItem.DropDownItems()) { 
                                     item.Enabled = true; 
-                                    //item.Visible = true; 
                                 }
                                 sendToTeamItem.DropDownItems()[teamIndex].Enabled = false;
-                                //sendToTeamItem.DropDownItems()[teamIndex].Visible = false;
                             }
                             else {
                                 sendToTeamItem.Enabled = false;
@@ -1870,6 +1880,26 @@ namespace RconTool
                 }
                 return true;
             }
+            else if (command.ToLowerInvariant().Trim().StartsWith("server.enableshuffleteamsrandomization")) {
+                if (CurrentConnectionHooked) {
+                    try { currentConnection.EnableShuffleTeamsRandomization(); }
+                    catch { }
+                }
+                else {
+                    textBoxConsoleTextEntry.Text += "\nServer.EnableShuffleTeamsRandomization Failed: ServerHook is not enabled.";
+                }
+                return true;
+            }
+            else if (command.ToLowerInvariant().Trim().StartsWith("server.disableshuffleteamsrandomization")) {
+                if (CurrentConnectionHooked) {
+                    try { currentConnection.DisableShuffleTeamsRandomization(); }
+                    catch { }
+                }
+                else {
+                    textBoxConsoleTextEntry.Text += "\nServer.DisableShuffleTeamsRandomization Failed: ServerHook is not enabled.";
+                }
+                return true;
+            }
             // Server.StatusPacket - print server status packet to the console
             else if (command.Trim().StartsWith("Server.StatusPacket")) {
                 if (CurrentConnectionHooked) {
@@ -1903,6 +1933,17 @@ namespace RconTool
                 textBoxConsoleTextEntry.Text += ": JSON Filter Enabled";
                 FilterServerJson = true; return true;
             }
+            else if (command.Trim().StartsWith("Server.ToggleShuffleTeamsPlayerCountRequirement")) {
+                if (CurrentConnectionHooked) {
+                    textBoxConsoleTextEntry.Text += 
+                        $"-> {currentConnection.ToggleShuffleTeamsPlayerCountRequirement()} player(s) required.";
+                }
+                else { 
+                    textBoxConsoleTextEntry.Text += 
+                        $"\nCommand failed, ServerHook not active."; 
+                }
+                return true;
+			}
             return false;
 		}
 
@@ -2796,11 +2837,16 @@ namespace RconTool
             ResizeToFitScoreboard();
         }
 
+        private void toolStripSplitButtonServerHook_Click(object sender, EventArgs e)
+        {
+            // Attempt ServerHook
+            if (CurrentConnectionHooked || !currentConnection.ShouldUseServerHook) { return; }
+            else { currentConnection.AttemptServerHook(); currentConnection.attemptingServerHook = false; }
+        }
 
+        #endregion
 
-		#endregion
-
-		#region Above-Log Buttons
+        #region Above-Log Buttons
 
         // Move the above-log buttons relative to the tabcontrol
         private void UpdateAboveLogButtonPositions()
@@ -2827,10 +2873,8 @@ namespace RconTool
         // buttonClearLog behaviors
         private void tabControlServerInterfaces_Selected(object sender, TabControlEventArgs e)
         {
-
-			#region Update buttonClearLog tooltip
-
-			// get tab index, validate range
+            
+            // get tab index, validate range
 			int index = tabControlServerInterfaces?.SelectedIndex ?? -1;
             if (index < 0 || index > 3) { return; }
 
@@ -2844,10 +2888,8 @@ namespace RconTool
                 default: break;
             }
 
-            // update tooltip
+            //Update buttonClearLog tooltip
             toolTip1.SetToolTip(buttonClearLog, $"Click to clear {logName}Log text.");
-
-			#endregion
 
 		}
 		private void buttonClearLog_Click(object sender, EventArgs e)

@@ -90,6 +90,31 @@ namespace RconTool
             return GetAddress(GetModule(modname), name);
         }
 
+        public bool SetReadOnlyProtection(IntPtr lpAddress, int dwSize)
+		{
+            try {
+                uint x = 0;
+                VirtualProtectEx(Handle, lpAddress, new IntPtr(dwSize), (uint)MemoryProtection.ReadOnly, ref x);
+                return true;
+            }
+            catch (Exception e) {
+                App.Log("Failed to set ReadOnly protections on memory region where teams-shuffled string resides.\n" + e);
+                return false;
+            }
+        }
+        public bool SetReadWriteProtection(IntPtr lpAddress, int dwSize)
+		{
+            try {
+                uint x = 0;
+                VirtualProtectEx(Handle, lpAddress, new IntPtr(dwSize), (uint)MemoryProtection.ReadWrite, ref x);
+                return true;
+            }
+            catch (Exception e) {
+                App.Log("Failed to set ReadWrite protections on memory region where teams-shuffled string resides.\n" + e);
+                return false; 
+            }
+		}
+
         public bool Is64Bit()
         {
             if ((Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor >= 1) || Environment.OSVersion.Version.Major > 5) {
@@ -165,6 +190,9 @@ namespace RconTool
         }
         [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
         static extern Int32 VirtualAllocEx(IntPtr hProcess, Int32 lpAddress, Int32 dwSize, AllocationType flAllocationType, MemoryProtection flProtect);
+
+        [DllImport("kernel32.dll")]
+        public static extern bool VirtualProtectEx(IntPtr hProcess, IntPtr lpAddress, IntPtr dwSize, uint flNewProtect, ref uint lpflOldProtect);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern Int32 GetProcAddress(Int32 hModule, string procedureName);

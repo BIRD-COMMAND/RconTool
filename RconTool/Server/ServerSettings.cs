@@ -262,7 +262,7 @@ namespace RconTool
             get { 
                 return !string.IsNullOrWhiteSpace(Name)
                     ? Name 
-                    : (Ip ?? "Unknown IP" ) + ":" + ((RconPort ?? InfoPort) ?? "Unknown Port")
+                    : $"{Ip ?? "Unknown IP"}:{(RconPort ?? InfoPort) ?? "Unknown Port"}"
                 ;
             } 
         }
@@ -348,7 +348,7 @@ namespace RconTool
         public void DeleteVoteFile(VoteFile file)
         {
             try { file.DeleteFromDisk(); }
-            catch (Exception e) { App.Log(e.Message, this); }
+            catch (Exception e) { App.Log(e.Message, App.GetConnection(this)); }
             VoteFiles.Remove(file);
         }
         public void WriteAllVoteFilesToDisk()
@@ -356,7 +356,7 @@ namespace RconTool
             foreach (VoteFile voteFile in VoteFiles)
             {
                 try { voteFile.WriteToDisk(); }
-                catch (Exception e) { App.Log(e.Message, this); }
+                catch (Exception e) { App.Log(e.Message, App.GetConnection(this)); }
             }
         }
         public void LoadAllVoteFilesFromDisk()
@@ -371,7 +371,7 @@ namespace RconTool
                         
                         VoteFile newVF = null;
                         try { newVF = VoteFile.FromLoad(item.FullName, this); }
-                        catch (Exception e) { App.Log(e.Message, this); }
+                        catch (Exception e) { App.Log(e.Message, App.GetConnection(this)); }
 
                         if (newVF != null)
                         {
