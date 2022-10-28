@@ -655,6 +655,12 @@ namespace RconTool
 
 					if (parseResult.IsValid) {
 
+						if (connection.InLobby) {
+							parseResult.Add("voteAddGame cannot be used in lobby.");
+							connection.Respond(player?.Name, parseResult.Response, parseResult.ChatMessage);
+							return;
+						}
+
 						MatchInfo matchInfo = connection.GetMatchInfo(parseResult.Parameters[0], parseResult.Parameters[1]);
 
 						if (matchInfo.IsValid)
