@@ -2169,12 +2169,23 @@ namespace RconTool
             //    Name = "SERVER",
             //    Message = string.Join(DatabaseServerMessageSeparator, messages)
             //};
-
-            foreach (string message in messages) {
-                // Using default RconCommand.Command because Server.Say
-                // will be picked up and displayed as a chat message
-                RconCommandQueue.Enqueue(RconCommand.Command($"Server.Say \"{message}\""));
+            
+            if (messages.Count() > 5) {
+                new Thread(new ThreadStart(() => {
+                    foreach (string message in messages) {
+                        // Using default RconCommand.Command because Server.Say will be picked up and displayed as a chat message
+                        RconCommandQueue.Enqueue(RconCommand.Command($"Server.Say \"{message}\""));
+                        Thread.Sleep(50);
+                    }
+                })).Start();
             }
+            else {
+                foreach (string message in messages) {
+                    // Using default RconCommand.Command because Server.Say will be picked up and displayed as a chat message
+                    RconCommandQueue.Enqueue(RconCommand.Command($"Server.Say \"{message}\""));
+                }
+            }
+            
             //Database.MessagesTable.Add(chatMessage);
 
 		}        
@@ -2243,11 +2254,21 @@ namespace RconTool
             //    Message = string.Join(DatabaseServerMessageSeparator, messages)
             //};
 
-            foreach (string message in messages) {
-                // Using default RconCommand.Command because Server.PM
-                // will be picked up and displayed as a chat message I think
-                RconCommandQueue.Enqueue(RconCommand.Command($"Server.PM \"{playerName}\" \"{message}\""));
-			}
+            if (messages.Count() > 5) {
+                new Thread(new ThreadStart(() => {
+                    foreach (string message in messages) {
+                        // Using default RconCommand.Command because Server.PM will be picked up and displayed as a chat message I think
+                        RconCommandQueue.Enqueue(RconCommand.Command($"Server.PM \"{playerName}\" \"{message}\""));
+                        Thread.Sleep(50);
+                    }
+                })).Start();
+            }
+            else {
+                foreach (string message in messages) {
+                    // Using default RconCommand.Command because Server.PM will be picked up and displayed as a chat message I think
+                    RconCommandQueue.Enqueue(RconCommand.Command($"Server.PM \"{playerName}\" \"{message}\""));
+                }
+            }
 
             //Database.MessagesTable.Add(chatMessage);
 
