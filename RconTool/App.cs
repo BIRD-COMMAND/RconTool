@@ -1880,6 +1880,22 @@ namespace RconTool
                 }
                 return true;
             }
+            else if (command.ToLowerInvariant().Trim().StartsWith("server.addmaphint")) {
+                try {
+                    List<string> mapHintArgs = command.TrimStart("server.addmaphint".Length).Trim().Split(',').ToList();
+                    if (mapHintArgs.Count != 3) { textBoxConsoleTextEntry.Text += "\nServer.AddMapHint Failed.\nUsage: 'Server.AddMapHint mapName, mapHintMessage, hintFrequencyInSeconds'\nExample: 'Server.AddMapHint guardian, Don't fall off the map, 60'"; return true; }
+                    else {
+                        string mapName = mapHintArgs[0].Trim();
+                        string mapHint = mapHintArgs[1].Trim();
+                        if (string.IsNullOrWhiteSpace(mapName) || string.IsNullOrWhiteSpace(mapHint) || !int.TryParse(mapHintArgs[2], out int hintFrequency) || hintFrequency < 1) {
+                            textBoxConsoleTextEntry.Text += "\nServer.AddMapHint Failed.\nUsage: 'Server.AddMapHint mapName, mapHintMessage, hintFrequencyInSeconds'\nExample: 'Server.AddMapHint guardian, Don't fall off the map, 60'"; return true;
+                        }
+                        else { currentConnection.mapHints.Add(new MapHint(mapName, mapHint, hintFrequency)); }
+					}
+                }
+                catch { }
+                return true;
+			}
             else if (command.ToLowerInvariant().Trim().StartsWith("server.enableshuffleteamsrandomization")) {
                 if (CurrentConnectionHooked) {
                     try { currentConnection.EnableShuffleTeamsRandomization(); }

@@ -199,6 +199,8 @@ namespace RconTool
         private PlayerJoinLeaveEventArgs LastPlayerJoinEventArgs { get; set; } = null;
         public Dictionary<int, RankEmblemData> RankAndEmblemData { get; set; } = new Dictionary<int, RankEmblemData>();
 
+        public List<MapHint> mapHints = new List<MapHint>();
+
         public System.Collections.Concurrent.ConcurrentQueue<RconCommand> RconCommandQueue { get; set; } = new System.Collections.Concurrent.ConcurrentQueue<RconCommand>();
         public Thread RconCommandQueueThread;
         public Thread RunTimedCommandsThread;
@@ -761,6 +763,8 @@ namespace RconTool
             if (IsDisplayedCurrently) {
                 Scoreboard.RegenerateScoreboardImage = true;
             }
+
+			foreach (MapHint hint in mapHints) { hint.TryHint(this); }
 
         }
         private async void ManageRanksAndEmblems()

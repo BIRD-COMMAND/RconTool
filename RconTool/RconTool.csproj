@@ -134,6 +134,7 @@
     </Compile>
     <Compile Include="Utility\TranslationResult.cs" />
     <Compile Include="Utility\Translation.cs" />
+    <Compile Include="Voting and Variants\MapHint.cs" />
     <Compile Include="Windows and Controls\About.cs">
       <SubType>Form</SubType>
     </Compile>

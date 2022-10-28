@@ -151,6 +151,7 @@ Player.PrivKey
 Player.PubKey
 Player.ServiceTag
 Server.AddBan
+Server.AddMapHint
 Server.Announce
 Server.AssassinationEnabled
 Server.BanListSyncIntervalSeconds
@@ -167,6 +168,8 @@ Server.Countdown
 Server.CountdownLobby
 Server.Dedicated
 Server.DualWieldEnabled
+Server.EnableShuffleTeamsRandomization
+Server.DisableShuffleTeamsRandomization
 Server.FloodFilterEnabled
 Server.FloodMessageScoreLong
 Server.FloodMessageScoreShort
