@@ -107,7 +107,7 @@ namespace RconTool
             {
 
                 if (Status != newState.Status) { connection.RecordMatchResults(this); }
-                if (connection.ServerHookEnabled && Teams != newState.Teams) { Scoreboard.RegenerateScoreboardImage = true; }
+                if (connection.ServerHookActive && Teams != newState.Teams) { Scoreboard.RegenerateScoreboardImage = true; }
 
                 Name = newState.Name;
                 Port = newState.Port;

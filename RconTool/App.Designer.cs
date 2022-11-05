@@ -573,6 +573,7 @@
 			this.fileMenuTranslationItemTranslatedCharactersTextBox.BackColor = System.Drawing.SystemColors.Control;
 			this.fileMenuTranslationItemTranslatedCharactersTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.fileMenuTranslationItemTranslatedCharactersTextBox.Enabled = false;
+			this.fileMenuTranslationItemTranslatedCharactersTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.fileMenuTranslationItemTranslatedCharactersTextBox.Name = "fileMenuTranslationItemTranslatedCharactersTextBox";
 			this.fileMenuTranslationItemTranslatedCharactersTextBox.Overflow = System.Windows.Forms.ToolStripItemOverflow.Always;
 			this.fileMenuTranslationItemTranslatedCharactersTextBox.ReadOnly = true;
@@ -585,6 +586,7 @@
 			this.fileMenuTranslationItemTranslationBillingCycleTextBox.BackColor = System.Drawing.SystemColors.Control;
 			this.fileMenuTranslationItemTranslationBillingCycleTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.fileMenuTranslationItemTranslationBillingCycleTextBox.Enabled = false;
+			this.fileMenuTranslationItemTranslationBillingCycleTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.fileMenuTranslationItemTranslationBillingCycleTextBox.Name = "fileMenuTranslationItemTranslationBillingCycleTextBox";
 			this.fileMenuTranslationItemTranslationBillingCycleTextBox.Overflow = System.Windows.Forms.ToolStripItemOverflow.Always;
 			this.fileMenuTranslationItemTranslationBillingCycleTextBox.ReadOnly = true;
@@ -654,10 +656,12 @@
 			// 
 			// toolStripSplitButtonServerHook
 			// 
+			this.toolStripSplitButtonServerHook.BackColor = System.Drawing.SystemColors.Control;
+			this.toolStripSplitButtonServerHook.DropDownButtonWidth = 0;
 			this.toolStripSplitButtonServerHook.Image = global::RconTool.Properties.Resources.Image_XMark32x32;
 			this.toolStripSplitButtonServerHook.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripSplitButtonServerHook.Name = "toolStripSplitButtonServerHook";
-			this.toolStripSplitButtonServerHook.Size = new System.Drawing.Size(100, 22);
+			this.toolStripSplitButtonServerHook.Size = new System.Drawing.Size(89, 22);
 			this.toolStripSplitButtonServerHook.Text = "ServerHook";
 			this.toolStripSplitButtonServerHook.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
 			this.toolStripSplitButtonServerHook.ToolTipText = "Click to attempt to establish the ServerHook.\\nIn order to establish the ServerHo" +

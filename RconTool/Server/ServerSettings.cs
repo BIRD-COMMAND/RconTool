@@ -84,7 +84,7 @@ namespace RconTool
         #region Local File Management
 
         [JsonProperty]
-        public bool UseServerHook { get; set; } = false;
+        public bool UseServerHook { get; set; }
 
         [JsonProperty]
         public bool UseLocalFiles { get; set; } = true;

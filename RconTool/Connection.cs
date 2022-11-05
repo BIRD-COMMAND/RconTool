@@ -164,7 +164,7 @@ namespace RconTool
         /// </summary>
         public GameVariant LiveGameVariant { 
             get {
-                if (ServerHookEnabled) {
+                if (ServerHookActive) {
                     if (DateTime.Now - lastLiveGameVariantQuery > TimeSpan.FromSeconds(15)) {
                         liveGameVariant = GetCurrentGameType();
                         lastLiveGameVariantQuery = DateTime.Now;
@@ -189,7 +189,7 @@ namespace RconTool
 
         public List<PlayerStatsRecord> LastMatchResults = new List<PlayerStatsRecord>();
 
-        public void UpdateServerHook_PlayerTeamsByUid() { if (ServerHookEnabled) { GetPlayerTeams(); } }
+        public void UpdateServerHook_PlayerTeamsByUid() { if (ServerHookActive) { GetPlayerTeams(); } }
 
         public DateTime TimeOfLastEmblemRequest { get; set; }
         public bool EmblemsNeeded { get; set; } = false;
@@ -755,9 +755,8 @@ namespace RconTool
             }
 
             State.Update(newState, this);
-            if (!ServerHookEnabled && ShouldUseServerHook && !ServerHookAttempted && !string.IsNullOrWhiteSpace(State?.Name)) {
+            if (!ServerHookActive && !string.IsNullOrWhiteSpace(State?.Name)) {
                 AttemptServerHook();
-                attemptingServerHook = false;
             }
             HasPlayers = (State?.Players?.Count ?? 0) > 0;
             if (IsDisplayedCurrently) {
@@ -2453,7 +2452,7 @@ namespace RconTool
 		{
             if (player == null) { return -1; }
             else { 
-                if (ServerHookEnabled) {
+                if (ServerHookActive) {
                     return serverHookPlayerTeamIndices.TryGetValue(player.Uid ?? "null", out int teamIndex) 
                         ? teamIndex 
                         : player.Team;
@@ -2594,208 +2593,254 @@ namespace RconTool
         #region ServerHook
 
         private Int32[] teamIndexAddresses = new Int32[16];
-        public bool ShouldUseServerHook = true, ServerHookAttempted = false;
-        public bool ServerHookEnabled = false; public bool attemptingServerHook = false;
+        public bool ServerHookActive = false;
+        public bool attemptingServerHook = false;
         private ProcessMemory ServerMemory = null;
         private IntPtr MtnDewModuleBaseAddress, ServerProcessBaseAddress;
         private static readonly byte[] CustomShuffleMessageOriginalStringBytes = new byte[] { 0x6C, 0x69, 0x66, 0x65, 0x5F, 0x63, 0x79, 0x63, 0x6C, 0x65, 0x5F, 0x73, 0x74, 0x61, 0x74, 0x65, 0x5F, 0x68, 0x61, 0x6E, 0x64, 0x6C, 0x65, 0x72, 0x5F, 0x6D, 0x61, 0x74, 0x63, 0x68, 0x6D, 0x61, 0x6B, 0x69, 0x6E, 0x67, 0x5F, 0x66, 0x69, 0x6E, 0x64, 0x5F, 0x61, 0x6E, 0x64, 0x5F, 0x61, 0x73, 0x73, 0x65, 0x6D, 0x62, 0x6C, 0x65, 0x5F, 0x6D, 0x61, 0x74, 0x63, 0x68 };
         private const int CustomShuffleMessageMaxLength = 60;
 
-        public void AttemptServerHook()
+        public void AttemptServerHook(string processId) {
+            if (int.TryParse(processId, out int pId)) { AttemptServerHook(pId); }
+            else { App.Log("Connection.AttemptServerHook(string processId) Failed: Unable to convert processId argument to valid integer process ID."); }
+        }
+        public void AttemptServerHook(int processId = -1)
         {
             
-            ServerHookEnabled = false;
+            if (!Settings?.UseServerHook ?? false) {
+                AppLog($"Server Hook is disabled for this Connection in Server Settings. Enable Server Hook from Server Settings or by clicking the Server Hook button in the status bar at the bottom of the app.");
+                return;
+            }
+
+            ServerHookActive = false;
 
             if (attemptingServerHook) { return; }
             attemptingServerHook = true;
 
-            ServerHookEnabled = false;
-			ServerHookAttempted = true;
-
             AppLog($"Attempting Server Hook...");
 
-            foreach (System.Diagnostics.Process process in System.Diagnostics.Process.GetProcesses()/*("eldorado.exe (32 bit)")*/) {
+            // If a processId has been provided, attempt to verify the process
+            if (processId > -1) { 
+                ServerHookActive = VerifyServerProcess(System.Diagnostics.Process.GetProcessById(processId)); 
+            }
 
-                ServerProcessBaseAddress = IntPtr.Zero;
-                MtnDewModuleBaseAddress = IntPtr.Zero;
-                bool gotMtnDewModule = false;
+            // Otherwise check each process and attempt to find the server
+            else {
+                foreach (System.Diagnostics.Process process in System.Diagnostics.Process.GetProcesses()/*("eldorado.exe (32 bit)")*/) {
 
-                try {
-                    
-                    // Get Server Process                    
-                    if (!(process?.MainWindowTitle ?? "").StartsWith("ElDewrito |")) { continue; }
-                    
-                    process.Refresh(); // for accuracy/stability of accessing modules
-
-                    ServerProcessBaseAddress = process.MainModule.BaseAddress;
-
-                    // ProcessMemory object streamlines working with the process memory
-                    if (ServerMemory != null) { ServerMemory.Dispose(); ServerMemory = null; }
-                    ServerMemory = new ProcessMemory(process.Id);
-                    
-                    // Get mtndew.dll Module                    
-                    List<ProcessMemory.ModuleInfo> modules = ServerMemory.GetModuleInfos().ToList();
-                    foreach (ProcessMemory.ModuleInfo module in modules) {
-                        if (module.baseName == "mtndew.dll") {
-                            MtnDewModuleBaseAddress = module.baseOfDll;
-                            if (ServerProcessMatchesConnection(true)) {
-                                AppLog($"Found Server Process");
-                                gotMtnDewModule = true;
-                                break;
-                            }
-                        }
+                    if (VerifyServerProcess(process)) {
+                        ServerHookActive = true;
+                        break; 
                     }
 
-                    if (gotMtnDewModule) {
-                        try {
-                            teamIndexAddresses[00] = 0x1A4ED58 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[01] = 0x1A503A0 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[02] = 0x1A519E8 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[03] = 0x1A53030 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[04] = 0x1A54678 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[05] = 0x1A55CC0 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[06] = 0x1A57308 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[07] = 0x1A58950 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[08] = 0x1A59F98 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[09] = 0x1A5B5E0 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[10] = 0x1A5CC28 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[11] = 0x1A5E270 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[12] = 0x1A5F8B8 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[13] = 0x1A60F00 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[14] = 0x1A62548 - (Int32)ServerProcessBaseAddress;
-                            teamIndexAddresses[15] = 0x1A63B90 - (Int32)ServerProcessBaseAddress;
-                        }
-                        catch (Exception e) {
-                            AppLog($"Failed to record player properties addresses.\n{e}");
-                            return;
-                        }
-
+                    #region Obsolete: advanced modification of shuffle teams function, causes issues with team-assignment and team-randomization between matches
 
 #if DEBUG               // One-time modification of shuffle teams function so that it works even if there's only one player
-                        //ToggleShuffleTeamsPlayerCountRequirement();
+                    //ToggleShuffleTeamsPlayerCountRequirement();
 #endif
 
-                        // Modifies the shuffle teams function such that:
-                        // if {0x90, 0x90} (nop, nop) is written at mtndew.dll+12390F
-                        // the function skips random team assignment
-                        // *but then corrects the bytes that were just nop'd back to their original values*
-                        // so the *next* time you call the shuffle teams function, it works correctly
+                    // Modifies the shuffle teams function such that:
+                    // if {0x90, 0x90} (nop, nop) is written at mtndew.dll+12390F
+                    // the function skips random team assignment
+                    // *but then corrects the bytes that were just nop'd back to their original values*
+                    // so the *next* time you call the shuffle teams function, it works correctly
 
-                        // originally this byte[] was hardcoded, but DWORD 2 is actually an address
-                        // that can vary slightly, so that address needs to be calculated at runtime
+                    // originally this byte[] was hardcoded, but DWORD 2 is actually an address
+                    // that can vary slightly, so that address needs to be calculated at runtime
 
-                        // new byte[] { 0xEB, 0x0C, 0xC7, 0x05,
-                        //          --> 0x0D, 0x39, 0xF7, 0x79, <-- address
-                        //              0x85, 0xDB, 0xEB, 0x0D,
-                        //              0xEB, 0x21, 0x90, 0x7E,
-                        //              0x1E }
+                    // new byte[] { 0xEB, 0x0C, 0xC7, 0x05,
+                    //          --> 0x0D, 0x39, 0xF7, 0x79, <-- address
+                    //              0x85, 0xDB, 0xEB, 0x0D,
+                    //              0xEB, 0x21, 0x90, 0x7E,
+                    //              0x1E }
 
-                        // The original bytecode for the shuffle teams function looks like this:
-                        // https://i.imgur.com/iJa5hgZ.png
-                        // The modified bytecode looks like this:
-                        // https://i.imgur.com/co1KQQA.png
+                    // The original bytecode for the shuffle teams function looks like this:
+                    // https://i.imgur.com/iJa5hgZ.png
+                    // The modified bytecode looks like this:
+                    // https://i.imgur.com/co1KQQA.png
 
-                        List<byte> shuffleModificationBytes = new List<byte>() { 0xEB, 0x0C, 0xC7, 0x05, 0x85, 0xDB, 0xEB, 0x0C, 0xEB, 0x21, 0x90, 0x7E, 0x1E };
-                        shuffleModificationBytes.InsertRange(4, BitConverter.GetBytes((Int32)MtnDewModuleBaseAddress + 0x12390D));
+                    //List<byte> shuffleModificationBytes = new List<byte>() { 0xEB, 0x0C, 0xC7, 0x05, 0x85, 0xDB, 0xEB, 0x0C, 0xEB, 0x21, 0x90, 0x7E, 0x1E };
+                    //shuffleModificationBytes.InsertRange(4, BitConverter.GetBytes((Int32)MtnDewModuleBaseAddress + 0x12390D));
 
-                        if (true) {
-                            AppLog("Skipping ShuffleTeams function modification.\n");
-                        }
-                        else {
-                            try { ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, shuffleModificationBytes.ToArray()); }
-                            catch (Exception e) {
-                                AppLog($"Failed to modify ShuffleTeams function.\n{e}");
-                                return;
-                            }
-                        }
+                    //if (true) {
+                    //    AppLog("Skipping ShuffleTeams function modification.\n");
+                    //}
+                    //else {
+                    //    try { ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, shuffleModificationBytes.ToArray()); }
+                    //    catch (Exception e) {
+                    //        AppLog($"Failed to modify ShuffleTeams function.\n{e}");
+                    //        return;
+                    //    }
+                    //}
 
-                        #region One-time modification of ShuffleTeams message from 'Teams have been shuffled.' to 'Teams updated.'
-						
-                        //byte[] teamShuffleMessagePointerBytes;
+                    #endregion
 
-                        //// Record the bytes for the Teams-Shuffled-Message string pointer
-                        //// mtndew.dll+0x123948: record pointer bytes
-                        //try { teamShuffleMessagePointerBytes = ServerMemory.Read((Int32)MtnDewModuleBaseAddress + 0x123948, 4); }
-                        //catch (Exception e) { 
-                        //    AppLog($"Failed to acquire pointer to default teams-shuffled message string.\n{e}");
-                        //    return; 
-                        //}
+                    #region Obsolete: One-time modification of ShuffleTeams message from 'Teams have been shuffled.' to 'Teams updated.'
 
-                        //// Update protections on Teams shuffled string to ReadWrite
-                        //try { ServerMemory.SetReadWriteProtection((IntPtr)BitConverter.ToInt32(teamShuffleMessagePointerBytes, 0), 25); }
-                        //catch (Exception e) { 
-                        //    AppLog($"Failed to set ReadWrite protections on memory region where teams-shuffled message string resides.\n{e}");
-                        //    return; 
-                        //}
+                    //byte[] teamShuffleMessagePointerBytes;
 
-                        //// modify string
-                        //try { ServerMemory.Write(BitConverter.ToInt32(teamShuffleMessagePointerBytes, 0), Encoding.ASCII.GetBytes("Teams updated.           ")); }
-                        //catch (Exception e) { 
-                        //    AppLog($"Failed to modify default teams-shuffled string.\n{e}");
-                        //    return; 
-                        //}
+                    //// Record the bytes for the Teams-Shuffled-Message string pointer
+                    //// mtndew.dll+0x123948: record pointer bytes
+                    //try { teamShuffleMessagePointerBytes = ServerMemory.Read((Int32)MtnDewModuleBaseAddress + 0x123948, 4); }
+                    //catch (Exception e) { 
+                    //    AppLog($"Failed to acquire pointer to default teams-shuffled message string.\n{e}");
+                    //    return; 
+                    //}
 
-                        //// Update protections on Teams shuffled string to ReadOnly
-                        //try { ServerMemory.SetReadOnlyProtection((IntPtr)BitConverter.ToInt32(teamShuffleMessagePointerBytes, 0), 25); }
-                        //catch (Exception e) { 
-                        //    AppLog($"Failed to set ReadWrite protections on memory region where teams-shuffled message string resides.\n{e}");
-                        //    return; 
-                        //}
+                    //// Update protections on Teams shuffled string to ReadWrite
+                    //try { ServerMemory.SetReadWriteProtection((IntPtr)BitConverter.ToInt32(teamShuffleMessagePointerBytes, 0), 25); }
+                    //catch (Exception e) { 
+                    //    AppLog($"Failed to set ReadWrite protections on memory region where teams-shuffled message string resides.\n{e}");
+                    //    return; 
+                    //}
 
-                        //// modify byte indicating the shuffle teams message length (2 places: 0x123946 and 0x1239C0)
-                        //try { 
-                        //    ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x123946, new byte[] { 0x0E });
-                        //    ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x1239C0, new byte[] { 0x0E });
-                        //}
-                        //catch (Exception e) {
-                        //    AppLog($"Failed to modify value dictating teams-shuffled message length.\n{e}");
-                        //    return;
-                        //}
+                    //// modify string
+                    //try { ServerMemory.Write(BitConverter.ToInt32(teamShuffleMessagePointerBytes, 0), Encoding.ASCII.GetBytes("Teams updated.           ")); }
+                    //catch (Exception e) { 
+                    //    AppLog($"Failed to modify default teams-shuffled string.\n{e}");
+                    //    return; 
+                    //}
 
-                        #endregion
+                    //// Update protections on Teams shuffled string to ReadOnly
+                    //try { ServerMemory.SetReadOnlyProtection((IntPtr)BitConverter.ToInt32(teamShuffleMessagePointerBytes, 0), 25); }
+                    //catch (Exception e) { 
+                    //    AppLog($"Failed to set ReadWrite protections on memory region where teams-shuffled message string resides.\n{e}");
+                    //    return; 
+                    //}
 
-                        ServerHookEnabled = true;
+                    //// modify byte indicating the shuffle teams message length (2 places: 0x123946 and 0x1239C0)
+                    //try { 
+                    //    ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x123946, new byte[] { 0x0E });
+                    //    ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x1239C0, new byte[] { 0x0E });
+                    //}
+                    //catch (Exception e) {
+                    //    AppLog($"Failed to modify value dictating teams-shuffled message length.\n{e}");
+                    //    return;
+                    //}
 
-                        AppLog("Found and modified process successfully");
+                    #endregion
 
-                        break;
-                    }
-                    else {
-                        try {
-                            AppLog($"Found non-matching game instance");
-                            ServerProcessBaseAddress = IntPtr.Zero;
-                            MtnDewModuleBaseAddress = IntPtr.Zero;
-                            if (ServerMemory != null) {
-                                ServerMemory.Dispose();
-                                ServerMemory = null;
-                            }
-                        }
-                        catch (Exception e) {
-                            AppLog($"Failed to reset variables needed to check next process.\n{e}");
-                            return;
-                        }
-                        continue; 
-                    }
-
-                }
-                catch (Exception e) {
-                    AppLog($"Exception raised while checking processes:\n{e}");
-                    continue; 
                 }
             }
 
             if (ServerMemory == null) {
                 AppLog("Failed: Unable to locate server process.\nThe app will continue running with ServerHook functionality disabled.");
-                return;
             }
-            else { AppLog($"Server Hook Successful"); }
+            else {
+                AppLog($"Server Hook Successful");
+            }
 
+            attemptingServerHook = false;
+
+        }
+
+        /// <summary>
+        /// Returns true if the supplied Process is the Server process matching this Connection.
+        /// </summary>
+        /// <param name="process">A process running on this system, it will be checked to see if it is the Server process matching this Connection.</param>
+        /// <returns>True if the supplied Process is the Server process matching this Connection, false if it is not the Server, and false if any exceptions or errors are encountered.</returns>
+        public bool VerifyServerProcess(System.Diagnostics.Process process)
+		{
+
+            try {
+
+                // Return false if process is invalid
+                if (process == null) { return ServerProcessValidationResult(false); }
+
+                // Check Window Title
+                if (!(process?.MainWindowTitle ?? "").StartsWith("ElDewrito |")) { return ServerProcessValidationResult(false); }
+
+                // Reset relevant objects
+                ServerProcessBaseAddress = IntPtr.Zero; MtnDewModuleBaseAddress = IntPtr.Zero;
+                if (ServerMemory != null) { ServerMemory.Dispose(); ServerMemory = null; }
+
+                bool gotMtnDewModule = false;
+
+                process.Refresh(); // for accuracy/stability of accessing modules
+
+                ServerProcessBaseAddress = process.MainModule.BaseAddress;
+
+                // ProcessMemory object streamlines working with the process memory
+                ServerMemory = new ProcessMemory(process.Id);
+
+                // Get mtndew.dll Module and verify that the module details in memory match the connection details
+                List<ProcessMemory.ModuleInfo> modules = ServerMemory.GetModuleInfos().ToList();
+                foreach (ProcessMemory.ModuleInfo module in modules) {
+                    if (module.baseName == "mtndew.dll") {
+                        MtnDewModuleBaseAddress = module.baseOfDll;
+                        if (ServerProcessMatchesConnection(true)) {
+                            AppLog($"Found Server Process");
+                            gotMtnDewModule = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Return false if we did not find the module, or the module details in memory did not match the connection details
+                if (!gotMtnDewModule) { 
+                    AppLog("Found non-matching game instance - Process ID: " + process.Id);
+                    return ServerProcessValidationResult(false);
+                }
+
+                // Record memory locations of each PlayerProperties block
+                try {
+                    teamIndexAddresses[00] = 0x1A4ED58 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[01] = 0x1A503A0 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[02] = 0x1A519E8 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[03] = 0x1A53030 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[04] = 0x1A54678 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[05] = 0x1A55CC0 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[06] = 0x1A57308 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[07] = 0x1A58950 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[08] = 0x1A59F98 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[09] = 0x1A5B5E0 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[10] = 0x1A5CC28 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[11] = 0x1A5E270 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[12] = 0x1A5F8B8 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[13] = 0x1A60F00 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[14] = 0x1A62548 - (Int32)ServerProcessBaseAddress;
+                    teamIndexAddresses[15] = 0x1A63B90 - (Int32)ServerProcessBaseAddress;
+                }
+                catch (Exception e) { 
+                    AppLog($"Failed to record player properties addresses.\n{e}");
+                    return ServerProcessValidationResult(false);
+                }
+
+            }
+            catch (Exception e) { 
+                AppLog($"Connection.VerifyServerProcess(process): Exception raised while verifying process:\n{e}");
+                return ServerProcessValidationResult(false);
+            }
+
+            return ServerProcessValidationResult(true);
+
+        }
+        public bool ServerProcessValidationResult(bool result)
+		{
+
+            // Reset relevant objects if validation failed
+            if (!result) {
+                ServerProcessBaseAddress = IntPtr.Zero;
+                MtnDewModuleBaseAddress = IntPtr.Zero;
+                if (ServerMemory != null) {
+                    ServerMemory.Dispose();
+                    ServerMemory = null;
+                }
+            }
+
+            return result;
+		}
+        public System.Diagnostics.Process[] GetServerProcesses()
+		{
+            return System.Diagnostics.Process.GetProcesses().Where(
+                process => (process?.MainWindowTitle ?? "").StartsWith("ElDewrito |")
+            ).ToArray();
         }
 
         public int ToggleShuffleTeamsPlayerCountRequirement()
 		{
 
-            if (!ServerHookEnabled) { return 2; }
+            if (!ServerHookActive) { return 2; }
             
             int playerCountRequiredToShuffleTeams = 2;
 
@@ -2821,7 +2866,7 @@ namespace RconTool
         public void SetShuffleTeamsPlayerCountRequirement(int requiredPlayerCount)
 		{
 
-            if (!ServerHookEnabled) { return; }
+            if (!ServerHookActive) { return; }
 
             // ensure valid argument
             if (requiredPlayerCount < 1 || requiredPlayerCount > 16) { 
@@ -2842,7 +2887,7 @@ namespace RconTool
         /// <param name="autoreset">True by default. If true, the team randomization will be automatically re-enabled after 3 seconds.</param>
         public void DisableShuffleTeamsRandomization(bool autoreset = true)
 		{
-            if (!ServerHookEnabled) { return; }
+            if (!ServerHookActive) { return; }
 
             // if {0xEB, 0x0D} (jmp, offset) is written at mtndew.dll+12390F the function skips random team assignment
             try { ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, new byte[] { 0xEB, 0x0D }); }
@@ -2859,7 +2904,7 @@ namespace RconTool
         }
         public void EnableShuffleTeamsRandomization()
 		{
-            if (!ServerHookEnabled) { return; }
+            if (!ServerHookActive) { return; }
 
             // if {0x7E, 0x2D} (jle, offset) is written at mtndew.dll+12390F the function performs random team assignment normally
             try { ServerMemory.Write((Int32)MtnDewModuleBaseAddress + 0x12390F, new byte[] { 0x7E, 0x2D }); }
@@ -2870,7 +2915,7 @@ namespace RconTool
 
         public void GetPlayerTeams()
         {
-            if (!ServerHookEnabled || State == null) { return; }
+            if (!ServerHookActive || State == null) { return; }
             //Console.WriteLine($"{LogPrefix}.GetPlayerTeams() Start");
             try {
 
@@ -2903,8 +2948,8 @@ namespace RconTool
                 if (teamUpdate) { Scoreboard.RegenerateScoreboardImage = true; }
 
             }
-            catch (System.ComponentModel.Win32Exception e32) { ServerHookEnabled = false; AppLog($"Failed:\n{e32}"); }
-            catch (Exception e) { ServerHookEnabled = false; AppLog($"Failed:\n{e}"); }
+            catch (System.ComponentModel.Win32Exception e32) { ServerHookActive = false; AppLog($"Failed:\n{e32}"); }
+            catch (Exception e) { ServerHookActive = false; AppLog($"Failed:\n{e}"); }
             //Console.WriteLine($"{LogPrefix}.ServerHookPlayerTeamIndices:\n{serverHookPlayerTeamIndices.ToEntriesString()}");
         }
 
@@ -2919,7 +2964,7 @@ namespace RconTool
             //Console.WriteLine($"{LogPrefix}.SetPlayerTeam() Start");
 
             // If ServerHook not enabled, return
-            if (!ServerHookEnabled) { 
+            if (!ServerHookActive) { 
                 AppLog($"Failed: ServerHook not active."); 
                 return; 
             }
@@ -2996,7 +3041,7 @@ namespace RconTool
             }
             catch (Exception e) { 
                 AppLog($"Failed:\n{e}");
-                ServerHookEnabled = false; 
+                ServerHookActive = false; 
             }
 
             //Console.WriteLine($"{LogPrefix}.SetPlayerTeam() End");
@@ -3008,7 +3053,7 @@ namespace RconTool
 		/// </summary>
 		public GameVariant GetCurrentGameType()
         {
-            if (!ServerHookEnabled) { return null; }
+            if (!ServerHookActive) { return null; }
 
             Console.WriteLine($"{LogPrefix}.GetCurrentGameType() Start");
 
@@ -3057,10 +3102,10 @@ namespace RconTool
 
             }
             catch (System.ComponentModel.Win32Exception) { 
-                ServerHookEnabled = false;
+                ServerHookActive = false;
             }
             catch (Exception e) {
-                ServerHookEnabled = false;
+                ServerHookActive = false;
                 PrintToConsole("GetCurrentGameType Failed: Failed to retrieve gametype data from memory.\n" + e.ToString());
             }
 
@@ -3074,7 +3119,7 @@ namespace RconTool
         {
             try {
 
-                if (!ServerHookEnabled && !attemptingServerHook) { return false; }
+                if (!ServerHookActive && !attemptingServerHook) { return false; }
 
                 string status = GetServerStatusPacketStringFromMemory();
                 
@@ -3112,7 +3157,7 @@ namespace RconTool
             //mtndew.dll+40C700 -> pointer(4 bytes), a pointer to the server status packet string
             //mtndew.dll+40C710 -> integer(4 bytes), the number of bytes in the server status packet string
             // the server status packet string is UTF8, so byte-length can differ from string length, e.g. 🦀
-            if (!ServerHookEnabled && !attemptingServerHook) { return "GetServerStatusStringFromMemory Disabled."; }
+            if (!ServerHookActive && !attemptingServerHook) { return null; }
 
             try {
                 int statusPacketByteCount =

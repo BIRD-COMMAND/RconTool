@@ -776,7 +776,7 @@ namespace RconTool
         private static void DrawScoreboardRow(int rowIndex, Connection currentConnection, PlayerInfo player, Color rectColor, Color textColor)
         {
             Color TagColor;
-            if (currentConnection?.ServerHookEnabled ?? false) {
+            if (currentConnection?.ServerHookActive ?? false) {
                 int teamIndex = currentConnection.GetTeamIndex(player);
                 if (currentConnection.State.Teams && teamIndex > -1 && teamIndex < 8) {
                     rectColor = App.TeamColors[teamIndex].Item2;

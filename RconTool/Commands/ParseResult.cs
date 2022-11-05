@@ -255,7 +255,7 @@ namespace RconTool
 							break;
 
 						case Arg.Type.MapName:
-							Parameters.Add(BestMatch(connection.MapVariantNames, content, arg, false));
+							Parameters.Add(BestMatch(connection.MapVariantNames, content, arg, true));
 							break;
 
 						case Arg.Type.BaseVariant:
@@ -263,7 +263,7 @@ namespace RconTool
 							break;
 
 						case Arg.Type.VariantName:
-							Parameters.Add(BestMatch(connection.GameVariantNames, content, arg, false));
+							Parameters.Add(BestMatch(connection.GameVariantNames, content, arg, true));
 							break;
 
 						case Arg.Type.String:

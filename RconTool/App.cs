@@ -72,7 +72,7 @@ namespace RconTool
         /// <summary>
         /// Returns true if the current connection exists and has its server hook enabled.
         /// </summary>
-        public static bool CurrentConnectionHooked { get { return currentConnection?.ServerHookEnabled ?? false; } }
+        public static bool CurrentConnectionHooked { get { return currentConnection?.ServerHookActive ?? false; } }
 
         public static SavedSetting<List<PlayerStatsRecord>> PlayerStatsRecords = new SavedSetting<List<PlayerStatsRecord>>(SettingsKeys.PlayerStatsRecords, new List<PlayerStatsRecord>());
 
@@ -1919,7 +1919,7 @@ namespace RconTool
             // Server.StatusPacket - print server status packet to the console
             else if (command.Trim().StartsWith("Server.StatusPacket")) {
                 if (CurrentConnectionHooked) {
-                    textBoxConsoleTextEntry.Text += "\n" + currentConnection.GetServerStatusPacketStringFromMemory(true);
+                    textBoxConsoleTextEntry.Text += "\n" + (currentConnection.GetServerStatusPacketStringFromMemory(true) ?? "NULL Status Packet");
                 }
                 else {
                     textBoxConsoleTextEntry.Text += "\nServer.StatusPacket Failed: ServerHook is not enabled.";
@@ -1929,6 +1929,7 @@ namespace RconTool
             // Application.VerifyServerHook - print details on verification that ServerHook server matches RCON connection server
             else if (command.Trim().StartsWith("Application.VerifyServerHook")) {
                 if (CurrentConnectionHooked) {
+                    //TODO remove this call, ServerProcessMatchesConnection should not be called from outside of Connection.AttemptServerHook
                     if (currentConnection.ServerProcessMatchesConnection()) {
                         textBoxConsoleTextEntry.Text = command.Trim() + ": ServerHook is valid.";
                     }
@@ -2855,9 +2856,10 @@ namespace RconTool
 
         private void toolStripSplitButtonServerHook_Click(object sender, EventArgs e)
         {
+            new ServerHookForm(currentConnection).ShowDialog();
             // Attempt ServerHook
-            if (CurrentConnectionHooked || !currentConnection.ShouldUseServerHook) { return; }
-            else { currentConnection.AttemptServerHook(); currentConnection.attemptingServerHook = false; }
+            //if (CurrentConnectionHooked) { return; }
+            //else { currentConnection.AttemptServerHook(); }
         }
 
         #endregion

@@ -1355,7 +1355,7 @@ namespace RconTool
 				Command = (connection, message, player, command, parseResult) =>
 				{
 
-					if (parseResult.IsValid && connection.ServerHookEnabled)
+					if (parseResult.IsValid && connection.ServerHookActive)
 					{
 
 						bool canSetTeam = false; int teamIndex = -1;
@@ -1414,7 +1414,7 @@ namespace RconTool
 				Args = new List<Arg>() { new Arg("teamCount", "number of teams", Arg.Type.String, true) },
 				Command = (connection, message, player, command, parseResult) =>
 				{
-					if (parseResult.IsValid && connection.ServerHookEnabled && connection.HasPlayers)
+					if (parseResult.IsValid && connection.ServerHookActive && connection.HasPlayers)
 					{
 
 						List<Tuple<PlayerInfo,int>> teamAssignments;
@@ -1455,7 +1455,7 @@ namespace RconTool
 				Args = new List<Arg>() { new Arg("teamCount", "number of teams", Arg.Type.String, true) },
 				Command = (connection, message, player, command, parseResult) =>
 				{
-					if (parseResult.IsValid && connection.ServerHookEnabled && connection.HasPlayers)
+					if (parseResult.IsValid && connection.ServerHookActive && connection.HasPlayers)
 					{
 
 						List<Tuple<PlayerInfo,int>> teamAssignments;
