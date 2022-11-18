@@ -2178,7 +2178,7 @@ namespace RconTool
                     foreach (string message in messages) {
                         // Using default RconCommand.Command because Server.Say will be picked up and displayed as a chat message
                         RconCommandQueue.Enqueue(RconCommand.Command($"Server.Say \"{message}\""));
-                        Thread.Sleep(50);
+                        Thread.Sleep(500);
                     }
                 })).Start();
             }
@@ -2262,7 +2262,7 @@ namespace RconTool
                     foreach (string message in messages) {
                         // Using default RconCommand.Command because Server.PM will be picked up and displayed as a chat message I think
                         RconCommandQueue.Enqueue(RconCommand.Command($"Server.PM \"{playerName}\" \"{message}\""));
-                        Thread.Sleep(50);
+                        Thread.Sleep(500);
                     }
                 })).Start();
             }
@@ -2621,7 +2621,7 @@ namespace RconTool
 
             // If a processId has been provided, attempt to verify the process
             if (processId > -1) { 
-                ServerHookActive = VerifyServerProcess(System.Diagnostics.Process.GetProcessById(processId)); 
+                ServerHookActive = VerifyServerProcess(System.Diagnostics.Process.GetProcessById(processId), true); 
             }
 
             // Otherwise check each process and attempt to find the server
@@ -2739,7 +2739,7 @@ namespace RconTool
         /// </summary>
         /// <param name="process">A process running on this system, it will be checked to see if it is the Server process matching this Connection.</param>
         /// <returns>True if the supplied Process is the Server process matching this Connection, false if it is not the Server, and false if any exceptions or errors are encountered.</returns>
-        public bool VerifyServerProcess(System.Diagnostics.Process process)
+        public bool VerifyServerProcess(System.Diagnostics.Process process, bool idProvided = false)
 		{
 
             try {
@@ -2764,12 +2764,20 @@ namespace RconTool
                 ServerMemory = new ProcessMemory(process.Id);
 
                 // Get mtndew.dll Module and verify that the module details in memory match the connection details
+                char[] executableFilename = process?.MainModule?.FileName?.Split('\\')?.Last()?.ToCharArray() ?? "eldorado.exe".ToCharArray();
+                string executablePath = process?.MainModule?.FileName?.TrimEnd(executableFilename) ?? null;
                 List<ProcessMemory.ModuleInfo> modules = ServerMemory.GetModuleInfos().ToList();
                 foreach (ProcessMemory.ModuleInfo module in modules) {
                     if (module.baseName == "mtndew.dll") {
                         MtnDewModuleBaseAddress = module.baseOfDll;
-                        if (ServerProcessMatchesConnection(true)) {
-                            AppLog($"Found Server Process");
+                        if ((Settings.ServerExecutableDirectoryPath ?? "") + "\\" == executablePath) {
+                            //AppLog($"ExecutableFileName: {executableFilename}\nExecutablePath: {executablePath}\nSettings.ServerExecutableDirectoryPath: {Settings.ServerExecutableDirectoryPath}");
+                            AppLog($"Found Server Process Matching Server Executable Directory");
+                            gotMtnDewModule = true;
+                            break;
+                        }
+                        else if (idProvided || ServerProcessMatchesConnection(true)) {
+                            AppLog($"Found Server Process {(idProvided ? "by ID" : "Matching Connection Settings")}");
                             gotMtnDewModule = true;
                             break;
                         }

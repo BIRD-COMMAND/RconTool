@@ -289,9 +289,15 @@ namespace RconTool
 
 						case Arg.Type.CommandName:
 							if (!string.IsNullOrWhiteSpace(content)) {
+								
+								RuntimeCommand runtimeCommand = RuntimeCommand.RuntimeCommands.First(x => x.Name.StartsWith(content) || x.Trigger.StartsWith(content));
+								if (runtimeCommand != null) { Parameters.Add(content); break; }
+
 								ToolCommand toolCommand = connection.Settings.Commands.First(x => x.Name.StartsWith(content));
-								if (toolCommand != null) { Parameters.Add(content); }
-								else { Parameters.Add(null); }
+								if (toolCommand != null) { Parameters.Add(content); break; }
+								
+								Parameters.Add(null);
+
 							}
 							else { Parameters.Add(null); }
 							break;

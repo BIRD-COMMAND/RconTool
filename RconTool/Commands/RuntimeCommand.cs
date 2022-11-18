@@ -63,6 +63,13 @@ namespace RconTool
 						if (commandString != "!t" && !commandString.StartsWith("!t ")) { continue; }
 					}
 
+					// Handle command Disabled state
+					if (!command.Enabled) {
+						connection.Respond(sendingPlayer?.Name ?? null, new List<string>() { "That command is disabled." }, chatMessage);
+						return;
+					}
+
+					// 
 					if (!command.AcceptsParameters && commandStringHasParameters) { continue; }
 					if (command.Command == null)
 					{
@@ -894,18 +901,30 @@ namespace RconTool
 				Trigger = "!enableCommand",
 				Name = "enableCommand",
 				Blurb = " !enableCommand: Enable a command.",
-				HelpStrings = new List<string>() { "Sets a saved server command's state to enabled." },
+				HelpStrings = new List<string>() { "Sets a server command's state to enabled." },
 				Description = "Enable a command.",
 				Args = new List<Arg>() {new Arg("commandName", "the name of the command to be enabled.", Arg.Type.CommandName, false)},
 				Command = (connection, message, player, command, parseResult) =>
 				{
 					if (parseResult.IsValid) {
-						ToolCommand match = connection.Settings.Commands.First(x => x.Name.StartsWith(parseResult.Parameters[0]));
-						if (match != null) {
-							connection.Command_SetCommandEnabledState(match, true, parseResult);
+
+						bool commandFound = false;
+
+						RuntimeCommand runtimeCommand = RuntimeCommands.First(x => x.Name.StartsWith(parseResult.Parameters[0]) || x.Trigger.StartsWith(parseResult.Parameters[0]));
+						if (runtimeCommand != null) {
+							commandFound = true;
+							runtimeCommand.Enabled = true;
+							parseResult.Add($"Enabled command: {runtimeCommand.Name}");
 						}
-						else {
-							parseResult.Add("The specified command could not be found.");
+
+						if (!commandFound) {
+							ToolCommand match = connection.Settings.Commands.First(x => x.Name.StartsWith(parseResult.Parameters[0]));
+							if (match != null) {
+								connection.Command_SetCommandEnabledState(match, true, parseResult);
+							}
+							else {
+								parseResult.Add("The specified command could not be found.");
+							}
 						}
 					}
 					else { parseResult.Add("Command failed."); }
@@ -919,18 +938,30 @@ namespace RconTool
 				Trigger = "!disableCommand",
 				Name = "disableCommand",
 				Blurb = " !disableCommand: Disable a command.",
-				HelpStrings = new List<string>() { "Sets a saved server command's state to disabled." },
+				HelpStrings = new List<string>() { "Sets a server command's state to disabled." },
 				Description = "Disable a command.",
 				Args = new List<Arg>() {new Arg("commandName", "the name of the command to be disabled.", Arg.Type.CommandName, false)},
 				Command = (connection, message, player, command, parseResult) =>
 				{
 					if (parseResult.IsValid) {
-						ToolCommand match = connection.Settings.Commands.First(x => x.Name.StartsWith(parseResult.Parameters[0]));
-						if (match != null) {
-							connection.Command_SetCommandEnabledState(match, false, parseResult);
+
+						bool commandFound = false;
+
+						RuntimeCommand runtimeCommand = RuntimeCommands.First(x => x.Name.StartsWith(parseResult.Parameters[0]) || x.Trigger.StartsWith(parseResult.Parameters[0]));
+						if (runtimeCommand != null) {
+							commandFound = true;
+							runtimeCommand.Enabled = false;
+							parseResult.Add($"Disabled command: {runtimeCommand.Name}");
 						}
-						else {
-							parseResult.Add("The specified command could not be found.");
+
+						if (!commandFound) {
+							ToolCommand match = connection.Settings.Commands.First(x => x.Name.StartsWith(parseResult.Parameters[0]));
+							if (match != null) {
+								connection.Command_SetCommandEnabledState(match, false, parseResult);
+							}
+							else {
+								parseResult.Add("The specified command could not be found.");
+							}
 						}
 					}
 					else { parseResult.Add("Command failed."); }
@@ -982,6 +1013,56 @@ namespace RconTool
 						else {
 							parseResult.Add("The specified command could not be found.");
 						}
+					}
+					else { parseResult.Add("Command failed."); }
+					connection.Respond(player?.Name, parseResult.Response, parseResult.ChatMessage);
+				}
+			},
+            #endregion
+			#region RestrictCommand
+			new RuntimeCommand()
+			{
+				Trigger = "!restrictCommand",
+				Name = "restrictCommand",
+				Blurb = " !restrictCommand: Set as admin-only.",
+				HelpStrings = new List<string>() { "Restrict a server command's usage to admins-only." },
+				Description = "Set as admin-only.",
+				Args = new List<Arg>() {new Arg("commandName", "the name of the command to be restricted.", Arg.Type.CommandName, false)},
+				Command = (connection, message, player, command, parseResult) =>
+				{
+					if (parseResult.IsValid) {
+
+						RuntimeCommand runtimeCommand = RuntimeCommands.First(x => x.Name.StartsWith(parseResult.Parameters[0]) || x.Trigger.StartsWith(parseResult.Parameters[0]));
+						if (runtimeCommand != null) {
+							runtimeCommand.AdminCommand = true;
+							parseResult.Add($"Restricted command: {runtimeCommand.Name}");
+						}
+
+					}
+					else { parseResult.Add("Command failed."); }
+					connection.Respond(player?.Name, parseResult.Response, parseResult.ChatMessage);
+				}
+			},
+            #endregion
+			#region UnrestrictCommand
+			new RuntimeCommand()
+			{
+				Trigger = "!unrestrictCommand",
+				Name = "unrestrictCommand",
+				Blurb = " !unrestrictCommand: Anyone can use.",
+				HelpStrings = new List<string>() { "Allow anyone to use a server command." },
+				Description = "Anyone can use.",
+				Args = new List<Arg>() {new Arg("commandName", "the name of the command to be unrestricted.", Arg.Type.CommandName, false)},
+				Command = (connection, message, player, command, parseResult) =>
+				{
+					if (parseResult.IsValid) {
+
+						RuntimeCommand runtimeCommand = RuntimeCommands.First(x => x.Name.StartsWith(parseResult.Parameters[0]) || x.Trigger.StartsWith(parseResult.Parameters[0]));
+						if (runtimeCommand != null) {
+							runtimeCommand.AdminCommand = false;
+							parseResult.Add($"Unrestricted command: {runtimeCommand.Name}");
+						}
+
 					}
 					else { parseResult.Add("Command failed."); }
 					connection.Respond(player?.Name, parseResult.Response, parseResult.ChatMessage);
@@ -1510,6 +1591,7 @@ namespace RconTool
 		public List<Arg> Args { get; set; } = new List<Arg>();
 		public Action<Connection, string, PlayerInfo, RuntimeCommand, ParseResult> Command { get; set; }
 		public CommandAttribute Attribute { get; set; } = CommandAttribute.None;
+		public bool Enabled { get; set; } = true;
 		public bool AdminCommand { get; set; } = true;
 		public bool AcceptsParameters { get; set; } = true;
 		

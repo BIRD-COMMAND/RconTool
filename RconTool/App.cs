@@ -22,6 +22,7 @@ namespace RconTool
         // Therefore, if you are calling a control's method from a different thread, 
         // you must use one of the control's invoke methods to marshal the call to the proper thread.
 
+        //TODO update github readme with list of runtimecommands and other features
 
         #region Properties/Fields
 
