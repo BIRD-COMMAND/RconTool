@@ -46,6 +46,9 @@ namespace RconTool
 				if (processArgs.Length > 0 && int.TryParse(processArgs[0], out int pId)) {
 					connection.AttemptServerHook(pId);
 				}
+				else if (!string.IsNullOrWhiteSpace(connection?.Settings?.ServerExecutableDirectoryPath ?? null)) {
+					connection.AttemptServerHook();
+				}
 				Close();
 			}
 			catch (Exception) { App.Log("ServerHook Failed"); }
