@@ -3,8 +3,11 @@ This is a tool for ElDewrito Server hosts to monitor and moderate their own serv
 
 [Current Version Released Here](https://github.com/BIRD-COMMAND/RconTool/releases/) Updated by BIRD COMMAND
 
-[Original Version](https://github.com/jaron780/RconTool) Created by Jaron
+![RconAppOverview](https://github.com/BIRD-COMMAND/RconTool/assets/19749782/eac28358-9bd9-4c62-8386-374ba3d98e04)
 
+![RconAppGameSelection](https://github.com/BIRD-COMMAND/RconTool/assets/19749782/20c7577f-ac03-4fbe-92ca-8252d527eba0)
+
+[Original Version](https://github.com/jaron780/RconTool) Created by Jaron
 
 ## Build Instructions
 - Clone/Download
