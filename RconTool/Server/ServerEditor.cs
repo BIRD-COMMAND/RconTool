@@ -75,8 +75,10 @@ namespace RconTool
                 info.ServerLanguage = "en"; comboBoxServerLanguage.SelectedIndex = 0;
 			}
 
-            checkBoxUseServerHook.Checked = info.UseServerHook;
-            if (info.ServerExecutableDirectory?.Exists ?? false) {
+            //checkBoxUseServerHook.Checked = info.UseServerHook;
+			checkBoxUseServerHook.Checked = false;
+            checkBoxUseServerHook.Enabled = false;
+			if (info.ServerExecutableDirectory?.Exists ?? false) {
                 gameExecutableDirectoryInfo = info.ServerExecutableDirectory;
 			}
             checkBoxUseLocalData.Checked = info.UseLocalFiles;
@@ -138,28 +140,29 @@ namespace RconTool
                     connection.Settings.ServerLanguage = serverLanguage;
                     connection.Settings.AutoTranslateChatMessages = checkBoxEnableAutoTranslate.Checked;
                     connection.Settings.UseLocalFiles = checkBoxUseLocalData.Checked;
-                    connection.Settings.UseServerHook = checkBoxUseServerHook.Checked;
+					//connection.Settings.UseServerHook = checkBoxUseServerHook.Checked;
+					connection.Settings.UseServerHook = false;
 
-                    if (gameExecutableDirectoryInfo?.Exists ?? false) {
+					if (gameExecutableDirectoryInfo?.Exists ?? false) {
                         // Add Server Directory Path
                         connection.Settings.ServerExecutableDirectoryPath =
                             gameExecutableDirectoryInfo.FullName;
                         // Add Map Variants folder if found
-                        if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\mods\\maps")) {
+                        if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\data\\map_variants")) {
                             connection.Settings.MapVariantsDirectoryPath =
-                                gameExecutableDirectoryInfo.FullName + "\\mods\\maps";
+                                gameExecutableDirectoryInfo.FullName + "\\data\\map_variants";
                         }
                         else { connection.Settings.MapVariantsDirectoryPath = ""; }
                         // Add Game Variants folder if found
-                        if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\mods\\variants")) {
+                        if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\data\\game_variants")) {
                             connection.Settings.GameVariantsDirectoryPath =
-                                gameExecutableDirectoryInfo.FullName + "\\mods\\variants";
+                                gameExecutableDirectoryInfo.FullName + "\\data\\game_variants";
                         }
                         else { connection.Settings.GameVariantsDirectoryPath = ""; }
                         // Add Vote Files folder if found
-                        if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\mods\\server")) {
+                        if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\data\\server")) {
                             connection.Settings.VoteFilesDirectoryPath =
-                                gameExecutableDirectoryInfo.FullName + "\\mods\\server";
+                                gameExecutableDirectoryInfo.FullName + "\\data\\server";
                         }
                         else { connection.Settings.VoteFilesDirectoryPath = ""; }
                     }
@@ -216,8 +219,9 @@ namespace RconTool
                         ServerLanguage = serverLanguage,
                         SendOnConnectCommands = onConnectCommands,
                         UseLocalFiles = checkBoxUseLocalData.Checked,
-                        UseServerHook = checkBoxUseServerHook.Checked
-                    };
+                        //UseServerHook = checkBoxUseServerHook.Checked
+                        UseServerHook = false
+					};
 
                     if (newServerSettings.UseLocalFiles) {
 
@@ -227,19 +231,19 @@ namespace RconTool
                                 gameExecutableDirectoryInfo.FullName;
 
                             // Add Map Variants folder if found
-                            if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\mods\\maps")) {
+                            if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\data\\map_variants")) {
                                 newServerSettings.MapVariantsDirectoryPath =
-                                    gameExecutableDirectoryInfo.FullName + "\\mods\\maps";
+                                    gameExecutableDirectoryInfo.FullName + "\\data\\map_variants";
                             }
                             // Add Game Variants folder if found
-                            if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\mods\\variants")) {
+                            if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\data\\game_variants")) {
                                 newServerSettings.GameVariantsDirectoryPath = 
-                                    gameExecutableDirectoryInfo.FullName + "\\mods\\variants";
+                                    gameExecutableDirectoryInfo.FullName + "\\data\\game_variants";
                             }
                             // Add Vote Files folder if found
-                            if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\mods\\server")) {
+                            if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\data\\server")) {
                                 newServerSettings.VoteFilesDirectoryPath =
-                                    gameExecutableDirectoryInfo.FullName + "\\mods\\server";
+                                    gameExecutableDirectoryInfo.FullName + "\\data\\server";
                             }
 
                         }
@@ -352,15 +356,15 @@ namespace RconTool
                 textBoxGameExecutable.Text = gameExecutableDirectoryInfo.FullName;
 
                 // Add Map Variants folder if found
-                if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\mods\\maps")) {
+                if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\data\\map_variants")) {
                     pictureBoxMapsFolderFoundIndicator.Image = CheckMarkImage;
                 } else { pictureBoxMapsFolderFoundIndicator.Image = XMarkImage; }
                 // Add Game Variants folder if found
-                if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\mods\\variants")) {
+                if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\data\\game_variants")) {
                     pictureBoxGamesFolderFoundIndicator.Image = CheckMarkImage;
                 } else { pictureBoxGamesFolderFoundIndicator.Image = XMarkImage; }
                 // Add Vote Files folder if found
-                if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\mods\\server")) {
+                if (Directory.Exists(gameExecutableDirectoryInfo.FullName + "\\data\\server")) {
                     pictureBoxVoteFilesFolderFoundIndicator.Image = CheckMarkImage;
                 } else { pictureBoxVoteFilesFolderFoundIndicator.Image = XMarkImage; }
 

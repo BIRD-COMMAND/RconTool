@@ -144,6 +144,7 @@ namespace RconTool
 			#region ToggleAutoTranslate
             new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.RequiresServerHook,
 				Trigger = "!toggleAutoTranslate",
 				Name = "toggleAutoTranslate",
 				Blurb = "!toggleAutoTranslate: Toggle AutoTranslation",
@@ -478,6 +479,7 @@ namespace RconTool
 			#region ReloadMapsAndGames
 			new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.DynamicVoteFileCommand,
 				Trigger = "!reloadMapsAndGames",
 				Name = "reloadMapsAndGames",
 				Blurb = "!reloadMapsAndGames: reload variants",
@@ -793,9 +795,97 @@ namespace RconTool
 				}
 			},
 			#endregion
+			#region EndRound
+            new RuntimeCommand()
+			{
+				Trigger = "!endRound",
+				Name = "endRound",
+				Blurb = " !endRound: vote to end the round",
+				HelpStrings = new List<string>() {
+					"Start a vote to end the round."
+				},
+				Description = "Starts a vote to end the round.",
+				Args = new List<Arg>() {},
+				AdminCommand = false,
+				ServerHookCommand = true,
+				Command = (connection, message, player, command, parseResult) =>
+				{
+
+					if (parseResult.IsValid) {
+
+						if (connection.InLobby) {
+							parseResult.Add("endRound cannot be used in lobby.");
+							connection.Respond(player?.Name, parseResult.Response, parseResult.ChatMessage);
+							return;
+						}
+
+						connection.Broadcast($"{player?.Name ?? "CMD"}: {parseResult.ChatMessage.Text}");
+						Thread.Sleep(Connection.ServerMessageDelay);
+
+						connection.Command_BeginVote(
+							connection.Command_EndRound,
+							player,
+							"end the round",
+							new List<string>(),
+							new List<string>(),
+							parseResult.ChatMessage
+						);
+
+					}
+					else
+					{
+						connection.Respond(player?.Name, parseResult.Response, parseResult.ChatMessage);
+					}
+
+				}
+			},
+            #endregion
+			#region SetRoundTimer
+            new RuntimeCommand()
+			{
+				Attribute = CommandAttribute.RequiresServerHook,
+				Trigger = "!setRoundTimer",
+				Name = "setRoundTimer",
+				Blurb = " !setRoundTimer: set round timer",
+				HelpStrings = new List<string>() {
+                  //-------------------------------------------
+                    "Sets the remaining round time.",
+					"Time value supplied as mm:ss or just seconds",
+					"Ex: \"!setRoundTimer 30\" -> 30 seconds remaining",
+					"Ex: \"!setRoundTimer 2:30\" -> 2:30 seconds remaining"
+				},
+				Description = "Sets remaining round time.",
+				Args = new List<Arg>() {
+					new Arg("time", "The gametype to use.", Arg.Type.TimeValue)
+				},
+				Command = (connection, message, player, command, parseResult) =>
+				{
+
+					if (parseResult.IsValid) {
+
+						if (connection.SetRoundTimer(parseResult.Parameters[0]))
+						{							
+							connection.Respond(player?.Name, parseResult.Response, parseResult.ChatMessage);
+							return;
+						}
+						else
+						{
+							parseResult.Add("Failed to set round time");
+							connection.Respond(player?.Name, parseResult.Response, parseResult.ChatMessage);
+						}
+					}
+					else
+					{
+						connection.Respond(player?.Name, parseResult.Response, parseResult.ChatMessage);
+					}
+
+				}
+			},
+            #endregion
 			#region ToggleVotefileEditing
 			new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.DynamicVoteFileCommand,
 				Trigger = "!toggleVotefileEditing",
 				Name = "toggleVotefileEditing",
 				Blurb = " !toggleVotefileEditing: En/Disable votefile editing.",
@@ -830,6 +920,7 @@ namespace RconTool
 			#region EnableVotefileEditing
 			new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.DynamicVoteFileCommand,
 				Trigger = "!enableVotefileEditing",
 				Name = "enableVotefileEditing",
 				Blurb = " !enableVotefileEditing: Enable votefile editing.",
@@ -864,6 +955,7 @@ namespace RconTool
 			#region DisableVotefileEditing
 			new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.DynamicVoteFileCommand,
 				Trigger = "!disableVotefileEditing",
 				Name = "disableVotefileEditing",
 				Blurb = " !disableVotefileEditing: Disable votefile editing.",
@@ -972,6 +1064,7 @@ namespace RconTool
 			#region EnableCommandsByTag
 			new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.RequiresServerHook,
 				Trigger = "!enableCommandsByTag",
 				Name = "enableCommandsByTag",
 				Blurb = " !enableCommandsByTag: Enable certain commands",
@@ -997,6 +1090,7 @@ namespace RconTool
 			#region DisableCommandsByTag
 			new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.RequiresServerHook,
 				Trigger = "!disableCommandsByTag",
 				Name = "disableCommandsByTag",
 				Blurb = " !disableCommandsByTag: Disable certain commands",
@@ -1198,6 +1292,7 @@ namespace RconTool
 			#region Translate
 			new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.RequiresServerHook,
 				Trigger = "!t",
 				Name = "translate",
 				Blurb = " !t, !t-aa: translation",
@@ -1316,6 +1411,7 @@ namespace RconTool
 			#region TranslationUsage
             new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.RequiresServerHook,
 				Trigger = "!translationUsage",
 				Name = "translationUsage",
 				Blurb = "!translationUsage: Translation character count.",
@@ -1386,6 +1482,7 @@ namespace RconTool
 			#region AddAutoTranslateIgnoredPhrase
             new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.RequiresServerHook,
 				Trigger = "!ignorePhrase",
 				Name = "ignorePhrase",
 				Blurb = "!ignorePhrase: Add a translation-ignored phrase",
@@ -1419,6 +1516,7 @@ namespace RconTool
 			#region SetTeam
             new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.RequiresServerHook,
 				Trigger = "!setTeam",
 				Name = "setTeam",
 				Blurb = " !setTeam: set a player's team",
@@ -1483,6 +1581,7 @@ namespace RconTool
 			#region ForceBalanceTeams
             new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.RequiresServerHook,
 				Trigger = "!forceBalanceTeams",
 				Name = "forceBalanceTeams",
 				Blurb = " !forceBalanceTeams: try to balance teams",
@@ -1524,6 +1623,7 @@ namespace RconTool
 			#region BalanceTeams
             new RuntimeCommand()
 			{
+				Attribute = CommandAttribute.RequiresServerHook,
 				Trigger = "!balanceTeams",
 				Name = "balanceTeams",
 				Blurb = " !balanceTeams: vote to balance teams",
@@ -1594,13 +1694,14 @@ namespace RconTool
 		public bool Enabled { get; set; } = true;
 		public bool AdminCommand { get; set; } = true;
 		public bool AcceptsParameters { get; set; } = true;
+		public bool ServerHookCommand { get; set; } = false;
 		
 		/// <summary>
 		/// Returns true if the command's attributes are permitted on the specified connection.
 		/// </summary>
 		public bool IsValidForConnection(Connection connection)
 		{
-
+			if (HasFlag(CommandAttribute.RequiresServerHook) && !connection.ServerHookActive) { return false; }
 			if (HasFlag(CommandAttribute.DynamicVoteFileCommand) && !connection.Settings.UseLocalFiles) { return false; }
 
 			return true;
@@ -1714,7 +1815,8 @@ namespace RconTool
 		public enum CommandAttribute
 		{
 			None = 0,
-			DynamicVoteFileCommand = 1
+			DynamicVoteFileCommand = 1,
+			RequiresServerHook = 2,
 		}
 
 	}

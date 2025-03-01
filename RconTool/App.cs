@@ -36,12 +36,17 @@ namespace RconTool
 
         public const string toolversion = "3.51";
         public const string InternalAppName = "RCON Tool";
-        public const string ChatMessageDateTimeFormatString = "MM/dd/yy HH:mm:ss";
+        public const string ChatMessageIncomingDateTimeFormatString = "MM/dd/yy hh:mm:ss";
+		public const string ChatMessageDateTimeFormatString = "MM/dd/yy hh:mm:ss tt";
 
         public const string DefaultDynamicVotingJsonPath = "mods/server/dynamic.json";
         public const string defaultVotingJsonPath = "mods/server/voting.json";
 
-        public static bool FilterServerJson { get; set; } = true;
+		/// <summary>
+		/// By default the tool ignores JSON messages, identified by a first character of '{'<br/>
+        /// If this is set to true, the <see cref="Connection.OnRconWebsocketMessage(object, WebSocketSharp.MessageEventArgs)"/> method will not process JSON messages in any way.
+		/// </summary>
+		public static bool FilterServerJson { get; set; } = true;
 
         public static TranslationClient TranslationClient { get; private set; }
         private static SavedSetting<string> TranslationAPIKey = new SavedSetting<string>(SettingsKeys.TranslationApiKey, "", true, false);
@@ -463,76 +468,76 @@ namespace RconTool
             variantsCM = new ContextMenuStrip();
 
             variantsCM.Items.Add("Slayer", null, null);
-            variantsCM.Items[0].DropDownItems().Add("Slayer", null, (sender, e) => { ContextLoadGame("Game.GameType \"slayer\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["slayer"]; });
+            variantsCM.Items[0].DropDownItems().Add("Slayer", null, (sender, e) => { ContextLoadGame("Game.GameType slayer", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["slayer"]; });
             variantsCM.Items[0].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["slayer"];
-            variantsCM.Items[0].DropDownItems().Add("Team Slayer", null, (sender, e) => { ContextLoadGame("Game.GameType \"team slayer\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["team slayer"]; });
+            variantsCM.Items[0].DropDownItems().Add("Team Slayer", null, (sender, e) => { ContextLoadGame("Game.GameType team slayer", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["team slayer"]; });
             variantsCM.Items[0].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["team slayer"];
-            variantsCM.Items[0].DropDownItems().Add("Rockets", null, (sender, e) => { ContextLoadGame("Game.GameType \"rockets\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["rockets"]; });
+            variantsCM.Items[0].DropDownItems().Add("Rockets", null, (sender, e) => { ContextLoadGame("Game.GameType rockets", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["rockets"]; });
             variantsCM.Items[0].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["rockets"];
-            variantsCM.Items[0].DropDownItems().Add("Elimination", null, (sender, e) => { ContextLoadGame("Game.GameType \"elimination\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["elimination"]; });
+            variantsCM.Items[0].DropDownItems().Add("Elimination", null, (sender, e) => { ContextLoadGame("Game.GameType elimination", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["elimination"]; });
             variantsCM.Items[0].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["elimination"];
-            variantsCM.Items[0].DropDownItems().Add("Duel", null, (sender, e) => { ContextLoadGame("Game.GameType \"duel\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["duel"]; });
+            variantsCM.Items[0].DropDownItems().Add("Duel", null, (sender, e) => { ContextLoadGame("Game.GameType duel", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["duel"]; });
             variantsCM.Items[0].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["duel"];
             variantsCM.Items.Add("Oddball", null, null);
-            variantsCM.Items[1].DropDownItems().Add("Oddball", null, (sender, e) => { ContextLoadGame("Game.GameType \"oddball\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["oddball"]; });
+            variantsCM.Items[1].DropDownItems().Add("Oddball", null, (sender, e) => { ContextLoadGame("Game.GameType oddball", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["oddball"]; });
             variantsCM.Items[1].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["oddball"];
-            variantsCM.Items[1].DropDownItems().Add("Team Oddball", null, (sender, e) => { ContextLoadGame("Game.GameType \"team oddball\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["team oddball"]; });
+            variantsCM.Items[1].DropDownItems().Add("Team Oddball", null, (sender, e) => { ContextLoadGame("Game.GameType team oddball", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["team oddball"]; });
             variantsCM.Items[1].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["team oddball"];
-            variantsCM.Items[1].DropDownItems().Add("Lowball", null, (sender, e) => { ContextLoadGame("Game.GameType \"lowball\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["lowball"]; });
+            variantsCM.Items[1].DropDownItems().Add("Lowball", null, (sender, e) => { ContextLoadGame("Game.GameType lowball", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["lowball"]; });
             variantsCM.Items[1].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["lowball"];
-            variantsCM.Items[1].DropDownItems().Add("Ninjaball", null, (sender, e) => { ContextLoadGame("Game.GameType \"ninjaball\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["ninjaball"]; });
+            variantsCM.Items[1].DropDownItems().Add("Ninjaball", null, (sender, e) => { ContextLoadGame("Game.GameType ninjaball", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["ninjaball"]; });
             variantsCM.Items[1].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["ninjaball"];
-            variantsCM.Items[1].DropDownItems().Add("Rocketball", null, (sender, e) => { ContextLoadGame("Game.GameType \"rocketball\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["rocketball"]; });
+            variantsCM.Items[1].DropDownItems().Add("Rocketball", null, (sender, e) => { ContextLoadGame("Game.GameType rocketball", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["rocketball"]; });
             variantsCM.Items[1].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["rocketball"];
             variantsCM.Items.Add("Capture The Flag", null, null);
-            variantsCM.Items[2].DropDownItems().Add("Multi Flag", null, (sender, e) => { ContextLoadGame("Game.GameType \"multi flag\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["multi flag"]; });
+            variantsCM.Items[2].DropDownItems().Add("Multi Flag", null, (sender, e) => { ContextLoadGame("Game.GameType multi flag", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["multi flag"]; });
             variantsCM.Items[2].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["multi flag"];
-            variantsCM.Items[2].DropDownItems().Add("One Flag", null, (sender, e) => { ContextLoadGame("Game.GameType \"one flag\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["one flag"]; });
+            variantsCM.Items[2].DropDownItems().Add("One Flag", null, (sender, e) => { ContextLoadGame("Game.GameType one flag", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["one flag"]; });
             variantsCM.Items[2].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["one flag"];
-            variantsCM.Items[2].DropDownItems().Add("Tank Flag", null, (sender, e) => { ContextLoadGame("Game.GameType \"tank flag\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["tank flag"]; });
+            variantsCM.Items[2].DropDownItems().Add("Tank Flag", null, (sender, e) => { ContextLoadGame("Game.GameType tank flag", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["tank flag"]; });
             variantsCM.Items[2].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["tank flag"];
-            variantsCM.Items[2].DropDownItems().Add("Attrition CTF", null, (sender, e) => { ContextLoadGame("Game.GameType \"attrition ctf\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["attrition ctf"]; });
+            variantsCM.Items[2].DropDownItems().Add("Attrition CTF", null, (sender, e) => { ContextLoadGame("Game.GameType attrition ctf", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["attrition ctf"]; });
             variantsCM.Items[2].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["attrition ctf"];
             variantsCM.Items.Add("Assault", null, null);
-            variantsCM.Items[3].DropDownItems().Add("Assault", null, (sender, e) => { ContextLoadGame("Game.GameType \"assault\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["assault"]; });
+            variantsCM.Items[3].DropDownItems().Add("Assault", null, (sender, e) => { ContextLoadGame("Game.GameType assault", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["assault"]; });
             variantsCM.Items[3].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["assault"];
-            variantsCM.Items[3].DropDownItems().Add("Neutral Bomb", null, (sender, e) => { ContextLoadGame("Game.GameType \"neutral assault\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["neutral assault"]; });
+            variantsCM.Items[3].DropDownItems().Add("Neutral Bomb", null, (sender, e) => { ContextLoadGame("Game.GameType neutral assault", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["neutral assault"]; });
             variantsCM.Items[3].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["neutral assault"];
-            variantsCM.Items[3].DropDownItems().Add("One Bomb", null, (sender, e) => { ContextLoadGame("Game.GameType \"one bomb\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["one bomb"]; });
+            variantsCM.Items[3].DropDownItems().Add("One Bomb", null, (sender, e) => { ContextLoadGame("Game.GameType one bomb", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["one bomb"]; });
             variantsCM.Items[3].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["one bomb"];
-            variantsCM.Items[3].DropDownItems().Add("Attrition Bomb", null, (sender, e) => { ContextLoadGame("Game.GameType \"attrition assault\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["attrition assault"]; });
+            variantsCM.Items[3].DropDownItems().Add("Attrition Bomb", null, (sender, e) => { ContextLoadGame("Game.GameType attrition assault", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["attrition assault"]; });
             variantsCM.Items[3].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["attrition assault"];
             variantsCM.Items.Add("Infection", null, null);
-            variantsCM.Items[4].DropDownItems().Add("Infection", null, (sender, e) => { ContextLoadGame("Game.GameType \"infection\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["infection"]; });
+            variantsCM.Items[4].DropDownItems().Add("Infection", null, (sender, e) => { ContextLoadGame("Game.GameType infection", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["infection"]; });
             variantsCM.Items[4].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["infection"];
-            variantsCM.Items[4].DropDownItems().Add("Save One Bullet", null, (sender, e) => { ContextLoadGame("Game.GameType \"save one bullet\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["save one bullet"]; });
+            variantsCM.Items[4].DropDownItems().Add("Save One Bullet", null, (sender, e) => { ContextLoadGame("Game.GameType save one bullet", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["save one bullet"]; });
             variantsCM.Items[4].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["save one bullet"];
-            variantsCM.Items[4].DropDownItems().Add("Alpha Zombie", null, (sender, e) => { ContextLoadGame("Game.GameType \"alpha zombie\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["alpha zombie"]; });
+            variantsCM.Items[4].DropDownItems().Add("Alpha Zombie", null, (sender, e) => { ContextLoadGame("Game.GameType alpha zombie", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["alpha zombie"]; });
             variantsCM.Items[4].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["alpha zombie"];
-            variantsCM.Items[4].DropDownItems().Add("Hide and Seek", null, (sender, e) => { ContextLoadGame("Game.GameType \"hide and seek\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["hide and seek"]; });
+            variantsCM.Items[4].DropDownItems().Add("Hide and Seek", null, (sender, e) => { ContextLoadGame("Game.GameType hide and seek", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["hide and seek"]; });
             variantsCM.Items[4].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["hide and seek"];
             variantsCM.Items.Add("King Of The Hill", null, null);
-            variantsCM.Items[5].DropDownItems().Add("Crazy King", null, (sender, e) => { ContextLoadGame("Game.GameType \"crazy king\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["crazy king"]; });
+            variantsCM.Items[5].DropDownItems().Add("Crazy King", null, (sender, e) => { ContextLoadGame("Game.GameType crazy king", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["crazy king"]; });
             variantsCM.Items[5].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["crazy king"];
-            variantsCM.Items[5].DropDownItems().Add("Team King", null, (sender, e) => { ContextLoadGame("Game.GameType \"team king\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["team king"]; });
+            variantsCM.Items[5].DropDownItems().Add("Team King", null, (sender, e) => { ContextLoadGame("Game.GameType team king", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["team king"]; });
             variantsCM.Items[5].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["team king"];
-            variantsCM.Items[5].DropDownItems().Add("Mosh Pit", null, (sender, e) => { ContextLoadGame("Game.GameType \"mosh pit\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["mosh pit"]; });
+            variantsCM.Items[5].DropDownItems().Add("Mosh Pit", null, (sender, e) => { ContextLoadGame("Game.GameType mosh pit", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["mosh pit"]; });
             variantsCM.Items[5].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["mosh pit"];
             variantsCM.Items.Add("Juggernaut", null, null);
-            variantsCM.Items[6].DropDownItems().Add("Juggernaut", null, (sender, e) => { ContextLoadGame("Game.GameType \"juggernaut\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["juggernaut"]; });
+            variantsCM.Items[6].DropDownItems().Add("Juggernaut", null, (sender, e) => { ContextLoadGame("Game.GameType juggernaut", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["juggernaut"]; });
             variantsCM.Items[6].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["juggernaut"];
-            variantsCM.Items[6].DropDownItems().Add("Mad Dash", null, (sender, e) => { ContextLoadGame("Game.GameType \"mad dash\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["mad dash"]; });
+            variantsCM.Items[6].DropDownItems().Add("Mad Dash", null, (sender, e) => { ContextLoadGame("Game.GameType mad dash", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["mad dash"]; });
             variantsCM.Items[6].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["mad dash"];
-            variantsCM.Items[6].DropDownItems().Add("Ninjanaut", null, (sender, e) => { ContextLoadGame("Game.GameType \"ninjanaut\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["ninjanaut"]; });
+            variantsCM.Items[6].DropDownItems().Add("Ninjanaut", null, (sender, e) => { ContextLoadGame("Game.GameType ninjanaut", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["ninjanaut"]; });
             variantsCM.Items[6].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["ninjanaut"];
             variantsCM.Items.Add("VIP", null, null);
-            variantsCM.Items[7].DropDownItems().Add("VIP", null, (sender, e) => { ContextLoadGame("Game.GameType \"vip\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["vip"]; });
+            variantsCM.Items[7].DropDownItems().Add("VIP", null, (sender, e) => { ContextLoadGame("Game.GameType vip", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["vip"]; });
             variantsCM.Items[7].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["vip"];
-            variantsCM.Items[7].DropDownItems().Add("One-Sided VIP", null, (sender, e) => { ContextLoadGame("Game.GameType \"one sided vip\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["one sided vip"]; });
+            variantsCM.Items[7].DropDownItems().Add("One-Sided VIP", null, (sender, e) => { ContextLoadGame("Game.GameType one sided vip", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["one sided vip"]; });
             variantsCM.Items[7].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["one sided vip"];
-            variantsCM.Items[7].DropDownItems().Add("Escort", null, (sender, e) => { ContextLoadGame("Game.GameType \"escort\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["escort"]; });
+            variantsCM.Items[7].DropDownItems().Add("Escort", null, (sender, e) => { ContextLoadGame("Game.GameType escort", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["escort"]; });
             variantsCM.Items[7].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["escort"];
-            variantsCM.Items[7].DropDownItems().Add("Influential VIP", null, (sender, e) => { ContextLoadGame("Game.GameType \"influential vip\"", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["influential vip"]; });
+            variantsCM.Items[7].DropDownItems().Add("Influential VIP", null, (sender, e) => { ContextLoadGame("Game.GameType influential vip", sender); toolStripDropDownButtonGame.ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["influential vip"]; });
             variantsCM.Items[7].DropDownItems().LastItem().ToolTipText = GameVariant.BuiltInGameVariantDescriptionsByName["influential vip"];
 
             toolStripDropDownButtonGame.DropDown = variantsCM;
@@ -579,7 +584,11 @@ namespace RconTool
             // Auto scroll
             textBoxAutoScrollConsoleText.TabSelected_UpdateAutoScroll(tabControlServerInterfaces, null);
 
-        }
+            // Disable Server Hook Button
+            toolStripSplitButtonServerHook.Enabled = false;
+            toolStripSplitButtonServerHook.Visible = false;
+
+		}
 
         private void RunTimedCommands()
         {
@@ -747,8 +756,8 @@ namespace RconTool
                     //    labelServerName.Text = currentConnection.State.Name; 
                     //}
                     if (!textBoxServerNameEdit_editing) { 
-                        if ((textBoxServerNameEdit.Text ?? "") != currentConnection.State.Name) {
-                            textBoxServerNameEdit.Text = currentConnection.State.Name;
+                        if ((textBoxServerNameEdit.Text ?? "") != currentConnection.State.name) {
+                            textBoxServerNameEdit.Text = currentConnection.State.name;
                         }
                     }
 
@@ -790,16 +799,16 @@ namespace RconTool
                         }
                     }
                     else {
-                        if (toolStripDropDownButtonGame.Text != (currentConnection.State.Variant == "none" ? "Deciding Gametype" : currentConnection.State.Variant)) {
-                            toolStripDropDownButtonGame.Text = currentConnection.State.Variant == "none" ? "Deciding Gametype" : currentConnection.State.Variant;
+                        if (toolStripDropDownButtonGame.Text != (currentConnection.State.variant == "none" ? "Deciding Gametype" : currentConnection.State.variant)) {
+                            toolStripDropDownButtonGame.Text = currentConnection.State.variant == "none" ? "Deciding Gametype" : currentConnection.State.variant;
                         }
                         if (pictureBoxGameVariantIcon.Image != GameVariantIconsByBaseGame[currentConnection.State.GameVariantType]) {
                             pictureBoxGameVariantIcon.Image = GameVariantIconsByBaseGame[currentConnection.State.GameVariantType];
                         }
                     }
 
-                    if (toolStripDropDownButtonMap.Text != currentConnection.State.Map) { toolStripDropDownButtonMap.Text = currentConnection.State.Map; }
-                    if (labelPlayers.Text != currentConnection.State.NumPlayers.ToString()) { labelPlayers.Text = currentConnection.State.NumPlayers.ToString(); }
+                    if (toolStripDropDownButtonMap.Text != currentConnection.State.map) { toolStripDropDownButtonMap.Text = currentConnection.State.map; }
+                    if (labelPlayers.Text != currentConnection.State.numPlayers.ToString()) { labelPlayers.Text = currentConnection.State.numPlayers.ToString(); }
 
                     // Set chat commands menu items toggle check state
                     if (currentConnection.Settings != null) {
@@ -824,9 +833,9 @@ namespace RconTool
                     }
 
                     // Update max players dropdown selector
-                    if (currentConnection.State.MaxPlayers != comboBoxMaxPlayers.SelectedIndex + 16) {
+                    if (currentConnection.State.maxPlayers != comboBoxMaxPlayers.SelectedIndex + 16) {
                         // Don't update the combo box if it's focused, because the selection will keep resetting and it will be unusable
-                        if (!comboBoxMaxPlayers.Focused) { comboBoxMaxPlayers.SelectedIndex = 16 - currentConnection.State.MaxPlayers; }
+                        if (!comboBoxMaxPlayers.Focused) { comboBoxMaxPlayers.SelectedIndex = 16 - currentConnection.State.maxPlayers; }
                     }
 
                     // Update Server Select Dropdown
@@ -921,10 +930,10 @@ namespace RconTool
                 if (validState && currentConnection.Settings != null) {
                     string title = "";
                     switch (currentConnection.Settings.TitleDisplayOption) {
-                        case ServerSettings.TitleOption.Name: title = ("RCON Tool - " + currentConnection?.State?.Name ?? "Unknown Server"); break;
+                        case ServerSettings.TitleOption.Name: title = ("RCON Tool - " + currentConnection?.State?.name ?? "Unknown Server"); break;
                         case ServerSettings.TitleOption.Game:
-                            if ((currentConnection?.State?.Status ?? "") == Connection.StatusStringInLobby) { title = ("RCON Tool - In Lobby"); }
-                            else { title =  "RCON Tool - " + currentConnection?.State?.Variant ?? "Unknown Gametype" + " on " + currentConnection?.State?.Map ?? "Unknown Map"; }
+                            if ((currentConnection?.State?.status ?? "") == Connection.StatusStringInLobby) { title = ("RCON Tool - In Lobby"); }
+                            else { title =  "RCON Tool - " + currentConnection?.State?.variant ?? "Unknown Gametype" + " on " + currentConnection?.State?.map ?? "Unknown Map"; }
                             break;
                         case ServerSettings.TitleOption.Ip: title = "RCON Tool - " + currentConnection?.Settings?.Ip ?? "Unknown IP " + ":" + currentConnection?.Settings?.InfoPort ?? "Unknown Port"; break;
                         case ServerSettings.TitleOption.None: title = ("RCON Tool"); break;
@@ -1330,7 +1339,7 @@ namespace RconTool
 		{
             if (contextPlayer != null && 
                 contextPlayer.Team != teamIndex && 
-                (currentConnection?.State?.Teams ?? false)) 
+                (currentConnection?.State?.teamGame ?? false)) 
             {
                 currentConnection.SetPlayerTeam(null, new Tuple<PlayerInfo, int>(contextPlayer, teamIndex));
 			}
@@ -2399,7 +2408,7 @@ namespace RconTool
         private void toolStripDropDownButtonGame_DropDownOpening(object sender, EventArgs e)
         {
 
-            if (!string.IsNullOrWhiteSpace(currentConnection?.State?.Variant)) {
+            if (!string.IsNullOrWhiteSpace(currentConnection?.State?.variant)) {
 
                 //[0]"Slayer",
                 //[1]"Oddball",
@@ -2410,7 +2419,7 @@ namespace RconTool
                 //[6]"Juggernaut",
                 //[7]"VIP",
 
-                string variantName = currentConnection.State.Variant ?? "";
+                string variantName = currentConnection.State.variant ?? "";
 
                 if (CurrentConnectionHooked) {
                     variantName = currentConnection.GetCurrentGameType()?.Name ?? "";
@@ -2513,7 +2522,7 @@ namespace RconTool
 
         private void pictureBoxMapAndStatusOverlay_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && !string.IsNullOrWhiteSpace(currentConnection?.State?.MapFile)) {
+            if (e.Button == MouseButtons.Right && !string.IsNullOrWhiteSpace(currentConnection?.State?.mapFile)) {
 
                 UpdateMapsContextMenu();
 
@@ -2527,7 +2536,7 @@ namespace RconTool
         private void UpdateMapsContextMenu()
 		{
             
-            if (!string.IsNullOrWhiteSpace(currentConnection?.State?.MapFile)) {
+            if (!string.IsNullOrWhiteSpace(currentConnection?.State?.mapFile)) {
 
                 //mapsCM.Items[00] = "Diamondback" /*"s3d_avalanche"*/
                 //mapsCM.Items[01] = "Edge"        /*"s3d_edge"*/
@@ -2542,7 +2551,7 @@ namespace RconTool
                 //mapsCM.Items[10] = "The Pit"     /*"cyberdyne"*/
                 //mapsCM.Items[11] = "Valhalla"    /*"riverworld"*/
 
-                string mapName = currentConnection.State.Map ?? "";
+                string mapName = currentConnection.State.map ?? "";
 
                 // Set Base Maps colors and check state
                 for (int i = 0; i < 12; i++) {
@@ -3005,8 +3014,8 @@ namespace RconTool
                 e.SuppressKeyPress = true;
 
                 // if name is unchanged or invalid, reset text to current server name
-                if (String.IsNullOrWhiteSpace(textBoxServerNameEdit.Text) || textBoxServerNameEdit.Text == (currentConnection?.State?.Name ?? "Server Name Error")) {
-                    textBoxServerNameEdit.Text = currentConnection?.State?.Name ?? "Server Name Error";
+                if (String.IsNullOrWhiteSpace(textBoxServerNameEdit.Text) || textBoxServerNameEdit.Text == (currentConnection?.State?.name ?? "Server Name Error")) {
+                    textBoxServerNameEdit.Text = currentConnection?.State?.name ?? "Server Name Error";
                 }
 
                 // get confirmation and then submit the Server Name change command if confirmed
@@ -3042,7 +3051,7 @@ namespace RconTool
                 e.SuppressKeyPress = true;
 
                 // reset text to current server name
-                textBoxServerNameEdit.Text = currentConnection?.State?.Name ?? "Server Name Error";
+                textBoxServerNameEdit.Text = currentConnection?.State?.name ?? "Server Name Error";
 
                 // remove focus, and change back to label-like display
                 this.ActiveControl = null;

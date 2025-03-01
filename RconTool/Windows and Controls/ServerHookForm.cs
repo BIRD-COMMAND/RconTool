@@ -28,7 +28,8 @@ namespace RconTool
 		private void checkBoxServerHookAllowed_CheckedChanged(object sender, EventArgs e)
 		{
 			if (checkBoxServerHookAllowed.Checked != (connection.Settings.UseServerHook)) {
-				connection.Settings.UseServerHook = checkBoxServerHookAllowed.Checked;
+				//connection.Settings.UseServerHook = checkBoxServerHookAllowed.Checked;
+				connection.Settings.UseServerHook = false;
 				connection.SaveSettings();
 			}
 		}

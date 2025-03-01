@@ -11,24 +11,33 @@ namespace RconTool
     public class ServerState
     {
 
-        public string Name { get; set; } = "";
-        public int Port { get; set; } = 0;
-        public string HostPlayer { get; set; } = "";
-        public string SprintEnabled { get; set; } = "";
-        public string SprintUnlimitedEnabled { get; set; } = "";
+        public string name { get; set; } = "";
+        public int port { get; set; } = 0;
+        public string hostPlayer { get; set; } = "";
+        public bool isDedicated { get; set; } = false;
+        public string sprintState { get; set; } = "";
+        public string sprintUnlimitedEnabled { get; set; } = "";
         public string DualWielding { get; set; } = "";
-        public string AssassinationEnabled { get; set; } = "";
+        public string assassinationEnabled { get; set; } = "";
         public string VotingEnabled { get; set; } = "";
-        public bool Teams { get; set; } = false;
-        public string Map { get; set; } = "";
-        public string MapFile { get; set; } = "";
-        public string Variant { get; set; } = "";
-        public string VariantType { get; set; } = "";
-        public string Status { get; set; } = "";
+        public bool voip { get; set; } = false;
+		public bool teamGame { get; set; } = false;
+        public int redScore { get; set; } = 0;
+		public int blueScore { get; set; } = 0;
+        public string map { get; set; } = "";
+		public string mapFile { get; set; } = "";
+        public string variant { get; set; } = "";
+        public string variantType { get; set; } = "";
+        public string status { get; set; } = "";
         public string PreviousStatus { get; set; } = "_";
-        public int NumPlayers { get; set; } = 0;
-        public int MaxPlayers { get; set; } = 0;
-        public string Xnkid { get; set; } = "";
+        public int numPlayers { get; set; } = 0;
+        public int maxPlayers { get; set; } = 0;
+		public int modCount { get; set; } = 0;
+		public string modPackageName { get; set; } = "";
+		public string modPackageAuthor { get; set; } = "";
+		public string modPackageHash { get; set; } = "";
+		public string modPackageVersion {  get; set; } = "";
+		public string Xnkid { get; set; } = "";
         public string Xnaddr { get; set; } = "";
         public bool Passworded { get; set; } = false;
         public List<int> TeamScores { get; set; } = new List<int>();
@@ -41,9 +50,8 @@ namespace RconTool
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
         public Dictionary<string, PlayerInfo> PlayersByUid { get; set; } = new Dictionary<string, PlayerInfo>();
         private List<PlayerInfo> RemovePlayers { get; set; } = new List<PlayerInfo>();
-        public bool IsDedicated { get; set; } = false;
         public string GameVersion { get; set; } = "";
-        public string EldewritoVersion { get; set; } = "";
+        public string eldewritoVersion { get; set; } = "";
         public GameVariant.BaseGame GameVariantType { get; set; }
 
         public readonly object ServerStateLock = new object();
@@ -52,6 +60,19 @@ namespace RconTool
 
         public bool InLobby { get { return inLobby; } }
         private bool inLobby = false;
+
+        /// <summary>
+        /// Returns the TimeSpan representing how long the server status has been InLobby.
+        /// <br>Returns 0 if the lobby timer is not active for any reason.</br>
+        /// </summary>
+        public TimeSpan TimeInLobby { get {
+                if (lobbyTimerActive) { return DateTime.Now - lobbyStartTime; }
+                else { return TimeSpan.Zero; }
+			}
+        }
+        private DateTime lobbyStartTime;
+        private bool lobbyTimerActive = false;
+
 
         public bool IsLoading { get { return isLoading; } }
         private bool isLoading = false;
@@ -75,14 +96,14 @@ namespace RconTool
 
         public Image LobbyStateOverlay { 
             get {
-                if (Status == "InLobby") { return statusOverlayInLobby; }
+                if (status == "InLobby") { return statusOverlayInLobby; }
                 else { return statusOverlayInGame; }
                 //else if (Status == "loading") { return Properties.Resources.Image_StatusOverlay_Loading_126x40; }
             }
         }
         public Image LobbyMapBackgroundImage {
             get {
-				switch (MapFile) {
+				switch (mapFile) {
                     case "guardian":       return mapIconGuardian;
                     case "riverworld":     return mapIconValhalla;
                     case "s3d_avalanche":  return mapIconDiamondback;
@@ -106,39 +127,39 @@ namespace RconTool
             lock (ServerStateLock)
             {
 
-                if (Status != newState.Status) { connection.RecordMatchResults(this); }
-                if (connection.ServerHookActive && Teams != newState.Teams) { Scoreboard.RegenerateScoreboardImage = true; }
+                if (status != newState.status) { connection.RecordMatchResults(this); }
+                if (connection.ServerHookActive && teamGame != newState.teamGame) { Scoreboard.RegenerateScoreboardImage = true; }
 
-                Name = newState.Name;
-                Port = newState.Port;
-                HostPlayer = newState.HostPlayer;
-                SprintEnabled = newState.SprintEnabled;
-                SprintUnlimitedEnabled = newState.SprintUnlimitedEnabled;
+                name = newState.name;
+                port = newState.port;
+                hostPlayer = newState.hostPlayer;
+                sprintState = newState.sprintState;
+                sprintUnlimitedEnabled = newState.sprintUnlimitedEnabled;
                 DualWielding = newState.DualWielding;
-                AssassinationEnabled = newState.AssassinationEnabled;
+                assassinationEnabled = newState.assassinationEnabled;
                 VotingEnabled = newState.VotingEnabled;
-                Teams = newState.Teams;
-                Map = newState.Map;
-                MapFile = newState.MapFile;
-                Variant = newState.Variant;
-                VariantType = newState.VariantType;
-                NumPlayers = newState.NumPlayers;
-                MaxPlayers = newState.MaxPlayers;
+                teamGame = newState.teamGame;
+                map = newState.map;
+                mapFile = newState.mapFile;
+                variant = newState.variant;
+                variantType = newState.variantType;
+                numPlayers = newState.numPlayers;
+                maxPlayers = newState.maxPlayers;
                 TeamScores = newState.TeamScores;
                 Passworded = newState.Passworded;
                 Xnkid = newState.Xnkid;
                 Xnaddr = newState.Xnaddr;
-                IsDedicated = newState.IsDedicated;
+                isDedicated = newState.isDedicated;
                 GameVersion = newState.GameVersion;
-                EldewritoVersion = newState.EldewritoVersion;
+                eldewritoVersion = newState.eldewritoVersion;
 
-                PreviousStatus = Status;
-                Status = newState.Status;
+                PreviousStatus = status;
+                status = newState.status;
 
-                inLobby = Status == "InLobby";
-                isLoading = Status == "Loading";
+                inLobby = status == "InLobby";
+                isLoading = status == "Loading";
 
-                GameVariantType = GameVariant.GetBaseGameID(VariantType);
+                GameVariantType = GameVariant.GetBaseGameID(variantType);
 
             }
 
@@ -146,17 +167,17 @@ namespace RconTool
             string date = $"[{DateTimeUTC()}] ";
 
             // Detect Match Start and End
-            if (Status != PreviousStatus)
+            if (status != PreviousStatus)
             {
                 // Game Started
-                if (Status == Connection.StatusStringInGame)
+                if (status == Connection.StatusStringInGame)
                 {
                     connection.InvokeMatchBeganOrEnded(new Connection.MatchBeginEndArgs(true, connection));
                     //connection.OnMatchBeginOrEnd(this, new Connection.MatchBeginEndArgs(true, connection));
-                    connection.PrintToConsole("Game Started: " + newState.Variant + " ON " + newState.Map);
+                    connection.PrintToConsole("Game Started: " + newState.variant + " ON " + newState.map);
                 }
                 // Game Ended
-                else if (Status == Connection.StatusStringInLobby && PreviousStatus == Connection.StatusStringInGame)
+                else if (status == Connection.StatusStringInLobby && PreviousStatus == Connection.StatusStringInGame)
                 {
                     connection.InvokeMatchBeganOrEnded(new Connection.MatchBeginEndArgs(false, connection));
                     //connection.OnMatchBeginOrEnd(this, new Connection.MatchBeginEndArgs(false, connection));
@@ -172,6 +193,17 @@ namespace RconTool
 					}
                     App.PlayerStatsRecords.Save();
                 }
+
+                // Start Lobby Timer
+                if (InLobby && !lobbyTimerActive) {
+                    lobbyStartTime = DateTime.Now;
+                    lobbyTimerActive = true;
+				}
+                // Reset Lobby Timer
+                if (!InLobby && lobbyTimerActive) {
+                    lobbyTimerActive = false;
+				}
+
             }
 
             // For each player in the new server state's player list
@@ -180,9 +212,9 @@ namespace RconTool
                 
                 if (player.Name.Length == 0) { continue; }
 
-                if (!Teams) { player.Team = -1; }
-                else if (Status == Connection.StatusStringInLobby) { player.Team = -1; }
-                else if (Status == Connection.StatusStringLoading) { player.Team = -1; }
+                if (!teamGame) { player.Team = -1; }
+                else if (status == Connection.StatusStringInLobby) { player.Team = -1; }
+                else if (status == Connection.StatusStringLoading) { player.Team = -1; }
 
                 // If the player list does not contain this player, this player has just joined the game
                 PlayerInfo match = Players.Find(x => x.Uid == player.Uid);
@@ -243,7 +275,7 @@ namespace RconTool
                 Players.Clear();
                 foreach (IGrouping<int, PlayerInfo> team in teams)
                 {
-                    Players.AddRange(team.OrderByDescending(x => x.Score));
+                    Players.AddRange(team.OrderByDescending(x => x.RoundScore));
                 }
 
                 OrderedTeamScores.Clear();
@@ -251,12 +283,12 @@ namespace RconTool
                 RankedPlayers.Clear();
 
                 // Sort team scores for scoreboard display
-                if (Teams)
+                if (this.teamGame)
                 {
-                    
-                    OrderedTeamScores = TeamScores.Select(
+
+					OrderedTeamScores = TeamScores.Select(
                         (x, i) =>
-                            (Players.Any(p => p.Team == i))
+                            ( Players.Any(p => p.Team == i))
                                 ? new Tuple<int, int>(i, x)
                                 : new Tuple<int, int>(-1, x)
                     )                                                   // Mark all empty teams with -1
@@ -267,10 +299,10 @@ namespace RconTool
 
                     for (int i = 0; i < OrderedTeamScores.Count; i++)
                     {
-                        OrderedTeams.Add(
+						OrderedTeams.Add(
                             new Tuple<Tuple<int, int>, List<PlayerInfo>>(
-                                OrderedTeamScores[i], 
-                                Players.Where(x => x.Team == OrderedTeamScores[i].Item1).ToList()
+								OrderedTeamScores[i],
+								Players.Where(x => x.Team == OrderedTeamScores[i].Item1).ToList()
                             )
                         );
                     }

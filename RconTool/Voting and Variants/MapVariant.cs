@@ -270,7 +270,12 @@ namespace RconTool
 							fs.Read(nameBytes, 0, 32);
 							string name;
 							try { name = new UnicodeEncoding(false, false, true).GetString(nameBytes); }
-							catch { fs.Close(); fs.Dispose(); throw new Exception("Error Decoding MapVariant Name"); }
+							catch { 
+								fs.Close(); fs.Dispose();
+								//TODO proper handling for mod maps
+								//throw new Exception("Error Decoding MapVariant Name"); 
+								return false;
+							}
 							name = name.Replace("\0", "");
 							#endregion
 
@@ -376,9 +381,21 @@ namespace RconTool
 
 					int id;
 					try { id = (int)BitConverter.ToUInt32(mapBaseTypeIdBytes, 0); }
-					catch { fs.Close(); fs.Dispose(); throw new Exception("Error Decoding Base Map Type ID"); }
+					catch { 
+						fs.Close(); fs.Dispose();
+						this.IsValid = false;
+						return;
+						//TODO proper handling for mod maps
+						//throw new Exception("Error Decoding Base Map Type ID"); 
+					}
 					if (BaseMapDisplayNamesByBasemapNumber.ContainsKey(id)) { BaseMapString = BaseMapDisplayNamesByBasemapNumber[id]; BaseMapID = (BaseMap)id; }
-					else { throw new Exception("Base Map Type Not Found For ID "+ id); }
+					else {
+						fs.Close(); fs.Dispose();
+						this.IsValid = false;
+						return;
+						//TODO proper handling for mod maps
+						//throw new Exception("Base Map Type Not Found For ID "+ id); 
+					}
 					
 
 					TypeNameForVotingFile = folder.Name;

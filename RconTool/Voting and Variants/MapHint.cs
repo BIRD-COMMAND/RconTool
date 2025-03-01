@@ -58,7 +58,7 @@ namespace RconTool
 			if (string.IsNullOrWhiteSpace(mapName) || string.IsNullOrWhiteSpace(mapHint)) { return; }
 			
 			// Return if a different map is loaded
-			if (connection.State.Map != mapName) { return; }
+			if (connection.State.map != mapName) { return; }
 
 			// Return if we're not in-game
 			if (connection.InLobby) { return; }

@@ -35,7 +35,11 @@ namespace RconTool
         }
         public string LogPrefix { get { return $"{DateTime.Now.ToUniversalTime().ToFastLogString()} ({ConnectionName})"; } }
 
-        public SavedRecord<string> ConsoleMessages { get; set; }
+        public SavedRecord<string> StringLog { get; set; }
+        private string stringLogText = "";
+		public SavedRecord<string> ServerStateLog { get; set; }
+		private string serverStateLogText = "";
+		public SavedRecord<string> ConsoleMessages { get; set; }
         private string consoleText = "";
         public SavedRecord<Message> ChatMessages { get; set; }
         private string chatText = "";
@@ -59,10 +63,10 @@ namespace RconTool
         public string PopulatedTeamsString { get { return PopulatedTeams.ToString(); } }
 
         public bool InLobby {
-            get { return (State?.Status ?? "") == StatusStringInLobby; }
+            get { return (State?.status ?? "") == StatusStringInLobby; }
 		}
         public bool InGame {
-            get { return (State?.Status ?? "") == StatusStringInGame; }
+            get { return (State?.status ?? "") == StatusStringInGame; }
         }
 
         public const int ServerMessageDelay = 25;
@@ -330,15 +334,29 @@ namespace RconTool
 
             if (Settings.AuthorizedUIDs == null) { Settings.AuthorizedUIDs = new List<string>(); }
 
-            // load saved chat messages
-            try {
-                ChatMessages = new SavedRecord<Message>($"{connectionId}_Messages", null);
-                foreach (Message item in ChatMessages) { PrintToChat(item); }
+			// load saved chat messages
+			try {
+				ChatMessages = new SavedRecord<Message>($"{connectionId}_Messages", null);
+				foreach (Message item in ChatMessages) { PrintToChat(item); }
+			}
+			catch (Exception e) { AppLog($"Failed to load or initialize saved Chat Message list: {e}"); }
+
+			// load log
+			try {
+                StringLog = new SavedRecord<string>($"{connectionId}_Log", null);
+                //foreach (string item in StringLog) { PrintToChat(item); }
             }
             catch (Exception e) { AppLog($"Failed to load or initialize saved Chat Message list: {e}"); }
 
-            // load saved console messages
-            try {
+			// load server state log
+			try {
+				ServerStateLog = new SavedRecord<string>($"{connectionId}_ServerStateLog", null);
+				//foreach (string item in ServerStateLog) { PrintToServerStateLog(item); }
+			}
+			catch (Exception e) { AppLog($"Failed to load or initialize saved Server State Log list: {e}"); }
+
+			// load saved console messages
+			try {
                 ConsoleMessages = new SavedRecord<string>($"{connectionId}_ConsoleMessages", null);
                 foreach (string item in ConsoleMessages) { PrintToConsole(item, false, false); }
             }
@@ -733,6 +751,8 @@ namespace RconTool
 
             if (ServerStateJson == null) { return; }
 
+            LogToServerStateFile(ServerStateJson);
+
             //ITraceWriter traceWriter = new MemoryTraceWriter();
             //ServerState newState = JsonConvert.DeserializeObject<ServerState>(ServerStateJson, new JsonSerializerSettings() {TraceWriter = traceWriter });
             ServerState newState;
@@ -755,7 +775,7 @@ namespace RconTool
             }
 
             State.Update(newState, this);
-            if (!ServerHookActive && !string.IsNullOrWhiteSpace(State?.Name)) {
+            if (!ServerHookActive && !string.IsNullOrWhiteSpace(State?.name)) {
                 AttemptServerHook();
             }
             HasPlayers = (State?.Players?.Count ?? 0) > 0;
@@ -782,7 +802,7 @@ namespace RconTool
 
                 // check if emblems needed
                 lock (State.ServerStateLock) {
-                    needEmblems = State.Players.Any(x => x.Emblem == null);
+                    needEmblems = State.Players.Any(x => x.EmblemBitmap == null);
                 }
 
                 if (needEmblems) {
@@ -824,12 +844,12 @@ namespace RconTool
                         lock (State.ServerStateLock) {
                             for (int i = 0; i < RankAndEmblemData.Count; i++) {
                                 if (!RankAndEmblemData.ContainsKey(i)) { continue; }
-                                if (State.Players[i] != null && State.Players[i].Emblem == null) {
+                                if (State.Players[i] != null && State.Players[i].EmblemBitmap == null) {
                                     State.Players[i].Rank = RankAndEmblemData[i].Rank;
                                     using (WebClient webClient = new WebClient()) {
                                         byte[] data = webClient.DownloadData(RankAndEmblemData[i].Emblem);
                                         using (MemoryStream mem = new MemoryStream(data)) {
-                                            State.Players[i].Emblem =
+                                            State.Players[i].EmblemBitmap =
                                                 App.ResizeImage(new Bitmap(mem), Scoreboard.EmblemSize.X, Scoreboard.EmblemSize.Y)
                                             ;
                                         }
@@ -1004,23 +1024,42 @@ namespace RconTool
 
         public void OnRconWebsocketMessage(object sender, MessageEventArgs e)
         {
+            
+            //bool debugOutput = false;
 
             string message = e?.Data;
-            if (message == null) { return; }
+
+            //LogToFile(message);
+
+			if (string.IsNullOrWhiteSpace(message)) { 
+                //if (debugOutput) { PrintToConsole("Empty WebSocket Message Received"); }
+                return; 
+            }
 
             //AppLog($"OnMessage TEXT:{e.IsText}|PING:{e.IsPing}|DATA:{e.IsBinary}|: [{App.DateTimeUTC()}]:\n{message}{(e.IsBinary ? "|" + Encoding.UTF8.GetString(e.RawData) : "")}");
 
             // By default the tool ignores JSON messages, identified by a first character of '{'
-            if (message.StartsWith("{")) {
-                if (App.FilterServerJson) { return; }
-                else { PrintToConsole(message.FormatJson()); return; }
+            if (message.Trim().StartsWith("{")) {
+                if (App.FilterServerJson) {
+					//if (debugOutput) { PrintToConsole($"Server JSON Message Received: {message.Trim().RemoveLineBreaks()}"); }
+					return; 
+                }
+                else { PrintToConsole(message.FormatJson()); return;  }
             }
 
-            // I think this is a keep-alive message, sending the version number occasionally to keep the websocket connection open
-            if (message.StartsWith("0.6")) { return; }
+			// I think this is a keep-alive message, sending the version number occasionally to keep the websocket connection open
+			// We want to match on a Regex pattern, but we don't want to match on a hardcoded version number, so we'll check \d+ and \d+\.\d+
+			// If the Regex matches, we'll return, because there's no processing to do with the keep-alive message
+			//if (Regex.IsMatch(message.Trim(), @"[\d\.]+")) {
+			//	if (debugOutput) {
+			//		PrintToConsole($"Server Keepalive Message Received: {message.Trim()}");
+			//	}
+			//	return; 
+            //} 
+            // This no longer validates the actual version, it accepts any version, I don't care
 
-            // If the message starts with "accept" the WebSocket connection has been succesfully established
-            else if (message.StartsWith("accept"))
+			// If the message starts with "accept" the WebSocket connection has been succesfully established
+			else if (message.StartsWith("accept"))
             {
 
                 // Indicate successful connection
@@ -1050,59 +1089,57 @@ namespace RconTool
             else if (!string.IsNullOrWhiteSpace(message))
             {
 
-                Message cm = ParseMessage(message);
-
-                if (cm.IsValidChatMessage)
+                if (TryParseChatMessage(message, out Message chatMessage) && chatMessage.IsValidChatMessage)
                 {
                     
                     if (    !string.IsNullOrWhiteSpace(Settings.WebhookTrigger) 
                         &&  !string.IsNullOrWhiteSpace(Settings.Webhook) 
-                        &&  cm.Text.StartsWith(Settings.WebhookTrigger))
+                        &&  chatMessage.Text.StartsWith(Settings.WebhookTrigger))
                     {
                         SendToDiscord(message);
                     }
 
                     // Print Chat Message to Chat Log
-                    PrintToChat(cm.Name, cm.Text);
+                    PrintToChat(chatMessage.Name, chatMessage.Text);
 
                     // Dispatch chat event
                     PlayerInfo sendingPlayer = null;
                     lock (State.ServerStateLock)
                     {
-                        sendingPlayer = State.Players.Find(x => x.Uid == cm.UID);
+                        sendingPlayer = State.Players.Find(x => x.Uid == chatMessage.UID);
                     }
 
                     // Auto-translation
                     List<string> response = null;
-                    if (CanTranslate && Settings.AutoTranslateChatMessages && sendingPlayer != null && !cm.Text.StartsWith("!")) {
-                        TranslateChatMessage(cm);
-                        if (cm.DetectedLanguage != Settings.ServerLanguage
-                            && cm.HasServerLanguageTranslation
-                            && !cm.Text.Trim().StartsWith("&")) {
-                            response = ($"{cm.Name}[{cm.DetectedLanguage}▸{Settings.ServerLanguage}]: {cm.ServerLanguageTranslation}").Split(124);
+                    if (CanTranslate && Settings.AutoTranslateChatMessages && sendingPlayer != null && !chatMessage.Text.StartsWith("!")) {
+                        TranslateChatMessage(chatMessage);
+                        if (chatMessage.DetectedLanguage != Settings.ServerLanguage
+                            && chatMessage.HasServerLanguageTranslation
+                            && !chatMessage.Text.Trim().StartsWith("&")) {
+                            response = ($"{chatMessage.Name}[{chatMessage.DetectedLanguage}▸{Settings.ServerLanguage}]: {chatMessage.ServerLanguageTranslation}").Split(124);
                         }
                     }
 
                     // Save message to database
-                    ChatMessages.Add(cm);
+                    ChatMessages.Add(chatMessage);
 
                     if (response != null && response.Count > 0) {
-                        Respond(null, response, cm);
+                        Respond(null, response, chatMessage);
                     }
 
                     // Send OnMessage event
                     OnChatMessageReceived(
                         new ChatEventArgs(
-                            cm.Text, 
+                            chatMessage.Text, 
                             sendingPlayer, 
-                            cm.DateTimeString, 
+                            chatMessage.DateTimeString, 
                             this,
-                            cm
+                            chatMessage
                         )
                     );
 
                 }
-                else if (message.Contains(" -> ")) { PrintToConsole($"Setting Updated: {message}"); }
+                //else if (message.Contains(" -> ")) { PrintToConsole($"Setting Updated: {message}"); }
                 else if (message.IsMultiLine()) { // EndsWith($"Map variant loaded successfully!")
 					foreach (string part in message.SplitOnLineBreaks()) {
                         PrintToConsole($"Server: {part}");
@@ -1120,6 +1157,36 @@ namespace RconTool
 
 		#endregion
 
+		#region Logging Methods
+
+		public void LogToFile(string message) {
+			try {
+				StringLog.Add(
+                    string.IsNullOrWhiteSpace(message) 
+                    ? $"[{App.DateTimeUTC()}]:Ø"
+                    : $"[{App.DateTimeUTC()}]:{message}"
+                );
+			}
+			catch (Exception e) {
+				App.Log($"{nameof(LogToFile)} Exception: {e}");
+			}
+		}
+
+		public void LogToServerStateFile(string message) {
+			try {
+				ServerStateLog.Add(
+					string.IsNullOrWhiteSpace(message)
+					? $"[{App.DateTimeUTC()}]:{Environment.NewLine}Ø"
+					: $"[{App.DateTimeUTC()}]:{Environment.NewLine}{message}"
+				);
+			}
+			catch (Exception e) {
+				App.Log($"{nameof(LogToServerStateFile)} Exception: {e}");
+			}
+		}
+
+		#endregion
+
 		#region Console Methods
 
 		public string GetConsole()
@@ -1129,8 +1196,9 @@ namespace RconTool
 
         public void PrintToConsole(string line, bool saveRecord = true, bool timestamp = true)
         {
+            if (string.IsNullOrWhiteSpace(line)) { line = Environment.NewLine; }
 
-            string result = Regex.Replace(line, @"\r\n?|\n", Environment.NewLine);
+			string result = Regex.Replace(line, @"\r\n?|\n", Environment.NewLine);
             //if (result.StartsWith("SERVER: ") && result.Contains(Environment.NewLine)) { }
             //else { }
 
@@ -1183,50 +1251,69 @@ namespace RconTool
             chatText = "";
         }
 
-        private const string MessageParseRegexString = "\\[([\\d\\/]*) ([\\d\\:]*)] <([^\\/]*)\\/([^\\/]*)\\/([^>]*)> ([^\n]*)";
-        private static readonly Regex MessageParseRegex = new Regex(MessageParseRegexString, RegexOptions.Singleline);
-        public static Message ParseMessage(string message)
-        {
-            Match m = MessageParseRegex.Match(message);
-            if (m.Success && m.Groups.Count == 7)
-            {
+		/// <summary>
+		/// This Regex matches any "chat" messages sent by players or by the server and captures:<br/>
+		/// 1. The Date (UTC) of the message<br/>
+		/// 2. The Time (UTC) of the message<br/>
+		/// 3. The name of the Player, or 'SERVER', that sent the message<br/>
+		/// 4. The UID of the Player, or '0000000000000000', that sent the message<br/>
+		/// 5. The IP Address the message originated from<br/>
+		/// 6. The Text of the message (can be empty)
+		/// </summary>
+		private static readonly Regex MessageParseRegex = new Regex(
+			@"\[([\d\/]+) ([\d\:]+)] <([^\/]+)\/([^\/]+)\/([^>]*)> ([\W\D\S]*)$",
+			RegexOptions.Singleline
+		);
 
-                DateTime dt;
-                try { 
-                    dt = DateTime.ParseExact(
-                        m.Groups[1].ToString() + " " + m.Groups[2].ToString(),
-                        App.ChatMessageDateTimeFormatString, 
-                        System.Globalization.DateTimeFormatInfo.InvariantInfo
-                    );
-                }
-                catch { dt = DateTime.UtcNow; }
+		/// <summary>
+		/// Attempts to parse a chat message from the provided text. If successful, the parsed message is returned in the out parameter <paramref name="message"/>.
+		/// </summary>
+		public bool TryParseChatMessage(string text, out Message message) {
 
-                return new Message()
-                {
-                    IsValidChatMessage = true,
-                    // DateTime examples from database '12/02/20 17:04:11' '12/03/20 03:08:58'
-                    DateTimeString = m.Groups[1].ToString() + " " + m.Groups[2].ToString(),
-                    Name = m.Groups[3].ToString(),
-                    UID = m.Groups[4].ToString(),
-                    IP = m.Groups[5].ToString(),
-                    Text = m.Groups[6].ToString(),
-                    DateTime = dt
-                };
-            }
-            else
-            {
-                return new Message()
-                {
-                    IsValidChatMessage = false
-                };
-            }
-        }
+			message = null;
 
-        #endregion
+			//[03/01/25 03:18:27] <Spatt69/f8bac26d5d8cf389/186.104.95.238> hola
+			//[03/01/25 03:23:05] <butter stealer/bfff1e3249fc43fd/134.16.11.184> lol
+			//[03/01/25 03:24:00] <SERVER/0000000000000000/127.0.0.1> gold team rules 
+			// UTC DateTime,       Name,   UID,            IP,         Text
 
-        #region PlayerLog Methods
+			if (string.IsNullOrWhiteSpace(text)) { return false; }
 
-        public string GetPlayerLog()
+			Match m = MessageParseRegex.Match(text);
+
+			if (m.Success && m.Groups.Count == 7) {
+				DateTime dt;
+				try {
+					dt = DateTime.ParseExact(
+						m.Groups[1].ToString() + " " + m.Groups[2].ToString(),
+						App.ChatMessageIncomingDateTimeFormatString, null,
+						System.Globalization.DateTimeStyles.AssumeUniversal
+					);
+				}
+				catch { dt = DateTime.UtcNow; }
+				message = new Message() {
+					IsValidChatMessage = true,
+					DateTimeString = dt.ToString(App.ChatMessageDateTimeFormatString),
+					Name = m.Groups[3].ToString(),
+					UID = m.Groups[4].ToString(),
+					IP = m.Groups[5].ToString(),
+					Text = m.Groups[6].ToString(),
+					DateTime = dt
+				};
+				return true;
+			}
+			else {
+				message = new Message() { IsValidChatMessage = false };
+				return false;
+			}
+
+		}
+
+		#endregion
+
+		#region PlayerLog Methods
+
+		public string GetPlayerLog()
         {
             return playerLogText;
         }
@@ -1481,6 +1568,17 @@ namespace RconTool
                     Thread.Sleep(1000);
                 }
             })).Start();
+        }
+
+
+		/// <summary>
+		/// End the current round.
+		/// </summary>
+		public void Command_EndRound()
+		{            
+            if (InLobby) { Broadcast("Cannot end round in the lobby."); return; }
+            if (!ServerHookActive) { Broadcast("Cannot end round, ServerHook is not active."); return; }
+            TriggerEndRound();
         }
 
 		#endregion
@@ -1942,7 +2040,7 @@ namespace RconTool
             {
                 
                 string roleInfo = "<@&" + Settings.WebhookRole + "> ";
-                string json = "{\"content\":\"" + roleInfo + "Player reported on " + State.Name + ": " + message + "\"}";
+                string json = "{\"content\":\"" + roleInfo + "Player reported on " + State.name + ": " + message + "\"}";
 
                 streamWriter.Write(json);
                 streamWriter.Flush();
@@ -2312,7 +2410,7 @@ namespace RconTool
                 for (int i = 0; i < numTeams; i++) { activeTeams.Add(i); }
             }
             else {
-                if (!State.Teams) { return null; }
+                if (!State.teamGame) { return null; }
                 else {
 
                     // add active team indices first
@@ -2601,12 +2699,13 @@ namespace RconTool
         private const int CustomShuffleMessageMaxLength = 60;
 
         public void AttemptServerHook(string processId) {
+            return;
             if (int.TryParse(processId, out int pId)) { AttemptServerHook(pId); }
             else { App.Log("Connection.AttemptServerHook(string processId) Failed: Unable to convert processId argument to valid integer process ID."); }
         }
         public void AttemptServerHook(int processId = -1)
         {
-            
+            return;
             if (!Settings?.UseServerHook ?? false) {
                 AppLog($"Server Hook is disabled for this Connection in Server Settings. Enable Server Hook from Server Settings or by clicking the Server Hook button in the status bar at the bottom of the app.");
                 return;
@@ -2845,7 +2944,7 @@ namespace RconTool
             ).ToArray();
         }
 
-        public int ToggleShuffleTeamsPlayerCountRequirement()
+		public int ToggleShuffleTeamsPlayerCountRequirement()
 		{
 
             if (!ServerHookActive) { return 2; }
@@ -2871,7 +2970,8 @@ namespace RconTool
             return playerCountRequiredToShuffleTeams;
 
         }
-        public void SetShuffleTeamsPlayerCountRequirement(int requiredPlayerCount)
+		
+		public void SetShuffleTeamsPlayerCountRequirement(int requiredPlayerCount)
 		{
 
             if (!ServerHookActive) { return; }
@@ -2889,11 +2989,11 @@ namespace RconTool
 
         }
 
-        /// <summary>
-        /// Disables the random team-reassignment of the shuffle teams function, allowing it to be used to manually assign players to specific teams by editing their team values in the server's application memory and then calling ShuffleTeams.
-        /// </summary>
-        /// <param name="autoreset">True by default. If true, the team randomization will be automatically re-enabled after 3 seconds.</param>
-        public void DisableShuffleTeamsRandomization(bool autoreset = true)
+		/// <summary>
+		/// Disables the random team-reassignment of the shuffle teams function, allowing it to be used to manually assign players to specific teams by editing their team values in the server's application memory and then calling ShuffleTeams.
+		/// </summary>
+		/// <param name="autoreset">True by default. If true, the team randomization will be automatically re-enabled after 3 seconds.</param>
+		public void DisableShuffleTeamsRandomization(bool autoreset = true)
 		{
             if (!ServerHookActive) { return; }
 
@@ -2910,7 +3010,8 @@ namespace RconTool
                 })).Start();
             }
         }
-        public void EnableShuffleTeamsRandomization()
+		
+		public void EnableShuffleTeamsRandomization()
 		{
             if (!ServerHookActive) { return; }
 
@@ -2921,7 +3022,8 @@ namespace RconTool
             }
         }
 
-        public void GetPlayerTeams()
+		
+		public void GetPlayerTeams()
         {
             if (!ServerHookActive || State == null) { return; }
             //Console.WriteLine($"{LogPrefix}.GetPlayerTeams() Start");
@@ -2961,12 +3063,19 @@ namespace RconTool
             //Console.WriteLine($"{LogPrefix}.ServerHookPlayerTeamIndices:\n{serverHookPlayerTeamIndices.ToEntriesString()}");
         }
 
-        public void SetPlayerTeam(PlayerInfo player, int teamIndex)
+
+		/// <summary>
+		/// Set the team index of a player by their PlayerInfo object.
+		/// </summary>
+		/// <param name="player"> The PlayerInfo object of the player whose team index will be set. </param>
+		/// <param name="teamIndex"> The team index to set. </param>
+		public void SetPlayerTeam(PlayerInfo player, int teamIndex)
         {
             SetPlayerTeam(null, new Tuple<PlayerInfo, int>(player, teamIndex));
         }
-        
-        public void SetPlayerTeam(string customMessage = null, params Tuple<PlayerInfo, int>[] args)
+		
+
+		public void SetPlayerTeam(string customMessage = null, params Tuple<PlayerInfo, int>[] args)
         {
 
             //Console.WriteLine($"{LogPrefix}.SetPlayerTeam() Start");
@@ -3056,6 +3165,7 @@ namespace RconTool
 
         }
 
+
 		/// <summary>
 		/// Attempts to read GameType information from active memory and construct a GameVariant. Returns null if the operation fails for any reason.
 		/// </summary>
@@ -3085,7 +3195,7 @@ namespace RconTool
                                                                                 //eGameTypeTerritories = 8?,
                     case 9: baseGame = GameVariant.BaseGame.Assault; break;     //eGameTypeAssault = 9,
                     case 10: baseGame = GameVariant.BaseGame.Infection; break;  //eGameTypeInfection = 10 (0xA),
-                    default: baseGame = GameVariant.BaseGame.Unknown; break;    //eGameTypeCount
+                    default: return null;    //eGameTypeCount
                 }
 
                 // Variant Name: (int)ServerProcessBaseAddress + 0x181EEA8 -> 16 bytes ascii
@@ -3123,7 +3233,8 @@ namespace RconTool
 
         }
 
-        public bool ServerProcessMatchesConnection(bool suppressDetailLogging = false)
+
+		public bool ServerProcessMatchesConnection(bool suppressDetailLogging = false)
         {
             try {
 
@@ -3140,12 +3251,12 @@ namespace RconTool
                 status = status.Substring(0, status.IndexOf('\"'));
 
                 // match
-                if (!string.IsNullOrWhiteSpace(status) && status == State?.Name) { 
+                if (!string.IsNullOrWhiteSpace(status) && status == State?.name) { 
                     return true;
                 }
 
                 if (!suppressDetailLogging) {
-                    PrintToConsole($"Connection Server Name: {State?.Name ?? ""}");
+                    PrintToConsole($"Connection Server Name: {State?.name ?? ""}");
                     PrintToConsole($"ServerHook Server Name: {status ?? ""}");
                 }
 
@@ -3154,12 +3265,13 @@ namespace RconTool
             return false;
         }
 
-        /// <summary>
-        /// Attempts to read the server status packet string from the server application's memory.
-        /// <br>If the operation fails, the returned string value will be null, unless <paramref name="returnExceptionString"/> is set to true.</br>
-        /// </summary>
-        /// <param name="returnExceptionString">If true, exception information will be returned as a string if the operation fails, otherwise the returned string value is null.</param>
-        public string GetServerStatusPacketStringFromMemory(bool returnExceptionString = false)
+
+		/// <summary>
+		/// Attempts to read the server status packet string from the server application's memory.
+		/// <br>If the operation fails, the returned string value will be null, unless <paramref name="returnExceptionString"/> is set to true.</br>
+		/// </summary>
+		/// <param name="returnExceptionString">If true, exception information will be returned as a string if the operation fails, otherwise the returned string value is null.</param>
+		public string GetServerStatusPacketStringFromMemory(bool returnExceptionString = false)
         {
 
             //mtndew.dll+40C700 -> pointer(4 bytes), a pointer to the server status packet string
@@ -3180,6 +3292,69 @@ namespace RconTool
                 if (returnExceptionString) { return $"GetServerStatusStringFromMemory Failed.\n{e}"; }
             }
             return null;
+
+        }
+
+
+        public void TriggerEndRound()
+		{
+            try {
+                if (ServerMemory.TryReadByte(MtnDewModuleBaseAddress + 0x7123D28, out byte currentValue) && currentValue == 1) {
+                    ServerMemory.Write(MtnDewModuleBaseAddress + 0x7123D28, new byte[] { 0x2 });
+                }
+            }
+            catch (Exception e) { AppLog("An exception was thrown while attempting to TriggerEndRound: " + e, "TriggerEndRound"); }
+        }
+
+
+		public bool GetRoundTimer(out TimeSpan timerValue)
+		{
+            timerValue = TimeSpan.Zero;
+            if (!ServerHookActive) { AppLog("GetRoundTimer failed, ServerHook is not active.", "GetRoundTimer"); return false; }
+            try {
+                byte[] readResult = new byte[4];
+                ServerMemory.Read(MtnDewModuleBaseAddress + 0x255A55B4, 3).CopyTo(readResult, 0);
+                readResult[3] = 0x0;
+                timerValue = TimeSpan.FromSeconds(BitConverter.ToInt32(readResult.Reverse().ToArray(), 0) / 60);
+                AppLog("TimerValue: " + timerValue);
+            }
+            catch (Exception e) { AppLog($"GetRoundTimer failed: {e}", "GetRoundTimer"); return false; }
+            return true;
+        }
+
+
+		public bool SetRoundTimer(string timeValue)
+		{
+            if (!string.IsNullOrWhiteSpace(timeValue) && int.TryParse(timeValue, out int seconds)) {
+                return SetRoundTimer(seconds);
+            }
+            else { AppLog("SetRoundTimer failed, invalid timeValue.", "SetRoundTimer"); return false; }
+        }
+
+
+		public bool SetRoundTimer(int seconds)
+		{
+            //Round Timer | 0x806155B4 | mtndew.dll + 0x255A55B4
+            //this 64 - bit integer(litte - endian) stores the tick count remaining in the current round
+            //1 tick = 1 / 60th of a second, so a 60 - second round sets a value of 3600 at round start
+            //3600, would be encoded as  : 0x10 0x0E 0x00 0x00(0xE10)
+            //the maximum usable value is: 0xFF 0xFF 0x1D 0x00(0x1DFFFF)
+
+            if (!ServerHookActive) { AppLog("SetRoundTimer failed, ServerHook is not active.", "SetRoundTimer"); return false; }
+
+            try {
+                GetRoundTimer(out TimeSpan timerVal);
+                if (seconds > -1 && seconds < 32760) {
+                    ServerMemory.Write(MtnDewModuleBaseAddress + 0x255A55B4, seconds.ToByteArray(ByteOrder.Little).Take(3).ToArray());
+                    return true;
+                }
+                else {
+                    AppLog("SetRoundTimer failed, invalid timeValue.", "SetRoundTimer");
+                }
+            }
+            catch (Exception e) { AppLog("SetRoundTimer failed: " + e, "SetRoundTimer"); }
+
+            return false;
 
         }
 
@@ -3204,7 +3379,7 @@ namespace RconTool
             if (e.MatchBegan)
             {
 
-#region Prune Reply-Tracking Dictionary
+                #region Prune Reply-Tracking Dictionary
 
                 // Copy all player UIDs we are tracking reply names for to a list
 				List<string> replyUids = ReplyCommandPlayers.Keys.ToList();
@@ -3221,7 +3396,7 @@ namespace RconTool
                     if (ReplyCommandPlayers.ContainsKey(absentUid ?? "")) { ReplyCommandPlayers.Remove(absentUid); }
 				}
 
-#endregion
+                #endregion
 
 			}
 			else
@@ -3239,11 +3414,11 @@ namespace RconTool
         public void OnPlayerTeamChanged(object sender, PlayerTeamChangeEventArgs e)
         {
             if (IsDisplayedCurrently) { Scoreboard.RegenerateScoreboardImage = true; }
-            if (State.Teams == false) { return; }
-            if (State.Status == StatusStringInLobby) { return; }
-            if (State.Status == StatusStringLoading) { return; }
+            if (State.teamGame == false) { return; }
+            if (State.status == StatusStringInLobby) { return; }
+            if (State.status == StatusStringLoading) { return; }
 
-            if (State.Status != StatusStringInGame) { AppLog($"TEAM CHANGE: {State.Status}"); }
+            if (State.status != StatusStringInGame) { AppLog($"TEAM CHANGE: {State.status}"); }
 
             AppLog($"{e.PlayerState.Name} changed teams from {App.TeamNames[e.PlayerStatePrevious.Team]} team to { App.TeamNames[e.PlayerState.Team]} team.");
 

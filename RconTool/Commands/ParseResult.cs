@@ -97,8 +97,8 @@ namespace RconTool
 					case GameVariant.BaseGame.All: return "";
 					default: return "";
 			}})},						// Flag Captures, Bomb Detonations, Time on the Hill, Kills, etc.			    
-			{"gameName", (c => {return c?.State?.Variant ?? "";})},  // name of the game variant
-			{"mapName", (c => {return c?.State?.Map ?? "";})},       // name of the map variant
+			{"gameName", (c => {return c?.State?.variant ?? "";})},  // name of the game variant
+			{"mapName", (c => {return c?.State?.map ?? "";})},       // name of the map variant
 			{"player1",  (c => {return c.GetPlayerName(0); })},      // player 1
 			{"player2",  (c => {return c.GetPlayerName(1); })},      // player 2
 			{"player3",  (c => {return c.GetPlayerName(2); })},      // player 3
@@ -225,6 +225,13 @@ namespace RconTool
 				}
 			}
 
+			// Validate ServerHook Requirement
+			if (command.ServerHookCommand && !connection.ServerHookActive) { 
+				IsValid = false;
+				Add("Command cannot be used because the ServerHook is not active.");
+				return;
+			}
+
 			// Process Args
 			if (command.Args.Count > 0)
 			{
@@ -268,6 +275,31 @@ namespace RconTool
 
 						case Arg.Type.String:
 							Parameters.Add(string.IsNullOrWhiteSpace(content) ? null : content);
+							break;
+
+						case Arg.Type.TimeValue:
+							if (!string.IsNullOrWhiteSpace(content)) {
+								// if we have a : assume minutes:seconds
+								if (content.Contains(":")) {
+									string[] timeValues = content.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+									// require exactly 2 values, minutes and seconds
+									if (timeValues.Length == 2 && int.TryParse(timeValues[0], out int minutes) && int.TryParse(timeValues[1], out int seconds)) {
+										if (minutes > -1 && minutes < 540 && seconds > -1 && seconds < 60) {
+											seconds += minutes * 60;
+											Parameters.Add(seconds.ToString());
+											break;
+										}
+									}
+								}
+								// otherwise assume we just have seconds
+								else {
+									if (int.TryParse(content, out int seconds) && seconds > -1 && seconds < 32760) {
+										Parameters.Add(seconds.ToString());
+										break;
+									}
+								}
+							}
+							Parameters.Add(null);
 							break;
 
 						case Arg.Type.FileNameJSON:
@@ -324,6 +356,7 @@ namespace RconTool
 							case Arg.Type.MapName:		Response.Add("Map names must be unquoted and correctly capitalized."); return;
 							case Arg.Type.BaseVariant:	Response.Add("Base gametype names must be unquoted, with any spaces removed."); return;
 							case Arg.Type.VariantName:	Response.Add("Game variant names must be unquoted and correctly capitalized."); return;
+							case Arg.Type.TimeValue:	Response.Add("Time value must be unquoted in mm:ss or ss format."); return;
 							case Arg.Type.FileNameJSON: Response.Add("JSON file names must end in '.json'."); return;
 							case Arg.Type.LanguageCode: Response.Add("Language code format is either '-aa' or '-aa-bb'."); return;
 							case Arg.Type.CommandName:  Response.Add("Command names must be unquoted and correctly capitalized."); return;

@@ -505,6 +505,14 @@ namespace RconTool
 			return new System.Drawing.Point((int)(rect.X + rect.Width / 2f), (int)(rect.Y + rect.Height / 2f));
 		}
 
+		/// <summary>
+		/// Removes all line breaks from the string or returns the original string if it is null or empty.
+		/// </summary>
+		public static string RemoveLineBreaks(this string input) {
+			if (string.IsNullOrEmpty(input)) { return input; }
+			return input.Replace("\r", "").Replace("\n", "");
+		}
+
 		#region IntPtr Extensions
 
 		//WPARAM - A message parameter.

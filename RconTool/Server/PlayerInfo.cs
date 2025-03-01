@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RconTool.Utility;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -31,10 +32,23 @@ namespace RconTool
         public Bitmap RankImage { get; set; } = null;
         public int Rank { get; set; } = -1;
 
-        public Bitmap Emblem { get; set; } = null;
-        public string EmblemURL { get; set; } = null;
+        [Newtonsoft.Json.JsonIgnore]
+        public Bitmap EmblemBitmap { get; set; } = null;
+        public string Emblem { 
+            get => _emblem;
+            set {
+                if (_emblem == null || _emblem != value) { 
+                    _emblem = value;
+					if (!string.IsNullOrWhiteSpace(_emblem)) {
+						try { EmblemBitmap = EmblemGenerator.GenerateEmblem(_emblem); }
+						catch { }
+					}
+				}
+            }
+        }
+        private string _emblem = null;
 
-        public string Name {
+		public string Name {
             get { return name; }
             set { this.name = value; /*NotifyPropertyChanged();*/ }
         }
@@ -94,7 +108,12 @@ namespace RconTool
             set { this.score = value; /*NotifyPropertyChanged();*/ }
         }
         private int score;
-        public int Kills {
+        public int RoundScore {
+			get { return roundScore; }
+			set { this.roundScore = value; /*NotifyPropertyChanged();*/ }
+		}
+		private int roundScore;
+		public int Kills {
             get { return kills; }
             set { this.kills = value; /*NotifyPropertyChanged();*/ }
         }
@@ -191,20 +210,11 @@ namespace RconTool
             BestStreak = player.BestStreak;
             PrimaryColor = player.PrimaryColor;
 
-            //Kill/Death Ratio            
-            if (Kills < 0) { KillDeathRatio = Kills; }
-            else if (Kills == 0) {
-                if (Deaths == 0) { KillDeathRatio = 0; }
-                else if (Deaths > 0) { KillDeathRatio = Deaths * -1; }
-                else { KillDeathRatio = Kills; }
-            }
-            else if (Kills > 0) {
-                if (Deaths == 0) { KillDeathRatio = Kills; }
-                else { KillDeathRatio = Kills / Deaths; }
-            }
-            else { KillDeathRatio = Kills; }
+			//Calculate Halo 3 Kill/Death Ratio (Avoiding divide by zero)
+			if (Deaths == 0) { KillDeathRatio = Kills; }
+			else { KillDeathRatio = (double)Kills / Deaths; }
 
-            ScoreboardKillDeathRatio = string.Format("{0:00.00}", KillDeathRatio);
+			ScoreboardKillDeathRatio = string.Format("{0:00.00}", KillDeathRatio);
             ScoreboardColor = System.Drawing.ColorTranslator.FromHtml(PrimaryColor);
             ScoreboardColorRGBA = "rgba(" + ScoreboardColor.R + "," + ScoreboardColor.G + "," + ScoreboardColor.B+ ",230)";
             ScoreboardColorDarkRGBA = "rgba(" + ScoreboardColorDark.R + "," + ScoreboardColorDark.G + "," + ScoreboardColorDark.B + ",230)";
@@ -214,8 +224,10 @@ namespace RconTool
 
             if (TimeSpentAlive != player.TimeSpentAlive) { TimeSpentAlive = player.TimeSpentAlive; }
 
+            Emblem = player.Emblem;
+
             if (player.Rank > -1) { Rank = player.Rank; }
-            if (player.Emblem != null) { Emblem = player.Emblem; }
+            if (player.EmblemBitmap != null && EmblemBitmap == null) { EmblemBitmap = player.EmblemBitmap; }
 
         }
 

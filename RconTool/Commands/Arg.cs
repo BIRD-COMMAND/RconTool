@@ -33,6 +33,7 @@ namespace RconTool
 			VariantName,
 			CommandName,
 			String,
+			TimeValue,
 			FileNameJSON,
 			LanguageCode
 		}

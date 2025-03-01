@@ -403,7 +403,7 @@ namespace RconTool
             s.Append("<tbody id=\"singlePlayers\">");
 
 
-            if (App.currentConnection.State.Teams)
+            if (App.currentConnection.State.teamGame)
             {
                 
                 s.Append("</tbody>");
@@ -778,7 +778,7 @@ namespace RconTool
             Color TagColor;
             if (currentConnection?.ServerHookActive ?? false) {
                 int teamIndex = currentConnection.GetTeamIndex(player);
-                if (currentConnection.State.Teams && teamIndex > -1 && teamIndex < 8) {
+                if (currentConnection.State.teamGame && teamIndex > -1 && teamIndex < 8) {
                     rectColor = App.TeamColors[teamIndex].Item2;
                     TagColor = App.TeamColors[teamIndex].Item1;
                 }
@@ -791,7 +791,7 @@ namespace RconTool
                 rectColor = DarkGray;
                 TagColor = DarkerGray;
             }
-            else if (currentConnection.State.Teams && player.Team != -1) {
+            else if (currentConnection.State.teamGame && player.Team != -1) {
                 rectColor = App.TeamColors[player.Team].Item2;
                 TagColor = App.TeamColors[player.Team].Item1;
             }
@@ -824,9 +824,9 @@ namespace RconTool
 
             if (currentConnection.State.InLobby || currentConnection.State.IsLoading)
             {
-                if (player.Emblem != null)
+                if (player.EmblemBitmap != null)
                 {
-                    G.DrawImage(player.Emblem, Columns[c].CellContentOrigins[rowIndex]);
+                    G.DrawImage(player.EmblemBitmap, Columns[c].CellContentOrigins[rowIndex]);
                 }
                 else
                 {
@@ -837,9 +837,9 @@ namespace RconTool
             {
                 G.DrawImage(EmblemDead, Columns[c].CellContentOrigins[rowIndex]);
             }
-            else if (player.Emblem != null)
+            else if (player.EmblemBitmap != null)
             {
-                G.DrawImage(player.Emblem, Columns[c].CellContentOrigins[rowIndex]);
+                G.DrawImage(player.EmblemBitmap, Columns[c].CellContentOrigins[rowIndex]);
             }
             else
             {
@@ -868,7 +868,7 @@ namespace RconTool
             #endregion
 
             #region Draw SCORE
-            DrawScoreboardCell(Columns[c], rowIndex, player.Score.ToString(), rectColor, textColor);
+            DrawScoreboardCell(Columns[c], rowIndex, player.RoundScore.ToString(), rectColor, textColor);
             c++;
             #endregion
 

@@ -157,6 +157,723 @@
   <data name="deleteIcon64x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\deleteIcon64x64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="emblem_backgrounds_00" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_00.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_02.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_03" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_03.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_04" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_04.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_05" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_05.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_06" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_06.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_07" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_07.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_08" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_08.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_09" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_09.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_12" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_12.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_13" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_13.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_14" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_14.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_15.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_17" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_17.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_19" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_19.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_21" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_21.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_22" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_22.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_23" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_23.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_26" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_26.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_27" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_27.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_28" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_28.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_29" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_29.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_30.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_31" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_31.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_33" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_33.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_34" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_34.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_35" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_35.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_36" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_36.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_37" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_37.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_39" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_39.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_41" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_41.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_42" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_42.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_43" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_43.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_44" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_44.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_45" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_45.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_46" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_46.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_47" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_47.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_49" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_49.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_50" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_51" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_51.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_backgrounds_52" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\background\emblem_backgrounds_52.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_000" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_000.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_001" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_001.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_002" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_002.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_003" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_003.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_004" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_004.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_005" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_005.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_006" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_006.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_007" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_007.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_008" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_008.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_009" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_009.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_010" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_010.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_011" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_011.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_012" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_012.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_013" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_013.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_014" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_014.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_015" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_015.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_016" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_016.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_017" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_017.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_018" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_018.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_019" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_019.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_020" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_020.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_021" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_021.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_022" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_022.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_023" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_023.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_024" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_024.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_025" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_025.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_026" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_026.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_027" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_027.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_028" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_028.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_029" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_029.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_030" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_030.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_031" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_031.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_032" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_032.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_033" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_033.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_034" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_034.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_035" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_035.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_036" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_036.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_037" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_037.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_038" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_038.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_039" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_039.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_040" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_040.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_041" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_041.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_042" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_042.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_043" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_043.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_044" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_044.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_045" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_045.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_046" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_046.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_047" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_047.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_048" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_048.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_049" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_049.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_050" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_050.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_051" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_051.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_052" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_052.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_053" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_053.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_054" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_054.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_055" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_055.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_056" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_056.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_057" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_057.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_058" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_058.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_059" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_059.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_060" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_060.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_061" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_061.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_062" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_062.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_063" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_063.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_064" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_064.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_065" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_065.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_066" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_066.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_067" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_067.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_068" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_068.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_069" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_069.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_070" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_070.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_071" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_071.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_072" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_072.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_073" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_073.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_074" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_074.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_075" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_075.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_076" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_076.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_077" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_077.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_078" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_078.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_079" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_079.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_080" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_080.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_081" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_081.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_082" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_082.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_083" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_083.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_084" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_084.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_085" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_085.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_086" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_086.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_087" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_087.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_088" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_088.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_089" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_089.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_090" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_090.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_091" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_091.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_092" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_092.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_093" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_093.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_094" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_094.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_095" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_095.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_096" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_096.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_097" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_097.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_098" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_098.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_099" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_099.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_100" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_100.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_101" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_101.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_102" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_102.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_103" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_103.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_104" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_104.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_105" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_105.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_106" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_106.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_107" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_107.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_108" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_108.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_109" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_109.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_110" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_110.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_111" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_111.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_112" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_112.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_113" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_113.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_114" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_114.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_115" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_115.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_116" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_116.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_117" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_117.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_118" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_118.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_119" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_119.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_120" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_120.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_121" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_121.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_122" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_122.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_123" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_123.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_124" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_124.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_125" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_125.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_126" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_126.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_127" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_127.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_129" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_129.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_130" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_130.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_131" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_131.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_132" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_132.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_133" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_133.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_134" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_134.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_135" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_135.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_136" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_136.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_137" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_137.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_138" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_138.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_139" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_139.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_140" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_140.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_141" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_141.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_142" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_142.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_143" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_143.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_144" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_144.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_145" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_145.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_146" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_146.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_147" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_147.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_148" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_148.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_149" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_149.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_150" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_150.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_151" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_151.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_152" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_152.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_153" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_153.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_154" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_154.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_155" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_155.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_156" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_156.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_157" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_157.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_158" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_158.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_159" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_159.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_160" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_160.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_161" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_161.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_162" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_162.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_163" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_163.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_164" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_164.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_165" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_165.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_166" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_166.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_167" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_167.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_168" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_168.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_169" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_169.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_170" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_170.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_171" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_171.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_172" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_172.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_173" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_173.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_174" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_174.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_175" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_175.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_176" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_176.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_177" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_177.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_178" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_178.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_179" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_179.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_180" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_180.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_181" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_181.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_182" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_182.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_183" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_183.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_184" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_184.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_foregrounds_185" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Emblems\foreground\emblem_foregrounds_185.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Font_Cascadia" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Fonts\Font_cascadia.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -254,7 +971,7 @@
         cSzhAeGOhGVLfmCuyAnF64qtbMEs3VO9sDFpz84oXWYb40wwxTQaBgVWyJKnR1ZbFJeY7Eer+Ft9/7S4
         DHGtYIpjlFUsdN+P+oPf3bqp/r5iUmMU6p49770TQtvwveV5X0ee930MwSe4tMv+1UMY+hB9q6x1HEDz
         BpxflTVjBy42oeUxpzu6LwVlBlIpeDuVb5qH8A00LBZ7K+1zcg9x6WryGvb2oSst2UtV3l1f2dufZ/z+
-        iP4AMXlyjQI2b9sAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkBAMHNA1m4GPVAAAAmElEQVQ4
+        iP4AMXlyjQI2b9sAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfkBAMHNA1m4GPVAAAAmElEQVQ4
         T6WTQQqAIBREvY0n8SDdPlctWrWqGRlBf/4UejCY9gbMMMyIMSbkRG4TriVpPhJtueaU5gPJ20GJtDmQ
         N1tm9PobiMMyI8UHki13c2k+kI6msGnt0nz5EDNSykRrO8d+IvDMbbK09J+77WBsvzEX6YtGZl4HJs3H
         FNrMy2RQXC+TQblm+bLUQxxll+YD6cd1DeEBAOKXUPjVCZkAAAAASUVORK5CYII=
@@ -269,7 +986,7 @@
         cSzhAeGOhGVLfmCuyAnF64qtbMEs3VO9sDFpz84oXWYb40wwxTQaBgVWyJKnR1ZbFJeY7Eer+Ft9/7S4
         DHGtYIpjlFUsdN+P+oPf3bqp/r5iUmMU6p49770TQtvwveV5X0ee930MwSe4tMv+1UMY+hB9q6x1HEDz
         BpxflTVjBy42oeUxpzu6LwVlBlIpeDuVb5qH8A00LBZ7K+1zcg9x6WryGvb2oSst2UtV3l1f2dufZ/z+
-        iP4AMXlyjQI2b9sAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkBAMHNS7dnCPmAAAAnklEQVQ4
+        iP4AMXlyjQI2b9sAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfkBAMHNS7dnCPmAAAAnklEQVQ4
         T7VTQQ6AIAwjfoYXE+76AX+oq2kBRRRMbNJkW7eSKTjAez8ZF+OM+Cj2gsOrcSMRJxOLQ6FdGdCAk6/C
         wvk3g6iG0gRx5Hw/ZMB0HC0Dq92tEChnSGSagGZpBesVJTIdx28GVnu+B4KKTBPQJO2G+VuoyLQfNoQT
         8AbkiotU/6YWOKDhZEK5tcJp9y+P6XwPrKDnDA48Z+d2TTeS3SDlF/sAAAAASUVORK5CYII=
@@ -896,7 +1613,7 @@
         cSzhAeGOhGVLfmCuyAnF64qtbMEs3VO9sDFpz84oXWYb40wwxTQaBgVWyJKnR1ZbFJeY7Eer+Ft9/7S4
         DHGtYIpjlFUsdN+P+oPf3bqp/r5iUmMU6p49770TQtvwveV5X0ee930MwSe4tMv+1UMY+hB9q6x1HEDz
         BpxflTVjBy42oeUxpzu6LwVlBlIpeDuVb5qH8A00LBZ7K+1zcg9x6WryGvb2oSst2UtV3l1f2dufZ/z+
-        iP4AMXlyjQI2b9sAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkBAMHLwpRsj3sAAAAoklEQVQ4
+        iP4AMXlyjQI2b9sAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfkBAMHLwpRsj3sAAAAoklEQVQ4
         T82Q0Q0CIRBESezAK4IWri2ruavh/u3JLnQHH8jCmuiXTvJyZGaHA9J/KOe8Gfcv2aiXDY4h/ISDetlg
         wbwZJ0NehDLNaPZM/SkzLgT6jsVKm6H2kplud2Msu1NS87JgZehq4BZfyFO2Ys96N6g1ntvYSQGMDxpe
         bVINoH/Q8HGd+gD6v/ancXNNYwD13kLraaYpCmGHKKP9W6X0AFPngKBtyoNyAAAAAElFTkSuQmCC
@@ -911,7 +1628,7 @@
         cSzhAeGOhGVLfmCuyAnF64qtbMEs3VO9sDFpz84oXWYb40wwxTQaBgVWyJKnR1ZbFJeY7Eer+Ft9/7S4
         DHGtYIpjlFUsdN+P+oPf3bqp/r5iUmMU6p49770TQtvwveV5X0ee930MwSe4tMv+1UMY+hB9q6x1HEDz
         BpxflTVjBy42oeUxpzu6LwVlBlIpeDuVb5qH8A00LBZ7K+1zcg9x6WryGvb2oSst2UtV3l1f2dufZ/z+
-        iP4AMXlyjQI2b9sAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkBAMHLi3to7nGAAAAkklEQVQ4
+        iP4AMXlyjQI2b9sAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfkBAMHLi3to7nGAAAAkklEQVQ4
         T82Q3Q2AIBCDSdhAh2AF13IancF3dnIL7ZnPHwyiPmmTxqPXngfu3wgh9EaO76BgI06wQX4GBbw4HgZY
         7WnfQ+aWoH23mnYZMtYElr/CdZsK2zVkipi3e1uNFpHyKBlNo5d/UDWKq0pLroa8Q+LtY116JJSnA+vh
         SbfUYUB8w4H4MqA7NZ+wI/4pnJsBbxBlNCCRiHAAAAAASUVORK5CYII=
@@ -1499,7 +2216,7 @@
         ZhxLeFC4K2nZkh+YLXJS8bpiK1swS32qFzYt2zPTSpfVyQSTRImhYVBghSx5emW3RXGJy3mkir/D98fE
         ZYhrBVMcY6xioft+1B/8nq2bGugvJjVFoO7Z8967oX4bvrc87+vI876PIfgEl3bZv3oIwx+ib5W1rgNo
         2YDzq7Jm7MDFJrQ/5nRH96WgrEAqBW+n8k1z0HYDjQvFuZXOObmHhMxq6hr29qEnLdmLVd7dUDm3P+/4
-        8yPyA5e4crYOY1H4AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTUUH5AEQBAQpDa94rwAAAY9JREFU
+        8yPyA5e4crYOY1H4AAAACXBIWXMAAA7CAAAOwgEVKEqAAAAAB3RJTUUH5AEQBAQpDa94rwAAAY9JREFU
         WEfFlrFOwlAUhm8pYC0IJiA7UxcGJ1Z9AmdHX4HFhcUFd6MJ4SncjSNh6Wxi4nMw3Ol4D6VwW34Kocfr
         8CW9/80535+UJigi+ldg6BIYugSGLoGhLFppjfIEGMqhVTweUBiNaLFE939aIJHXjUIZ/D0ldgIZtvLK
         Q0CdaY0qIS6ROciQlXfnTeotmnQ1wyWsQQmwPKX7UiXP3PnXE/pZz+QWlKFY3vsIKOib30N9QONYm5Fk
@@ -1521,7 +2238,7 @@
         OZZwv3BbyrIlPzhT5JTiNcVWdsX8qVP9MLxoT8eVLruFMcaZZAoNgxWWyVKgS05bFJeY3Ecr+Jt9/5S4
         DHEtY4pjhBwWuu9HzeB3b910X28xKRyF6ifPe2uHmi342vS8z0PP+zqC0CNc2CV/7kCG+C76Zklr24eG
         dTi7LGnGNpxvQNNDXnd0XwrJDqbT8HoiY0pC4zXUzRX79nPP8R0kpFcTV7C7Bx0ZyZ6v8O/a8r79+cbv
-        H9Fv21Fy0VulYxUAAAAJcEhZcwAALiMAAC4jAXilP3YAAAAHdElNRQfkAx0BBRtSAlE4AAACoklEQVRY
+        H9Fv21Fy0VulYxUAAAAJcEhZcwAALiIAAC4iAari3ZIAAAAHdElNRQfkAx0BBRtSAlE4AAACoklEQVRY
         R+3XOWgUcRTH8UnWqFFECwsLkWAhKIqiEo8mkM5GCKZQCMFCJY2EzYUYBQvBbBKTRqIixhOxsBARG+1U
         BEmjoCYm5MDCeDSiouCxfn+zb9ZxmJldArMq5MEHdt77H293Z2dmncb0Hacl87IKlzGB6YS9QA8WOQpe
         rMBbZEvsMeapgXO+ZKntUwPPAslSGlQDY4FkKV2ZbeC/auAHHuAaPlvO7z3O4CE0NlgPU1QDX3ECdRjA
@@ -1602,7 +2319,7 @@
         OZZwv3BbyrIlPzhT5JTiNcVWdsX8qVP9MLxoT8eVLruFMcaZZAoNgxWWyVKgS05bFJeY3Ecr+Jt9/5S4
         DHEtY4pjhBwWuu9HzeB3b910X28xKRyF6ifPe2uHmi342vS8z0PP+zqC0CNc2CV/7kCG+C76Zklr24eG
         dTi7LGnGNpxvQNNDXnd0XwrJDqbT8HoiY0pC4zXUzRX79nPP8R0kpFcTV7C7Bx0ZyZ6v8O/a8r79+cbv
-        H9Fv21Fy0VulYxUAAAAJcEhZcwAALiMAAC4jAXilP3YAAAAHdElNRQfkAx0BDhe4QMTYAAACjElEQVRY
+        H9Fv21Fy0VulYxUAAAAJcEhZcwAALiIAAC4iAari3ZIAAAAHdElNRQfkAx0BDhe4QMTYAAACjElEQVRY
         R+3XO2gUURTG8TFr1CiiwQeRxCSu7IRsTCIq0QgqCDYWgmAjiFgEO5E0IsbCTkXQRqIixCdiYWFhZ6uN
         pFHwUQgqFj4bUVHw+f9mz12G4c7sIsyqkAM/snvOvXPPbu48NuhaXgrCcn83LuMZXufsMU5gbqDgRSfe
         4leD3cNMNXA+lmy0ETXwMJFspAk18DSRbKQrUw38Vw38wB1cw2fLxb3HWdyFxibrPnU18BVHsR3juIrD
@@ -1811,7 +2528,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+EFCBcuJtz7
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB+EFCBcuJtz7
         /DwAAAaASURBVHhe7Z1Zj1ZFEIa/SwTFHRQRNxZjRI0bqDfuxlv//y/wSkOUuGV4a+w2Y9Ez03Wqurq7
         Tr/JkwznnFr6PBkmIWG+w9HhcLSIyxIcnCU4OEtwcJbg4CzBwVmCg7MEB2cJDs4SHJwlODhLcHCW4OAs
         wcFZgoPjIfg38PJh5X/BO7kAfknvqBle38FL8ongXbjIJbwEE0sygnfgJpfwFEyQ5GvprLsLzu4ql/AW
@@ -1890,7 +2607,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+EGGxElDZIy
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB+EGGxElDZIy
         IqQAAAngSURBVHhe7Z1J6BxFFMazuKMxQVH0IC5xCyagIi4IiopEMBIXNOpBg4rE7SJ4EcGLG6igCIJ4
         ckFEEYMigicRQVRwCbjeXBC3uOKu8fvqvRlqerpnpnvqVfV01w8emq7qt33TPTP/7upZkslkMplMJpPJ
         ZDKZTGYx2Lp1q/vvjh07joFdEtjW+TEyiYAQ58Gs2KRhMqmACL+JFib8q2EyqVAhLNldQ2VSoCJYsoeG
@@ -1994,7 +2711,7 @@
         lxxLuF+4PWnZkh+YLnBS8bpiK7Nq/txTvTC0aE9NKl1mG1HGmCCGhsEqy2TI0S2rLYpLXPYjZfwtvj8m
         LkNcy5jiGGEFC933o/7gd7duqq+3kBSKQNWT5711QPUWfOU97/PQ876OIPgIF3bRv3IAg++i54ta+z40
         bMDZZVEztuF8E5ofsrqj+1JQZiCVgtcT+aYZaLyG2rlCbz/7HN9BQroav4LdPehMS/Z8mXfXlPb25xm/
-        PyLfV25ynG21jEcAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfkAxsXKwdwxIRFAAAl+0lEQVR4
+        PyLfV25ynG21jEcAAAAJcEhZcwAADdYAAA3WAZBveZwAAAAHdElNRQfkAxsXKwdwxIRFAAAl+0lEQVR4
         Xu2dCXxV1Z3H77kvycu+Q9glrGGNbIGwBGTfN0URUETEre4buKCoiBsKAuKOCyqo1drWWqebVjt2s9N2
         tLYdW7WtHafTaju2HZ0Z9cz/d967yV3+9737XhIMzf/n5+sNyT3n3Pfu+f/Pfo4lEh3G6kp8jniKeIP4
         O/Fpkj8STxNzCUWIRKJ/EPUk7iP+l9AROEgUECKR6DDXycQHBGfoqUAtwSZEItFhKBjvdoIz7qisJEQi
@@ -2178,7 +2895,7 @@
         tHTiaeKIphuUL2R81jhvcdbLVda8J3+hmDNWUlynHkEMS4gjAQkqqiihDAdRWg1SbCRpX+7gH/b8CXKp
         5CqBkWMBFehQPD/4H/yerZ2fmvSTRBnofnHdj1EgtAs0aq77fey6jRMg+AxcGS1/pQ7MfpJea2mRI6B/
         G7i4bmnqHnC5Aww9mYqleFKQWsjngfcz+qYsMHAL9K75c2vu4/QBSNOslm+Ag0NgrEDZ6x3e3dM+tz/P
-        ePOD/AMCSHJ6ikIKqwAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+QBFgENKIjKbkcAAAJMSURB
+        ePOD/AMCSHJ6ikIKqwAAAAlwSFlzAAAuIgAALiIBquLdkgAAAAd0SU1FB+QBFgENKIjKbkcAAAJMSURB
         VFhH1ZU/aFNRFMZvBQdxqNT/IIIG1M3NzVEndRE6qYODiCDiZJfSSbqIoiK4iOAfcBA6CV2EDAVFISBU
         BFsxgigoQhFLqy0ev5/v3L6EXJOXNknxgx+c3HvO9533Qkj433XYWRWtEc8c6p7rqDCHuqfiiSsiLkDd
         07cwKOzYoQxqP+uJ1orXwsqPM6j9jLuu66SwwSPB5t9lUHPmd10VTzglbGIs2OKHDGrO/K6rb+GMsFPH
@@ -2201,7 +2918,7 @@
         K5sacZw4qmo65Qs5j1XOW5y1ao21+uQvDBX05QzXaY0ggUUkkYIIBTVUUIWNGO06KRbSdC518Udcf4pc
         CrkqYOSYxwY0yK4f/A9+z9YqTk16SSEJ6HlxnI9RILgLNOuO833sOM0TwP8MXOlt/0YDmPkkvd7WokfA
         wDZwcd3WlD3gcgcYfjJkU3YlPy2hWATez+ib8sDQLdC36s2tdY7TByBLs1q6AQ4OgbESZa91eXdv59z+
-        vOPOD9IPgWdyrUnCdncAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAHdElNRQfkARAENDSx7yKFAAACM0lE
+        vOPOD9IPgWdyrUnCdncAAAAJcEhZcwAADsIAAA7CARUoSoAAAAAHdElNRQfkARAENDSx7yKFAAACM0lE
         QVRYR8WWvUoDQRRGZ00somLwLyEmRbRwayshr5BGwcpCEGGbvIetaYOkEgQb7fcBxDfwAQJKFME21fXe
         hGtmMnd2Z7aIgUPYb2fmO8xuhigA+FfEcJmIITNOe+q8l4r3fEl756qXjsV7hBgS4zRRcUnhp6TipJhE
         msQ4m5aIVeKQEEMuxx0A3AFoFpCYlUe0A4A7AC4JK5iXJ4DfOKIEWB4k8VeexIBLUTlguShhXCyWNysV

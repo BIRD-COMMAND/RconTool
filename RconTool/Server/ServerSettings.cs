@@ -84,7 +84,7 @@ namespace RconTool
         #region Local File Management
 
         [JsonProperty]
-        public bool UseServerHook { get; set; }
+        public bool UseServerHook { get; set; } = false;
 
         [JsonProperty]
         public bool UseLocalFiles { get; set; } = true;
@@ -416,10 +416,23 @@ namespace RconTool
             VoteFilesDirectoryPath = null;
         }
 
+        /// <summary>
+        /// Indicates how the next match is determined for the lobby.
+        /// <br>Standard lobby voting, manual admin map and game selection, or matches added to the MatchQueue.</br>
+        /// </summary>
         public enum MatchMode
         {
+            /// <summary>
+            /// The server is using the lobby voting system, players vote on the next match from options determined by the votefile the server is using.
+            /// </summary>
             Voting,
-            SetList,
+            /// <summary>
+            /// The server is being manually controlled by an administrator. Lobby voting is disabled and the game and map are being set manually.
+            /// </summary>
+            Manual,
+            /// <summary>
+            /// The server is using the MatchQueue provided by the RconTool. Lobby voting is disabled and each time the lobby is entered the next game and map are loaded and then the game is started automatically.
+            /// </summary>
             Queue
         }
 

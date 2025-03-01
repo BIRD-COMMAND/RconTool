@@ -26,52 +26,37 @@ namespace RconTool
 		private SavedRecord() {}
 
 		public SavedRecord(string saveKey, T defaultValue) {
+			if (string.IsNullOrWhiteSpace(saveKey)) {
+				throw new ArgumentNullException(nameof(saveKey));
+			}
+			if (saveKey.IndexOfAny(Path.GetInvalidFileNameChars()) > -1) {
+				throw new ArgumentException("saveKey contained invalid filename characters.", nameof(saveKey));
+			}
 
-			if (string.IsNullOrWhiteSpace(saveKey)) { 
-				throw new ArgumentNullException("saveKey"); 
-			}
-			if (saveKey.IndexOfAny(Path.GetInvalidFileNameChars()) > -1) { 
-				throw new ArgumentException("saveKey contained invalid filename characters." ,"saveKey"); 
+			// Determine base directory relative to the running executable.
+			string baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SavedRecords");
+
+			// Validate or create the directory.
+			if (!Directory.Exists(baseDir)) {
+				try {
+					Directory.CreateDirectory(baseDir);
+				}
+				catch (Exception dirEx) {
+					App.Error("Directory Creation Failed",
+						$"Failed to create or access directory:\n{baseDir}\n\nException Info:\n{dirEx}");
+					SaveFile = null;
+					return;
+				}
 			}
 
-			// Try to get FileInfo object for the save file
-			try { 
-				SaveFile = new FileInfo($"{System.Windows.Forms.Application.CommonAppDataPath}\\{saveKey}.json"); 
-			}
-			catch (System.Security.SecurityException secEx) { 
-				App.Error("Load Failed", 
-					"Attempted to load data from:\n" +
-					$"{System.Windows.Forms.Application.CommonAppDataPath}\\{saveKey}.json\n\n" +
-					"The application lacks adequate permissions to access the file.\n" + 
-					"The load operation has been aborted, and that data will not be available.\n\n" +
-					$"Exception Info:\n{secEx}"
-				);
-				SaveFile = null; return;
-			}
-			catch (UnauthorizedAccessException authEx) {
-				App.Error("Load Failed",
-					"Attempted to load data from:\n" +
-					$"{System.Windows.Forms.Application.CommonAppDataPath}\\{saveKey}.json\n\n" +
-					"The application cannot access the file - access to the file is restricted.\n" +
-					"The load operation has been aborted, and that data will not be available.\n\n" +
-					$"Exception Info:\n{authEx}"
-				);
-				SaveFile = null; return;
-			}
-			catch (PathTooLongException pathEx) {
-				App.Error("Load Failed",
-					"Attempted to load data from:\n" +
-					$"{System.Windows.Forms.Application.CommonAppDataPath}\\{saveKey}.json\n\n" +
-					"The path specified is too long, so no file can exist at that location.\n" +
-					"The load operation has been aborted, and that data will not be available.\n\n" +
-					$"Exception Info:\n{pathEx}"
-				);
-				SaveFile = null; return;
-			}
-			catch { throw; }
+			// Construct the file path in the validated directory.
+			string filePath = Path.Combine(baseDir, $"{saveKey}.json");
+			SaveFile = new FileInfo(filePath);
 
 			// Load or create file
-			if (SaveFile.Exists) { Load(); }
+			if (SaveFile.Exists) {
+				Load();
+			}
 			else {
 				try {
 					using (StreamWriter file = SaveFile.CreateText()) {
@@ -83,7 +68,6 @@ namespace RconTool
 					App.Error("Save Failed", $"Failed to save data to:\n{SaveFile.FullName}\n\nException Info:\n{e}");
 				}
 			}
-
 		}
 
 		/// <summary>

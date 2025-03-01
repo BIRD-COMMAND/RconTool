@@ -61,6 +61,12 @@ namespace RconTool
             if (!WriteProcessMemory(Handle, (IntPtr)addr, bytes, bytes.Length, out t))
                 throw new Win32Exception();
         }
+        public void Write(IntPtr addr, byte[] bytes)
+		{
+            IntPtr t;
+            if (!WriteProcessMemory(Handle, addr, bytes, bytes.Length, out t))
+                throw new Win32Exception();
+        }
         public byte[] Read(Int32 addr, int len)
         {
             var ret = new byte[len];
@@ -69,6 +75,29 @@ namespace RconTool
                 throw new Win32Exception();
             return ret;
         }
+        public byte[] Read(IntPtr addr, int len)
+		{
+            var ret = new byte[len]; IntPtr t;
+            if (!ReadProcessMemory(Handle, addr, ret, ret.Length, out t))
+                throw new Win32Exception();
+            return ret;
+        }
+
+        public bool TryReadByte(IntPtr addr, out byte b)
+		{            
+			byte[] result;
+            b = byte.MaxValue;
+			
+            try { result = Read(addr, 1); }
+            catch { return false; }
+
+            if (result != null && result.Length == 1) {
+                b = result[0];
+                return true;
+            }
+
+            return false;
+		}
 
         public Int32 LoadModule(string name)
         {
