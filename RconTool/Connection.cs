@@ -1298,11 +1298,14 @@ namespace RconTool
 			if (m.Success && m.Groups.Count == 7) {
 				DateTime dt;
 				try {
+					// incoming datetime value is in this format: "MM/dd/yy HH:mm:ss" e.g. "03/08/25 19:25:00"
+					// this is the format that the game uses for chat messages, and it's UTC time
+					// get it via `$"{m.Groups[0]} {m.Groups[1]}"`
 					dt = DateTime.ParseExact(
-						m.Groups[1].ToString() + " " + m.Groups[2].ToString(),
-						App.ChatMessageIncomingDateTimeFormatString, null,
-						System.Globalization.DateTimeStyles.AssumeUniversal
-					);
+						$"{m.Groups[1]} {m.Groups[2]}", 
+                        App.ChatMessageIncomingDateTimeFormatString,
+                        System.Globalization.CultureInfo.InvariantCulture
+                    );
 				}
 				catch { dt = DateTime.UtcNow; }
 				message = new Message() {

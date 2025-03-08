@@ -35,7 +35,7 @@ namespace RconTool
 
         public const string toolversion = "3.51";
         public const string InternalAppName = "RCON Tool";
-        public const string ChatMessageIncomingDateTimeFormatString = "MM/dd/yy hh:mm:ss";
+        public const string ChatMessageIncomingDateTimeFormatString = "MM/dd/yy HH:mm:ss";
         public const string ChatMessageDateTimeFormatString = "MM/dd/yy hh:mm:ss tt";
 
         public const string DefaultDynamicVotingJsonPath = "mods/server/dynamic.json";
