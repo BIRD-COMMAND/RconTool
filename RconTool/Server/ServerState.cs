@@ -11,34 +11,56 @@ namespace RconTool
     public class ServerState
     {
 
-        public string name { get; set; } = "";
+        public string name { get; set; } = string.Empty;
         public int port { get; set; } = 0;
-        public string hostPlayer { get; set; } = "";
+        public string hostPlayer { get; set; } = string.Empty;
         public bool isDedicated { get; set; } = false;
-        public string sprintState { get; set; } = "";
-        public string sprintUnlimitedEnabled { get; set; } = "";
-        public string DualWielding { get; set; } = "";
-        public string assassinationEnabled { get; set; } = "";
-        public string VotingEnabled { get; set; } = "";
-        public bool voip { get; set; } = false;
-		public bool teamGame { get; set; } = false;
+        public SprintStyle SprintStyle {
+            get {
+                if (string.IsNullOrWhiteSpace(sprintState)) { return SprintStyle.Disabled; }
+                else if (sprintState == "0") { return SprintStyle.Disabled; }
+                else if (sprintState == "1") { return SprintStyle.Enabled; }
+                else if (sprintState == "2") { return SprintStyle.SetByGametype; }
+                else { return SprintStyle.Disabled; }
+            }
+        }
+        public string sprintState { get; set; } = string.Empty;
+        public bool SprintUnlimitedEnabledBool { get { return ( sprintUnlimitedEnabled ?? "0" ) == "1"; } }
+		public string sprintUnlimitedEnabled { get; set; } = string.Empty;
+        public bool DualWieldingEnabledBool { get { return ( dualWielding ?? "0" ) == "1"; } }
+		public string dualWielding { get; set; } = string.Empty;
+        public bool AssassinationEnabledBool { get { return (assassinationEnabled ?? "0") == "1"; } }
+		public string assassinationEnabled { get; set; } = string.Empty;
+        public string VotingEnabled { get; set; } = string.Empty;
+        public VotingStyle VotingStyle {
+			get {
+				if (string.IsNullOrWhiteSpace(voteSystemType)) { return VotingStyle.Disabled; }
+				else if (voteSystemType == "0") { return VotingStyle.Disabled; }
+				else if (voteSystemType == "1") { return VotingStyle.Vote; }
+				else if (voteSystemType == "2") { return VotingStyle.Veto; }
+				else { return VotingStyle.Disabled; }
+			}
+		}
+		public string voteSystemType { get; set; } = string.Empty;
+		public bool voip { get; set; } = false;
+		public bool teams { get; set; } = false;
         public int redScore { get; set; } = 0;
 		public int blueScore { get; set; } = 0;
-        public string map { get; set; } = "";
-		public string mapFile { get; set; } = "";
-        public string variant { get; set; } = "";
-        public string variantType { get; set; } = "";
-        public string status { get; set; } = "";
+        public string map { get; set; } = string.Empty;
+		public string mapFile { get; set; } = string.Empty;
+        public string variant { get; set; } = string.Empty;
+        public string variantType { get; set; } = string.Empty;
+        public string status { get; set; } = string.Empty;
         public string PreviousStatus { get; set; } = "_";
         public int numPlayers { get; set; } = 0;
         public int maxPlayers { get; set; } = 0;
 		public int modCount { get; set; } = 0;
-		public string modPackageName { get; set; } = "";
-		public string modPackageAuthor { get; set; } = "";
-		public string modPackageHash { get; set; } = "";
-		public string modPackageVersion {  get; set; } = "";
-		public string Xnkid { get; set; } = "";
-        public string Xnaddr { get; set; } = "";
+		public string modPackageName { get; set; } = string.Empty;
+		public string modPackageAuthor { get; set; } = string.Empty;
+		public string modPackageHash { get; set; } = string.Empty;
+		public string modPackageVersion {  get; set; } = string.Empty;
+		public string Xnkid { get; set; } = string.Empty;
+        public string Xnaddr { get; set; } = string.Empty;
         public bool Passworded { get; set; } = false;
         public List<int> TeamScores { get; set; } = new List<int>();
         public List<Tuple<int, int>> OrderedTeamScores { get; set; } = new List<Tuple<int, int>>();
@@ -50,13 +72,13 @@ namespace RconTool
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
         public Dictionary<string, PlayerInfo> PlayersByUid { get; set; } = new Dictionary<string, PlayerInfo>();
         private List<PlayerInfo> RemovePlayers { get; set; } = new List<PlayerInfo>();
-        public string GameVersion { get; set; } = "";
-        public string eldewritoVersion { get; set; } = "";
+        public string GameVersion { get; set; } = string.Empty;
+        public string eldewritoVersion { get; set; } = string.Empty;
         public GameVariant.BaseGame GameVariantType { get; set; }
 
         public readonly object ServerStateLock = new object();
         
-        public bool IsValid  { get { return GameVersion != ""; } }
+        public bool IsValid  { get { return GameVersion != string.Empty; } }
 
         public bool InLobby { get { return inLobby; } }
         private bool inLobby = false;
@@ -128,17 +150,17 @@ namespace RconTool
             {
 
                 if (status != newState.status) { connection.RecordMatchResults(this); }
-                if (connection.ServerHookActive && teamGame != newState.teamGame) { Scoreboard.RegenerateScoreboardImage = true; }
+                if (connection.ServerHookActive && teams != newState.teams) { Scoreboard.RegenerateScoreboardImage = true; }
 
                 name = newState.name;
                 port = newState.port;
                 hostPlayer = newState.hostPlayer;
                 sprintState = newState.sprintState;
                 sprintUnlimitedEnabled = newState.sprintUnlimitedEnabled;
-                DualWielding = newState.DualWielding;
+                dualWielding = newState.dualWielding;
                 assassinationEnabled = newState.assassinationEnabled;
                 VotingEnabled = newState.VotingEnabled;
-                teamGame = newState.teamGame;
+                teams = newState.teams;
                 map = newState.map;
                 mapFile = newState.mapFile;
                 variant = newState.variant;
@@ -212,7 +234,7 @@ namespace RconTool
                 
                 if (player.Name.Length == 0) { continue; }
 
-                if (!teamGame) { player.Team = -1; }
+                if (!teams) { player.Team = -1; }
                 else if (status == Connection.StatusStringInLobby) { player.Team = -1; }
                 else if (status == Connection.StatusStringLoading) { player.Team = -1; }
 
@@ -283,7 +305,7 @@ namespace RconTool
                 RankedPlayers.Clear();
 
                 // Sort team scores for scoreboard display
-                if (this.teamGame)
+                if (this.teams)
                 {
 
 					OrderedTeamScores = TeamScores.Select(
@@ -320,4 +342,36 @@ namespace RconTool
         }
 
     }
+
+    public enum SprintStyle
+	{
+		/// <summary>
+		/// Sprint is globally disabled.
+		/// </summary>
+		Disabled = 0,
+		/// <summary>
+		/// Sprint is globally enabled.
+		/// </summary>
+		Enabled = 1,
+		/// <summary>
+		/// Sprint enabled status is set by the active gametype.
+		/// </summary>
+		SetByGametype = 2
+	}
+
+    public enum VotingStyle {
+		/// <summary>
+		/// Voting is disabled.
+		/// </summary>
+		Disabled = 0,
+		/// <summary>
+		/// Voting is enabled.
+		/// </summary>
+		Vote = 1,
+		/// <summary>
+		/// Vetoing is enabled.
+		/// </summary>
+		Veto = 2
+	}
+
 }

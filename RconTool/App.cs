@@ -14,8 +14,7 @@ using System.Windows.Forms;
 namespace RconTool
 {
 
-	public partial class App : Form
-    {
+    public partial class App : Form {
 
         //NOTE
         // Controls in Windows Forms are bound to a specific thread and are not thread safe.
@@ -37,16 +36,16 @@ namespace RconTool
         public const string toolversion = "3.51";
         public const string InternalAppName = "RCON Tool";
         public const string ChatMessageIncomingDateTimeFormatString = "MM/dd/yy hh:mm:ss";
-		public const string ChatMessageDateTimeFormatString = "MM/dd/yy hh:mm:ss tt";
+        public const string ChatMessageDateTimeFormatString = "MM/dd/yy hh:mm:ss tt";
 
         public const string DefaultDynamicVotingJsonPath = "mods/server/dynamic.json";
         public const string defaultVotingJsonPath = "mods/server/voting.json";
 
-		/// <summary>
-		/// By default the tool ignores JSON messages, identified by a first character of '{'<br/>
+        /// <summary>
+        /// By default the tool ignores JSON messages, identified by a first character of '{'<br/>
         /// If this is set to true, the <see cref="Connection.OnRconWebsocketMessage(object, WebSocketSharp.MessageEventArgs)"/> method will not process JSON messages in any way.
-		/// </summary>
-		public static bool FilterServerJson { get; set; } = true;
+        /// </summary>
+        public static bool FilterServerJson { get; set; } = true;
 
         public static TranslationClient TranslationClient { get; private set; }
         private static SavedSetting<string> TranslationAPIKey = new SavedSetting<string>(SettingsKeys.TranslationApiKey, "", true, false);
@@ -57,7 +56,7 @@ namespace RconTool
         public static SavedSetting<List<string>> ConnectionIdsList = new SavedSetting<List<string>>("ConnectionIdsList", new List<string>());
         public static Connection currentConnection = null;
         public static List<Connection> connectionList = new List<Connection>();
-        public static SavedSetting<List<ToolCommand>> GlobalToolCommands = 
+        public static SavedSetting<List<ToolCommand>> GlobalToolCommands =
             new SavedSetting<List<ToolCommand>>(SettingsKeys.GlobalToolCommandsEncoded, new List<ToolCommand>());
 
         private static ConcurrentQueue<string> ConsoleLogQueue = new ConcurrentQueue<string>();
@@ -98,7 +97,7 @@ namespace RconTool
             "#1C0D02",
             "#FF4D8A"
         };
-        public static Dictionary<int, Tuple<Color,Color>> TeamColors { get; set; } = new Dictionary<int, Tuple<Color,Color>>()
+        public static Dictionary<int, Tuple<Color, Color>> TeamColors { get; set; } = new Dictionary<int, Tuple<Color, Color>>()
         {
            {-1,new Tuple<Color,Color>(Color.FromArgb(66,66,66),     Color.FromArgb(96, 96, 96)) },    //dark gray  {-1, System.Drawing.ColorTranslator.FromHtml("#0B0B0B")}, //'#0B0B0B' "#BDBDBD"
             {0,new Tuple<Color,Color>(Color.FromArgb(98,11,11),     Color.FromArgb(128,41,41)) },     //red        { 0, System.Drawing.ColorTranslator.FromHtml("#620B0B")}, //'#620B0B' "#BDBDBD"
@@ -261,8 +260,7 @@ namespace RconTool
         private System.Windows.Forms.Timer InterfaceUpdateTimer = new System.Windows.Forms.Timer();
         private System.Windows.Forms.Timer UpdateTranslationUsageTrackingDataTimer = new System.Windows.Forms.Timer();
 
-        private readonly struct SettingsKeys
-        {
+        private readonly struct SettingsKeys {
 
             public const string TranslationApiKey = "TranslationApiKey";
             public const string TranslatedCharactersCount = "TranslatedCharactersCount";
@@ -293,10 +291,119 @@ namespace RconTool
 
         }
 
-        #endregion
+        public static Dictionary<string, ConsoleCommand> ConsoleCommands = new Dictionary<string, ConsoleCommand>() {
+            {"Debug.Acrophobia",                        ConsoleCommand.Debug_Acrophobia },
+            {"Debug.MapBarriersDisabled",               ConsoleCommand.Debug_MapBarriersDisabled },
+            {"Debug.PlayerDamageDisabled",              ConsoleCommand.Debug_PlayerDamageDisabled},
+            {"Debug.ScriptName",                        ConsoleCommand.Debug_ScriptName},
+            {"Debug.ScriptTrace",                       ConsoleCommand.Debug_ScriptTrace},
+            {"Forge.Canvas",                            ConsoleCommand.Forge_Canvas},
+            {"Forge.ResetRuntime",                      ConsoleCommand.Forge_ResetRuntime},
+            {"Forge.ShowInvisibles",                    ConsoleCommand.Forge_ShowInvisibles},
+            {"Forge.ShowWorldBounds",                   ConsoleCommand.Forge_ShowWorldBounds},
+            {"Game.End",                                ConsoleCommand.Game_End},
+            {"Game.EndRound",                           ConsoleCommand.Game_EndRound},
+            {"Game.GameType",                           ConsoleCommand.Game_GameType},
+            {"Game.ListMaps",                           ConsoleCommand.Game_ListMaps},
+            {"Game.Map",                                ConsoleCommand.Game_Map},
+            {"Game.PrintScript",                        ConsoleCommand.Game_PrintScript},
+            {"Game.ScenarioScript",                     ConsoleCommand.Game_ScenarioScript},
+            {"Game.Start",                              ConsoleCommand.Game_Start},
+            {"Game.StartCountdown",                     ConsoleCommand.Game_StartCountdown},
+            {"Game.Stop",                               ConsoleCommand.Game_Stop},
+            {"Script.PrintToConsole",                   ConsoleCommand.Script_PrintToConsole},
+            {"Server.AddBan",                           ConsoleCommand.Server_AddBan},
+            {"Server.Announce",                         ConsoleCommand.Server_Announce},
+            {"Server.AssassinationEnabled",             ConsoleCommand.Server_AssassinationEnabled},
+            {"Server.BottomlessClipEnabled",            ConsoleCommand.Server_BottomlessClipEnabled},
+            {"Server.ChatCommandEndGameEnabled",        ConsoleCommand.Server_ChatCommandEndGameEnabled},
+            {"Server.ChatCommandEndRoundEnabled",       ConsoleCommand.Server_ChatCommandEndRoundEnabled},
+            {"Server.ChatCommandKickPlayerEnabled",     ConsoleCommand.Server_ChatCommandKickPlayerEnabled},
+            {"Server.ChatCommandShuffleTeamsEnabled",   ConsoleCommand.Server_ChatCommandShuffleTeamsEnabled},
+            {"Server.ChatCommandVoteTime",              ConsoleCommand.Server_ChatCommandVoteTime},
+            {"Server.ClearTempBans",                    ConsoleCommand.Server_ClearTempBans},
+            {"Server.Countdown",                        ConsoleCommand.Server_Countdown},
+            {"Server.CountdownLobby",                   ConsoleCommand.Server_CountdownLobby},
+            {"Server.DualWieldEnabled",                 ConsoleCommand.Server_DualWieldEnabled},
+            {"Server.EmotesDuringPodiumEnabled",        ConsoleCommand.Server_EmotesDuringPodiumEnabled},
+            {"Server.EmotesEnabled",                    ConsoleCommand.Server_EmotesEnabled},
+            {"Server.FloodFilterEnabled",               ConsoleCommand.Server_FloodFilterEnabled},
+            {"Server.FloodMessageScoreLong",            ConsoleCommand.Server_FloodMessageScoreLong},
+            {"Server.FloodMessageScoreShort",           ConsoleCommand.Server_FloodMessageScoreShort},
+            {"Server.FloodTimeoutResetSeconds",         ConsoleCommand.Server_FloodTimeoutResetSeconds},
+            {"Server.FloodTimeoutScore",                ConsoleCommand.Server_FloodTimeoutScore},
+            {"Server.FloodTimeoutSeconds",              ConsoleCommand.Server_FloodTimeoutSeconds},
+            {"Server.HUDWaypointStyle",                 ConsoleCommand.Server_HUDWaypointStyle},
+            {"Server.HitMarkersEnabled",                ConsoleCommand.Server_HitMarkersEnabled},
+            {"Server.KickBan",                          ConsoleCommand.Server_KickBan},
+            {"Server.KickBanIndex",                     ConsoleCommand.Server_KickBanIndex},
+            {"Server.KickBanPlayer",                    ConsoleCommand.Server_KickBanPlayer},
+            {"Server.KickBanUid",                       ConsoleCommand.Server_KickBanUid},
+            {"Server.KickIndex",                        ConsoleCommand.Server_KickIndex},
+            {"Server.KickPlayer",                       ConsoleCommand.Server_KickPlayer},
+            {"Server.KickTempBanPlayer",                ConsoleCommand.Server_KickTempBanPlayer},
+            {"Server.KickTempBanUid",                   ConsoleCommand.Server_KickTempBanUid},
+            {"Server.KickUid",                          ConsoleCommand.Server_KickUid},
+            {"Server.KillCommandDuringPodiumEnabled",   ConsoleCommand.Server_KillCommandDuringPodiumEnabled},
+            {"Server.KillCommandEnabled",               ConsoleCommand.Server_KillCommandEnabled},
+            {"Server.KillCommandMessage",               ConsoleCommand.Server_KillCommandMessage},
+            {"Server.ListPlayers",                      ConsoleCommand.Server_ListPlayers},
+            {"Server.ListTempBans",                     ConsoleCommand.Server_ListTempBans},
+            {"Server.MaxPlayers",                       ConsoleCommand.Server_MaxPlayers},
+            {"Server.Message",                          ConsoleCommand.Server_Message},
+            {"Server.MutePlayer",                       ConsoleCommand.Server_MutePlayer},
+            {"Server.MuteSoundsDuringPostGame",         ConsoleCommand.Server_MuteSoundsDuringPostGame},
+            {"Server.Name",                             ConsoleCommand.Server_Name},
+            {"Server.NearVictoryMusicEnabled",          ConsoleCommand.Server_NearVictoryMusicEnabled},
+            {"Server.NearVictoryMusicPercentage",       ConsoleCommand.Server_NearVictoryMusicPercentage},
+            {"Server.NumberOfTeams",                    ConsoleCommand.Server_NumberOfTeams},
+            {"Server.PM",                               ConsoleCommand.Server_PM},
+            {"Server.PlayersInfo",                      ConsoleCommand.Server_PlayersInfo},
+            {"Server.PlayersPingInfo",                  ConsoleCommand.Server_PlayersPingInfo},
+            {"Server.PodiumEnabled",                    ConsoleCommand.Server_PodiumEnabled},
+            {"Server.PodiumEnabledDuringForge",         ConsoleCommand.Server_PodiumEnabledDuringForge},
+            {"Server.PostGameFadeStartDelay",           ConsoleCommand.Server_PostGameFadeStartDelay},
+            {"Server.PostGameTimeSeconds",              ConsoleCommand.Server_PostGameTimeSeconds},
+            {"Server.PostMatchMusicEnabled",            ConsoleCommand.Server_PostMatchMusicEnabled},
+            {"Server.RconConsoleOutputEnabled",         ConsoleCommand.Server_RconConsoleOutputEnabled},
+            {"Server.RefreshMods",                      ConsoleCommand.Server_RefreshMods},
+            {"Server.RemoveTempBan",                    ConsoleCommand.Server_RemoveTempBan},
+            {"Server.Say",                              ConsoleCommand.Server_Say},
+            {"Server.ShowPlayerPing",                   ConsoleCommand.Server_ShowPlayerPing},
+            {"Server.ShuffleTeams",                     ConsoleCommand.Server_ShuffleTeams},
+            {"Server.Sprint",                           ConsoleCommand.Server_Sprint},
+            {"Server.SubmitVote",                       ConsoleCommand.Server_SubmitVote},
+            {"Server.TeamShuffleEnabled",               ConsoleCommand.Server_TeamShuffleEnabled},
+            {"Server.TeamSize",                         ConsoleCommand.Server_TeamSize},
+            {"Server.TempBanDuration",                  ConsoleCommand.Server_TempBanDuration},
+            {"Server.Unban",                            ConsoleCommand.Server_Unban},
+            {"Server.UnlimitedSprint",                  ConsoleCommand.Server_UnlimitedSprint},
+            {"Server.UnmutePlayer",                     ConsoleCommand.Server_UnmutePlayer},
+            {"Server.VotePassPercentage",               ConsoleCommand.Server_VotePassPercentage},
+            {"Time.GameSpeed",                          ConsoleCommand.Time_GameSpeed},
+            {"Voting.CancelVote",                       ConsoleCommand.Voting_CancelVote},
+            {"Voting.DuplicationLevel",                 ConsoleCommand.Voting_DuplicationLevel},
+            {"Voting.InstantVoteSkipEnabled",           ConsoleCommand.Voting_InstantVoteSkipEnabled},
+            {"Voting.InstantVoteSkipMinPlayers",        ConsoleCommand.Voting_InstantVoteSkipMinPlayers},
+            {"Voting.MaxRematchCount",                  ConsoleCommand.Voting_MaxRematchCount},
+            {"Voting.MaxRevoteCount",                   ConsoleCommand.Voting_MaxRevoteCount},
+            {"Voting.MaxVetoCount",                     ConsoleCommand.Voting_MaxVetoCount},
+            {"Voting.ReloadJson",                       ConsoleCommand.Voting_ReloadJson},
+            {"Voting.SystemType",                       ConsoleCommand.Voting_SystemType},
+            {"Voting.VetoPassPercentage",               ConsoleCommand.Voting_VetoPassPercentage},
+            {"Voting.VetoSelectionType",                ConsoleCommand.Voting_VetoSelectionType},
+            {"Voting.VetoWinnerShowTime",               ConsoleCommand.Voting_VetoWinnerShowTime},
+            {"Voting.VoteGameStartCountdown",           ConsoleCommand.Voting_VoteGameStartCountdown},
+            {"Voting.VoteOptionCount",                  ConsoleCommand.Voting_VoteOptionCount},
+            {"Voting.VoteTime",                         ConsoleCommand.Voting_VoteTime}
+        };
+
+        public static readonly List<string> ConsoleCommandAutoCompleteList = ConsoleCommands.Select(x => x.Key).ToList();
+
+		#endregion
 
 
-        public App()
+		public App()
         {
 
             form = this;
@@ -547,17 +654,18 @@ namespace RconTool
 
             #region Setup Auto-Complete
             AutoCompleteStringCollection serverCommandsCollection = new AutoCompleteStringCollection();
-            ConsoleAutoCompleteStrings = Resources.TextFile_ServerCommandTriggers.Split("\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-            ConsoleAutoCompleteStrings.Add("Server.ListPlayersJson");
-            ConsoleAutoCompleteStrings.Add("Server.BalanceTeams");
-            ConsoleAutoCompleteStrings.Add("Server.StatusPacket");
-            ConsoleAutoCompleteStrings.Add("Server.ToggleShuffleTeamsPlayerCountRequirement");
-            ConsoleAutoCompleteStrings.Add("Application.VerifyServerHook");
-            ConsoleAutoCompleteStrings.Add("Application.ShowServerJson");
-            ConsoleAutoCompleteStrings.Add("Application.HideServerJson");
-            serverCommandsCollection.AddRange(ConsoleAutoCompleteStrings.ToArray());
+            //ConsoleAutoCompleteStrings = Resources.TextFile_ServerCommandTriggers.Split("\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+            //ConsoleAutoCompleteStrings.Add("Server.ListPlayersJson");
+            //ConsoleAutoCompleteStrings.Add("Server.BalanceTeams");
+            //ConsoleAutoCompleteStrings.Add("Server.StatusPacket");
+            //ConsoleAutoCompleteStrings.Add("Server.ToggleShuffleTeamsPlayerCountRequirement");
+            //ConsoleAutoCompleteStrings.Add("Application.VerifyServerHook");
+            //ConsoleAutoCompleteStrings.Add("Application.ShowServerJson");
+            //ConsoleAutoCompleteStrings.Add("Application.HideServerJson");
+            //serverCommandsCollection.AddRange(ConsoleAutoCompleteStrings.ToArray());
+            serverCommandsCollection.AddRange(ConsoleCommandAutoCompleteList.ToArray());
 
-            TimedCommandsThread = new Thread(new ThreadStart(RunTimedCommands)) { IsBackground = true };
+			TimedCommandsThread = new Thread(new ThreadStart(RunTimedCommands)) { IsBackground = true };
             if (TimedCommandsThread.Name == null) {
                 TimedCommandsThread.Name = InternalAppName + ".RunTimedCommandsThread";
             }
@@ -1339,7 +1447,7 @@ namespace RconTool
 		{
             if (contextPlayer != null && 
                 contextPlayer.Team != teamIndex && 
-                (currentConnection?.State?.teamGame ?? false)) 
+                (currentConnection?.State?.teams ?? false)) 
             {
                 currentConnection.SetPlayerTeam(null, new Tuple<PlayerInfo, int>(contextPlayer, teamIndex));
 			}
@@ -2086,11 +2194,7 @@ namespace RconTool
             if (confirmResult == DialogResult.Yes)
             {
                 currentConnection.RconCommandQueue.Enqueue(
-                    RconCommand.ConsoleLogCommand(
-                        "Game.Start",
-                        "Game.Start", 
-                        "Game Start Button"
-                    )
+                    RconCommand.ConsoleLogCommand( ConsoleCommand.Game_Start.Command, ConsoleCommand.Game_Start.Command, "Game Start Button" )
                 );
             }
         }
@@ -2101,85 +2205,124 @@ namespace RconTool
             if (confirmResult == DialogResult.Yes)
             {
                 currentConnection.RconCommandQueue.Enqueue(
-                    RconCommand.ConsoleLogCommand(
-                        "Game.stop",
-                        "Game.stop",
-                        "Game Stop Button"
-                    )
+                    RconCommand.ConsoleLogCommand( ConsoleCommand.Game_Stop.Command, ConsoleCommand.Game_Stop.Command, "Game Stop Button")
                 );
             }
         }
 
         private void buttonToggleAssasinations_Click(object sender, EventArgs e)
         {
-            bool originallyEnabled = statusButtonAssassinationToggle.ToolTipText.StartsWith("Assassinations Enabled");
-            currentConnection.RconCommandQueue.Enqueue(
-                RconCommand.ConsoleLogCommand(
-                    $"Server.AssassinationEnabled {(originallyEnabled ? "0" : "1")}",
-                    $"Server.AssassinationEnabled {(originallyEnabled ? "0" : "1")}",
-                    "Assassination Toggle Button"
-                )
-            );
+            if (currentConnection == null) { return; }
 
-            statusButtonAssassinationToggle.Visible = false;
-            if (originallyEnabled) {
-                statusButtonAssassinationToggle.ToolTipText = "Assassinations Disabled: Click to Toggle";
-                statusButtonAssassinationToggle.Image = Resources.AssassinationTiny_Disabled;
-            }
-            else {
-                statusButtonAssassinationToggle.ToolTipText = "Assassinations Enabled: Click to Toggle";
-                statusButtonAssassinationToggle.Image = Resources.AssassinationTiny;
-            }
-            statusButtonAssassinationToggle.Visible = true;
+			statusButtonAssassinationToggle.Visible = false;
+
+			if (currentConnection.StoredState.AssassinationEnabledBool) {
+				currentConnection.RconCommandQueue.Enqueue(
+					RconCommand.ConsoleLogCommand(
+						ConsoleCommand.Server_AssassinationEnabled.SetFalse,
+						ConsoleCommand.Server_AssassinationEnabled.SetFalse,
+						"Assassination Toggle Button"
+					)
+				);
+				statusButtonAssassinationToggle.ToolTipText = "Assassinations Disabled: Click to Toggle";
+				statusButtonAssassinationToggle.Image = Resources.AssassinationTiny_Disabled;
+			}
+			else {
+				currentConnection.RconCommandQueue.Enqueue(
+					RconCommand.ConsoleLogCommand(
+						ConsoleCommand.Server_AssassinationEnabled.SetTrue,
+						ConsoleCommand.Server_AssassinationEnabled.SetTrue,
+						"Assassination Toggle Button"
+					)
+				);
+				statusButtonAssassinationToggle.ToolTipText = "Assassinations Enabled: Click to Toggle";
+				statusButtonAssassinationToggle.Image = Resources.AssassinationTiny;
+			}
+
+			statusButtonAssassinationToggle.Visible = true;
+
         }
 
         private void buttonToggleSprint_Click(object sender, EventArgs e)
         {
-            statusButtonSprintToggle.Visible = false;
-            if (statusButtonSprintToggle.ToolTipText.StartsWith("Sprint Disabled")) {
-                // turn on sprint
-                currentConnection.RconCommandQueue.Enqueue(
-                    RconCommand.ConsoleLogCommand(
-                        "Server.SprintEnabled 1",
-                        "Server.SprintEnabled 1",
-                        "Sprint Toggle Button (Enable)"
-                    )
-                );
-                statusButtonSprintToggle.ToolTipText = "Sprint Enabled: Click to Toggle";
-                statusButtonSprintToggle.Image = Resources.SprintTiny;
+
+            if (currentConnection == null) { return; }
+
+            // we want to cycle through the possible combinations of sprint states in a logical order:
+            // Disabled (Unlimited: N/A)
+            // Enabled (Unlimited: FALSE)
+            // Enabled (Unlimited: TRUE)
+            // SetByGametype (Unlimited: FALSE)
+            // SetByGametype (Unlimited: TRUE)
+
+            string newSprintStatus;
+			statusButtonSprintToggle.Visible = false;
+
+			switch (currentConnection.StoredState.SprintStyle) {
+                default:
+                case SprintStyle.Disabled:
+					// Cycle to Enabled (Unlimited: FALSE)                    
+                    newSprintStatus = "SPRINT TOGGLE: ENABLED | LIMITED";
+					currentConnection.RconCommandQueue.Enqueue(
+						RconCommand.ConsoleLogCommand(
+							ConsoleCommand.Server_Sprint.SetTrue, ConsoleCommand.Server_Sprint.SetTrue, newSprintStatus
+						)
+					);
+                    currentConnection.RconCommandQueue.Enqueue( RconCommand.Command(ConsoleCommand.Server_UnlimitedSprint.SetFalse) );
+					statusButtonSprintToggle.Image = Resources.SprintTiny;
+					break;
+                case SprintStyle.Enabled:
+                    if (!currentConnection.StoredState.SprintUnlimitedEnabledBool) {
+						// Cycle to Enabled (Unlimited: TRUE)
+						newSprintStatus = "SPRINT TOGGLE: ENABLED | UNLIMITED";
+						currentConnection.RconCommandQueue.Enqueue(
+							RconCommand.ConsoleLogCommand(
+								ConsoleCommand.Server_Sprint.SetTrue, ConsoleCommand.Server_Sprint.SetTrue, newSprintStatus
+							)
+						);
+						currentConnection.RconCommandQueue.Enqueue(RconCommand.Command(ConsoleCommand.Server_UnlimitedSprint.SetTrue));
+						statusButtonSprintToggle.Image = Resources.SprintTiny_Unlimited;
+					}
+					else {
+                        // Cycle to SetByGametype (Unlimited: FALSE)
+                        newSprintStatus = "SPRINT TOGGLE: GAMETYPE | LIMITED";
+						currentConnection.RconCommandQueue.Enqueue(
+							RconCommand.ConsoleLogCommand(
+								ConsoleCommand.Server_Sprint.SetTwo, ConsoleCommand.Server_Sprint.SetTwo, newSprintStatus
+							)
+						);
+						currentConnection.RconCommandQueue.Enqueue(RconCommand.Command(ConsoleCommand.Server_UnlimitedSprint.SetFalse));
+						statusButtonSprintToggle.Image = Resources.SprintTiny;
+					}
+					break;
+                case SprintStyle.SetByGametype:
+					if (!currentConnection.StoredState.SprintUnlimitedEnabledBool) {
+                        // Cycle to SetByGametype (Unlimited: TRUE)
+                        newSprintStatus = "SPRINT TOGGLE: GAMETYPE | UNLIMITED";
+						currentConnection.RconCommandQueue.Enqueue(
+							RconCommand.ConsoleLogCommand(
+                                ConsoleCommand.Server_Sprint.SetTwo, ConsoleCommand.Server_Sprint.SetTwo, newSprintStatus
+							)
+						);
+						currentConnection.RconCommandQueue.Enqueue(RconCommand.Command(ConsoleCommand.Server_UnlimitedSprint.SetTrue));
+						statusButtonSprintToggle.Image = Resources.SprintTiny_Unlimited;
+					}
+					else {
+                        // Cycle to Disabled (Unlimited: N/A)
+                        newSprintStatus = "SPRINT TOGGLE: DISABLED";
+						currentConnection.RconCommandQueue.Enqueue(
+							RconCommand.ConsoleLogCommand(
+								ConsoleCommand.Server_Sprint.SetFalse, ConsoleCommand.Server_Sprint.SetFalse, newSprintStatus
+							)
+						);
+						currentConnection.RconCommandQueue.Enqueue(RconCommand.Command(ConsoleCommand.Server_UnlimitedSprint.SetFalse));
+						statusButtonSprintToggle.Image = Resources.SprintTiny_Disabled;
+					}
+					break;
             }
-            else if (statusButtonSprintToggle.ToolTipText.StartsWith("Sprint Enabled")) {
-                // turn on unlimited sprint
-                currentConnection.RconCommandQueue.Enqueue(
-                    RconCommand.ConsoleLogCommand(
-                        "Server.UnlimitedSprint 1",
-                        "Server.UnlimitedSprint 1",
-                        "Sprint Toggle Button (Unlimited)"
-                    )
-                );
-                statusButtonSprintToggle.ToolTipText = "Unlimited Sprint Enabled: Click to Toggle";
-                statusButtonSprintToggle.Image = Resources.SprintTiny_Unlimited;
-            }
-            else {
-                // turn off sprint + unlimited sprint
-                currentConnection.RconCommandQueue.Enqueue(
-                    RconCommand.ConsoleLogCommand(
-                        "Server.SprintEnabled 0",
-                        "Server.SprintEnabled 0",
-                        "Sprint Toggle Button (Disable)"
-                    )
-                );
-                currentConnection.RconCommandQueue.Enqueue(
-                    RconCommand.ConsoleLogCommand(
-                        "Server.UnlimitedSprint 0",
-                        "Server.UnlimitedSprint 0",
-                        "Sprint Toggle Button (Disable)"
-                    )
-                );
-                statusButtonSprintToggle.ToolTipText = "Sprint Disabled: Click to Toggle";
-                statusButtonSprintToggle.Image = Resources.SprintTiny_Disabled;
-            }
+			statusButtonSprintToggle.ToolTipText = newSprintStatus;
             statusButtonSprintToggle.Visible = true;
+
         }
 
         private void fileMenuCommandsItem_DropDownOpening(object sender, EventArgs e)
@@ -2279,8 +2422,8 @@ namespace RconTool
             {
                 currentConnection.RconCommandQueue.Enqueue(
                     RconCommand.ConsoleLogCommand(
-                        "Server.ShuffleTeams",
-                        "Server.ShuffleTeams",
+                        ConsoleCommand.Server_ShuffleTeams.Command,
+						ConsoleCommand.Server_ShuffleTeams.Command,
                         "Shuffle Teams Button"
                     )
                 );

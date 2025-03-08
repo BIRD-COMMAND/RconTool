@@ -1463,8 +1463,14 @@ namespace RconTool
 					if (parseResult.IsValid)
 					{
 						if ((parseResult.Parameters?.Count ?? 0) > 0 && !string.IsNullOrWhiteSpace(parseResult.Parameters[0])) {
-							connection.RconCommandQueue.Enqueue(RconCommand.ChatLogCommand(parseResult.Parameters[0], parseResult));
-							parseResult.Add("Command sent.");
+							string commandString = parseResult.Parameters[0].Trim();
+							if (App.ConsoleAutoCompleteStrings.Any(s => s.StartsWith(commandString))) {
+								connection.RconCommandQueue.Enqueue(RconCommand.ChatLogCommand(parseResult.Parameters[0], parseResult));
+								parseResult.Add("Command sent.");
+							}
+							else {
+								parseResult.Add("Invalid or banned command.");
+							}
 						}
 						else
 						{

@@ -27,7 +27,9 @@ namespace RconTool
 
         public ServerState State { get; set; } = new ServerState();
 
-        public ServerSettings Settings { get { return settings?.Value ?? null; } }
+        public readonly ServerState StoredState = new ServerState();
+
+		public ServerSettings Settings { get { return settings?.Value ?? null; } }
         private SavedSetting<ServerSettings> settings;
 
         public string ConnectionName { 
@@ -775,7 +777,8 @@ namespace RconTool
             }
 
             State.Update(newState, this);
-            if (!ServerHookActive && !string.IsNullOrWhiteSpace(State?.name)) {
+            StoredState.Update(newState, this);
+			if (!ServerHookActive && !string.IsNullOrWhiteSpace(State?.name)) {
                 AttemptServerHook();
             }
             HasPlayers = (State?.Players?.Count ?? 0) > 0;
@@ -2410,7 +2413,7 @@ namespace RconTool
                 for (int i = 0; i < numTeams; i++) { activeTeams.Add(i); }
             }
             else {
-                if (!State.teamGame) { return null; }
+                if (!State.teams) { return null; }
                 else {
 
                     // add active team indices first
@@ -3414,7 +3417,7 @@ namespace RconTool
         public void OnPlayerTeamChanged(object sender, PlayerTeamChangeEventArgs e)
         {
             if (IsDisplayedCurrently) { Scoreboard.RegenerateScoreboardImage = true; }
-            if (State.teamGame == false) { return; }
+            if (State.teams == false) { return; }
             if (State.status == StatusStringInLobby) { return; }
             if (State.status == StatusStringLoading) { return; }
 

@@ -148,7 +148,7 @@
         K5sacZw4qmo65Qs5j1XOW5y1ao21+uQvDBX05QzXaY0ggUUkkYIIBTVUUIWNGO06KRbSdC518Udcf4pc
         CrkqYOSYxwY0yK4f/A9+z9YqTk16SSEJ6HlxnI9RILgLNOuO833sOM0TwP8MXOlt/0YDmPkkvd7WokfA
         wDZwcd3WlD3gcgcYfjJkU3YlPy2hWATez+ib8sDQLdC36s2tdY7TByBLs1q6AQ4OgbESZa91eXdv59z+
-        vOPOD9IPgWdyrUnCdncAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAHdElNRQfkARAENDSx7yKFAAACM0lE
+        vOPOD9IPgWdyrUnCdncAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAAHdElNRQfkARAENDSx7yKFAAACM0lE
         QVRYR8WWvUoDQRRGZ00somLwLyEmRbRwayshr5BGwcpCEGGbvIetaYOkEgQb7fcBxDfwAQJKFME21fXe
         hGtmMnd2Z7aIgUPYb2fmO8xuhigA+FfEcJmIITNOe+q8l4r3fEl756qXjsV7hBgS4zRRcUnhp6TipJhE
         msQ4m5aIVeKQEEMuxx0A3AFoFpCYlUe0A4A7AC4JK5iXJ4DfOKIEWB4k8VeexIBLUTlguShhXCyWNysV
@@ -170,7 +170,7 @@
         K5sacZw4qmo65Qs5j1XOW5y1ao21+uQvDBX05QzXaY0ggUUkkYIIBTVUUIWNGO06KRbSdC518Udcf4pc
         CrkqYOSYxwY0yK4f/A9+z9YqTk16SSEJ6HlxnI9RILgLNOuO833sOM0TwP8MXOlt/0YDmPkkvd7WokfA
         wDZwcd3WlD3gcgcYfjJkU3YlPy2hWATez+ib8sDQLdC36s2tdY7TByBLs1q6AQ4OgbESZa91eXdv59z+
-        vOPOD9IPgWdyrUnCdncAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAHdElNRQfkARAENDSx7yKFAAACM0lE
+        vOPOD9IPgWdyrUnCdncAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAAHdElNRQfkARAENDSx7yKFAAACM0lE
         QVRYR8WWvUoDQRRGZ00somLwLyEmRbRwayshr5BGwcpCEGGbvIetaYOkEgQb7fcBxDfwAQJKFME21fXe
         hGtmMnd2Z7aIgUPYb2fmO8xuhigA+FfEcJmIITNOe+q8l4r3fEl756qXjsV7hBgS4zRRcUnhp6TipJhE
         msQ4m5aIVeKQEEMuxx0A3AFoFpCYlUe0A4A7AC4JK5iXJ4DfOKIEWB4k8VeexIBLUTlguShhXCyWNysV
@@ -192,7 +192,7 @@
         K5sacZw4qmo65Qs5j1XOW5y1ao21+uQvDBX05QzXaY0ggUUkkYIIBTVUUIWNGO06KRbSdC518Udcf4pc
         CrkqYOSYxwY0yK4f/A9+z9YqTk16SSEJ6HlxnI9RILgLNOuO833sOM0TwP8MXOlt/0YDmPkkvd7WokfA
         wDZwcd3WlD3gcgcYfjJkU3YlPy2hWATez+ib8sDQLdC36s2tdY7TByBLs1q6AQ4OgbESZa91eXdv59z+
-        vOPOD9IPgWdyrUnCdncAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAHdElNRQfkARAENDSx7yKFAAACM0lE
+        vOPOD9IPgWdyrUnCdncAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAAHdElNRQfkARAENDSx7yKFAAACM0lE
         QVRYR8WWvUoDQRRGZ00somLwLyEmRbRwayshr5BGwcpCEGGbvIetaYOkEgQb7fcBxDfwAQJKFME21fXe
         hGtmMnd2Z7aIgUPYb2fmO8xuhigA+FfEcJmIITNOe+q8l4r3fEl756qXjsV7hBgS4zRRcUnhp6TipJhE
         msQ4m5aIVeKQEEMuxx0A3AFoFpCYlUe0A4A7AC4JK5iXJ4DfOKIEWB4k8VeexIBLUTlguShhXCyWNysV
@@ -207,9 +207,6 @@
   </data>
   <metadata name="statusStripVersion.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>338, 17</value>
-  </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>488, 17</value>
   </metadata>
   <metadata name="statusStripServerCommandButtons.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>585, 5</value>
@@ -229,9 +226,6 @@
         TgDQASA1MVpwzwAAAABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="toolStripMapSelect.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>585, 17</value>
-  </metadata>
   <metadata name="toolStripMapSelect.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>585, 17</value>
   </metadata>

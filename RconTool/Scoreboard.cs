@@ -403,7 +403,7 @@ namespace RconTool
             s.Append("<tbody id=\"singlePlayers\">");
 
 
-            if (App.currentConnection.State.teamGame)
+            if (App.currentConnection.State.teams)
             {
                 
                 s.Append("</tbody>");
@@ -778,7 +778,7 @@ namespace RconTool
             Color TagColor;
             if (currentConnection?.ServerHookActive ?? false) {
                 int teamIndex = currentConnection.GetTeamIndex(player);
-                if (currentConnection.State.teamGame && teamIndex > -1 && teamIndex < 8) {
+                if (currentConnection.State.teams && teamIndex > -1 && teamIndex < 8) {
                     rectColor = App.TeamColors[teamIndex].Item2;
                     TagColor = App.TeamColors[teamIndex].Item1;
                 }
@@ -791,7 +791,7 @@ namespace RconTool
                 rectColor = DarkGray;
                 TagColor = DarkerGray;
             }
-            else if (currentConnection.State.teamGame && player.Team != -1) {
+            else if (currentConnection.State.teams && player.Team != -1) {
                 rectColor = App.TeamColors[player.Team].Item2;
                 TagColor = App.TeamColors[player.Team].Item1;
             }

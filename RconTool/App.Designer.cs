@@ -206,7 +206,7 @@
 			this.textBoxAutoScrollConsoleText.Name = "textBoxAutoScrollConsoleText";
 			this.textBoxAutoScrollConsoleText.ReadOnly = true;
 			this.textBoxAutoScrollConsoleText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-			this.textBoxAutoScrollConsoleText.Size = new System.Drawing.Size(753, 121);
+			this.textBoxAutoScrollConsoleText.Size = new System.Drawing.Size(753, 117);
 			this.textBoxAutoScrollConsoleText.TabIndex = 1;
 			this.textBoxAutoScrollConsoleText.TabPage = this.tabPageConsole;
 			this.textBoxAutoScrollConsoleText.TabStop = false;
@@ -235,10 +235,10 @@
 			this.tabPageChat.BackColor = System.Drawing.SystemColors.Control;
 			this.tabPageChat.Controls.Add(this.panelChatTextEntry);
 			this.tabPageChat.Controls.Add(this.textBoxAutoScrollChatText);
-			this.tabPageChat.Location = new System.Drawing.Point(4, 24);
+			this.tabPageChat.Location = new System.Drawing.Point(4, 22);
 			this.tabPageChat.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
 			this.tabPageChat.Name = "tabPageChat";
-			this.tabPageChat.Size = new System.Drawing.Size(753, 153);
+			this.tabPageChat.Size = new System.Drawing.Size(753, 155);
 			this.tabPageChat.TabIndex = 1;
 			this.tabPageChat.Text = "Chat";
 			// 
@@ -249,7 +249,7 @@
 			this.panelChatTextEntry.Controls.Add(this.textBoxChatTextEntry);
 			this.panelChatTextEntry.Controls.Add(this.buttonChatTextSend);
 			this.panelChatTextEntry.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panelChatTextEntry.Location = new System.Drawing.Point(0, 121);
+			this.panelChatTextEntry.Location = new System.Drawing.Point(0, 123);
 			this.panelChatTextEntry.Margin = new System.Windows.Forms.Padding(0);
 			this.panelChatTextEntry.Name = "panelChatTextEntry";
 			this.panelChatTextEntry.Size = new System.Drawing.Size(753, 32);
@@ -302,11 +302,11 @@
 			// 
 			this.tabPagePlayerLog.BackColor = System.Drawing.SystemColors.Control;
 			this.tabPagePlayerLog.Controls.Add(this.textBoxAutoScrollPlayerLog);
-			this.tabPagePlayerLog.Location = new System.Drawing.Point(4, 24);
+			this.tabPagePlayerLog.Location = new System.Drawing.Point(4, 22);
 			this.tabPagePlayerLog.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
 			this.tabPagePlayerLog.Name = "tabPagePlayerLog";
 			this.tabPagePlayerLog.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPagePlayerLog.Size = new System.Drawing.Size(753, 153);
+			this.tabPagePlayerLog.Size = new System.Drawing.Size(753, 155);
 			this.tabPagePlayerLog.TabIndex = 4;
 			this.tabPagePlayerLog.Text = "Player Log";
 			// 
@@ -334,10 +334,10 @@
 			// 
 			this.tabPageAppLog.BackColor = System.Drawing.SystemColors.Control;
 			this.tabPageAppLog.Controls.Add(this.textBoxAutoScrollApplicationLog);
-			this.tabPageAppLog.Location = new System.Drawing.Point(4, 24);
+			this.tabPageAppLog.Location = new System.Drawing.Point(4, 22);
 			this.tabPageAppLog.Name = "tabPageAppLog";
 			this.tabPageAppLog.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageAppLog.Size = new System.Drawing.Size(753, 153);
+			this.tabPageAppLog.Size = new System.Drawing.Size(753, 155);
 			this.tabPageAppLog.TabIndex = 5;
 			this.tabPageAppLog.Text = "Application Log";
 			// 

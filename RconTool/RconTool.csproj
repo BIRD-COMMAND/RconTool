@@ -117,7 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Arg.cs" />
+    <Compile Include="Commands\ConsoleCommand.cs" />
     <Compile Include="Commands\ParseResult.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

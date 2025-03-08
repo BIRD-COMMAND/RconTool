@@ -26,7 +26,7 @@ namespace RconTool
             InitializeComponent();
             this.listbox = listbox;
             comboBoxServerLanguage.SelectedIndex = 0;
-            textBoxCommandsToSendUponConnection.Text = $"Server.SendChatToRconClients 1{Environment.NewLine}";
+            textBoxCommandsToSendUponConnection.Text = $"Server.SendChatToRconClients 1{Environment.NewLine}Server.RconConsoleOutputEnabled 1{Environment.NewLine}";
             pictureBoxMapsFolderFoundIndicator.Image = XMarkDisabledImage;
             pictureBoxGamesFolderFoundIndicator.Image = XMarkDisabledImage;
             pictureBoxVoteFilesFolderFoundIndicator.Image = XMarkDisabledImage;
