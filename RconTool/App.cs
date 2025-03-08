@@ -2401,15 +2401,8 @@ namespace RconTool
 		{
             currentConnection.RconCommandQueue.Enqueue(
                 RconCommand.ConsoleLogCommand(
-                    "Server.ReloadVotingJson",
-                    "Server.ReloadVotingJson",
-                    "Reload Vote / Veto Json Button"
-                )
-            );
-            currentConnection.RconCommandQueue.Enqueue(
-                RconCommand.ConsoleLogCommand(
-                    "Server.ReloadVetoJson",
-                    "Server.ReloadVetoJson",
+                    ConsoleCommand.Voting_ReloadJson.Command,
+					ConsoleCommand.Voting_ReloadJson.Command,
                     "Reload Vote / Veto Json Button"
                 )
             );
