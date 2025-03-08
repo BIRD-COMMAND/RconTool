@@ -32,8 +32,8 @@ namespace RconTool.Utility
 			ColorTranslator.FromHtml("#4bafb2"), // "Aqua"
 			ColorTranslator.FromHtml("#8ce8e5"), // "Cyan"
 			ColorTranslator.FromHtml("#3d518c"), // "Blue"
-			ColorTranslator.FromHtml("#8c70e1"), // "Cobalt"
-			ColorTranslator.FromHtml("#bdacfb"), // "Sapphire"
+			ColorTranslator.FromHtml("#4b84d2"), // "Cobalt"
+			ColorTranslator.FromHtml("#93a9f3"), // "Sapphire"
 			ColorTranslator.FromHtml("#4b3d8c"), // "Violet"
 			ColorTranslator.FromHtml("#8c70e1"), // "Orchid"
 			ColorTranslator.FromHtml("#bdacfb"), // "Lavender"
@@ -343,10 +343,7 @@ namespace RconTool.Utility
 		//
 		// secondary icon element (toggleable part) is this blue shade, "#92ecec"
 
-		private enum ColorPolicy {
-			KeepEven,
-			KeepBlue
-		}
+		private enum ColorPolicy { KeepEven, KeepBlue }
 
 		private struct EmblemData
 		{
