@@ -231,6 +231,23 @@ namespace RconTool
 			return true;
 		}
 
+		public bool Delete() {
+			try {
+				App.SettingsFile.AppSettings.Settings.Remove(SaveKey);
+			}
+			catch (Exception e) {
+				//App.Log($"Error: Exception in {this}.Delete(): {e}");
+				return false;
+			}
+			try { App.SettingsFile.Save(ConfigurationSaveMode.Full); }
+			catch (Exception e) {
+				//App.Log($"Error: Exception in {this}.Delete(): {e}");
+				return false;
+			}
+			return true;
+		}
+
+
 		/// <summary>
 		/// Returns a string representation of the object in the form 'SavedSetting(SaveKey)'.
 		/// </summary>

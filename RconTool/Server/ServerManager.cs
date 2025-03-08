@@ -76,16 +76,15 @@ namespace RconTool
                         Log(deletionMessage);
                     }
 
-                    
-                    ((ServerManagerListBoxItem)listBoxServerList.SelectedItem).Connection.Close();
-                    connectionList.Remove(((ServerManagerListBoxItem)listBoxServerList.SelectedItem).Connection);
-                    listBoxServerList.Items.Remove(listBoxServerList.SelectedItem);
+                    App.DeleteServer(((ServerManagerListBoxItem)listBoxServerList.SelectedItem ).Connection);
 
-					foreach (Connection connection in connectionList) { connection.UpdateDisplay = true; }
+					//((ServerManagerListBoxItem)listBoxServerList.SelectedItem).Connection.Close();
+					//connectionList.Remove(((ServerManagerListBoxItem)listBoxServerList.SelectedItem).Connection);
+					//listBoxServerList.Items.Remove(listBoxServerList.SelectedItem);
+					//foreach (Connection connection in connectionList) { connection.UpdateDisplay = true; }
+					//SaveSettings();
 
-                    SaveSettings();
-
-                }
+				}
             }
 
         }

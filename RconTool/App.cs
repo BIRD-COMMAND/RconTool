@@ -1181,7 +1181,30 @@ namespace RconTool
 
         }
 
-        public static void LoadServerDatabases() 
+        public static void DeleteServer(Connection connection) {
+
+			// get confirmation from user that they're okay with the application closing and restarting
+			DialogResult confirmResult = MessageBox.Show(
+				"Are you sure you want to delete the server connection '" + connection.ConnectionName + "'?\n" +
+				"If you click \"OK\" the server connection will be deleted permanently.",
+				"Confirm Server Connection Deletion", MessageBoxButtons.OKCancel
+			);
+
+            if (confirmResult != DialogResult.OK) { return; }
+
+            try {
+                if (ConnectionIdsList.Value.Contains(connection.ConnectionId)) {
+                    ConnectionIdsList.Value.Remove(connection.ConnectionId);
+                    ConnectionIdsList.Save();
+                }
+                connection.DeleteConnectionAndServerSettings();
+            } catch { }
+            
+            Application.Restart();
+
+		}
+
+		public static void LoadServerDatabases() 
         {
 
             // Make sure connection Ids list exists

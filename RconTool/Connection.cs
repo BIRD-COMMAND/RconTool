@@ -29,6 +29,8 @@ namespace RconTool
 
         public readonly ServerState StoredState = new ServerState();
 
+        public string ConnectionId { get; private set; } = string.Empty;
+
 		public ServerSettings Settings { get { return settings?.Value ?? null; } }
         private SavedSetting<ServerSettings> settings;
 
@@ -310,8 +312,10 @@ namespace RconTool
                 throw new ArgumentException("Invalid connectionId - must be unique, non-null, and non-whitespace."); 
             }
 
-            // Add/Save new Connection Id if needed
-            if (!App.ConnectionIdsList.Value.Contains(connectionId)) { 
+			ConnectionId = connectionId;
+
+			// Add/Save new Connection Id if needed
+			if (!App.ConnectionIdsList.Value.Contains(connectionId)) { 
                 App.ConnectionIdsList.Value.Add(connectionId);
                 App.ConnectionIdsList.Save();
             }
@@ -409,7 +413,14 @@ namespace RconTool
 
         }
 
-        public void Close()
+        public bool DeleteConnectionAndServerSettings() {
+			if (Settings == null) { return false; }
+			try { settings.Delete(); }
+			catch { return false; }
+			return true;
+		}
+
+		public void Close()
         {
             //try { Database.Dispose(); }
             //catch { Console.WriteLine($"Error disposing database for connection {Settings?.Name ?? "Unknown Connection"}"); }
